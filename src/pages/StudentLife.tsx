@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { studentLifeConfig, introGridConfig } from '../config';
-import { Link } from 'react-router-dom';
+import { studentLifeConfig } from '../config';
 import { Heart, Users, Sparkles, BookOpen, Quote } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
 

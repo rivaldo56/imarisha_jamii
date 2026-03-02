@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { aboutConfig } from '../config';
-import { Link } from 'react-router-dom';
 import * as Icons from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
 
@@ -10,9 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutUs() {
   const pageRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const missionRef = useRef<HTMLDivElement>(null);
-  const pillarsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
