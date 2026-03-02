@@ -107,7 +107,7 @@ export function Testimonials() {
         >
           {testimonialsConfig.testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
-              <div className="group bg-altwhite rounded-lg p-8 md:p-10 h-full transition-all duration-500 hover:bg-forest-dark hover:text-white">
+              <div className="group bg-altwhite rounded-2xl p-8 md:p-10 h-full transition-all duration-500 ease-out hover:bg-forest-dark hover:text-white">
                 {/* Quote icon */}
                 <Quote className="w-10 h-10 text-softblack/10 group-hover:text-white/20 mb-6 transition-colors duration-500" strokeWidth={1} />
 

@@ -162,7 +162,7 @@ export function FeaturedProjects() {
             >
               {/* Image with Viewfinder */}
               <div
-                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer opacity-0 ${
+                className={`project-image-wrap relative overflow-hidden rounded-2xl group cursor-pointer opacity-0 shadow-lg ${
                   index % 2 === 1 ? 'md:order-2' : ''
                 }`}
               >

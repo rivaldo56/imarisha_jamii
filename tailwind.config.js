@@ -28,6 +28,7 @@ module.exports = {
         },
         offwhite: "#F7F4EF",
         altwhite: "#EFE9E0",
+        bronze: "#C67B30",
         softblack: "#111111",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

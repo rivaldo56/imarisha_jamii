@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link } from 'react-router-dom';
 import { heroConfig } from '../config';
+import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,18 +90,19 @@ export function Hero() {
         }}
       />
 
-      {/* Layer 2: Big Text */}
+      {/* Layer 2: Big Text (Decorative) */}
       <div
         ref={textRef}
         className="absolute inset-0 flex flex-col items-start justify-center z-10 will-change-transform px-[2%] md:px-[4%]"
+        aria-hidden="true"
       >
         {heroConfig.backgroundText.split('\n').map((line, index) => (
-          <h1 
+          <div 
             key={index}
             className="text-[12vw] md:text-[8vw] lg:text-[8.5vw] font-sans font-extrabold text-white tracking-tighter leading-[0.8] select-none text-left uppercase"
           >
             {line}
-          </h1>
+          </div>
         ))}
       </div>
 
@@ -122,36 +125,33 @@ export function Hero() {
         </div>
       )}
 
-      {/* Layer 4: Overlay Text */}
-      {heroConfig.overlayText && (
-        <div
-          ref={overlayTextRef}
-          className="absolute bottom-[15%] left-[8%] md:left-[12%] z-30 will-change-transform"
-        >
-          <p className="font-serif italic text-xl md:text-2xl lg:text-3xl text-white/90 tracking-wide">
-            {heroConfig.overlayText}
-          </p>
+      {/* Layer 4: Overlay Text & CTAs */}
+      <div
+        ref={overlayTextRef}
+        className="absolute bottom-[10%] md:bottom-[15%] left-[8%] md:left-[12%] z-30 will-change-transform max-w-xl"
+      >
+        <h1 className="font-serif italic text-2xl md:text-4xl lg:text-5xl text-white/90 tracking-wide mb-8 leading-tight">
+          {heroConfig.overlayText}
+        </h1>
+        
+        <div className="flex flex-wrap gap-4 md:gap-6">
+          <Link
+            to="/apply"
+            onClick={() => trackEvent(ANALYTICS_EVENTS.CTA_CLICK, { location: 'hero', action: 'apply_now' })}
+            className="bg-bronze text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold shadow-xl hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2"
+          >
+            Apply Now
+          </Link>
+          <Link
+            to="/programs"
+            onClick={() => trackEvent(ANALYTICS_EVENTS.CTA_CLICK, { location: 'hero', action: 'explore_programs' })}
+            className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-base md:text-lg font-bold hover:bg-white/20 transition-all duration-500 ease-out"
+          >
+            Explore Programs
+          </Link>
         </div>
-      )}
+      </div>
 
-      {/* Navigation hint */}
-      <nav className="absolute top-0 left-0 right-0 z-40 px-6 md:px-12 py-6 flex items-center justify-between">
-        <div className="text-white font-sans font-bold text-lg tracking-tight">
-          {heroConfig.brandName}
-        </div>
-        {heroConfig.navLinks.length > 0 && (
-          <div className="hidden md:flex items-center gap-8 text-white/80 text-sm font-body">
-            {heroConfig.navLinks.map((link) => (
-              <a key={link.label} href={link.href} className="hover:text-white transition-colors duration-300">{link.label}</a>
-            ))}
-          </div>
-        )}
-        <button className="md:hidden text-white">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </nav>
     </section>
   );
 }

@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Twitter, Linkedin, Mail, type LucideIcon } from 'lucide-react';
 import { footerConfig } from '../config';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -121,13 +122,13 @@ export function Footer() {
                 )}
                 <nav className="space-y-3">
                   {footerConfig.navLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.label}
-                      href={link.href}
+                      to={link.href}
                       className="block text-softblack/80 hover:text-softblack font-body transition-colors duration-300"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
@@ -170,12 +171,12 @@ export function Footer() {
             <p className="text-softblack/40 font-body text-sm">
               {footerConfig.copyright || `\u00A9 ${new Date().getFullYear()} All rights reserved.`}
             </p>
-            {footerConfig.bottomLinks.length > 0 && (
+            {footerConfig.bottomLinks && footerConfig.bottomLinks.length > 0 && (
               <div className="flex items-center gap-6 text-softblack/40 font-body text-sm">
                 {footerConfig.bottomLinks.map((link) => (
-                  <a key={link.label} href={link.href} className="hover:text-softblack transition-colors duration-300">
+                  <Link key={link.label} to={link.href} className="hover:text-softblack transition-colors duration-300">
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
