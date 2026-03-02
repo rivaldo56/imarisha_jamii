@@ -28,9 +28,9 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   language: "en",
-  siteTitle: "Imarisha Daima Adult High School",
+  siteTitle: "Imarisha Jamii Adult High School",
   siteDescription: "Flexible adult high school programs designed to help you finish strong. Evening & weekend classes for working adults in Nairobi.",
-  brandName: "Imarisha Daima",
+  brandName: "Imarisha Jamii",
 };
 
 // Hero Section
@@ -80,7 +80,7 @@ export const aboutConfig: AboutConfig = {
   },
   mission: {
     title: "Our Mission & Philosophy",
-    description: "Imarisha Daima exists to provide a bridge for adults who stepped away from formal education. Our philosophy centers on respect, patience, and the belief that life experience is an asset in the classroom. We don't just teach subjects; we empower individuals to rewrite their futures.",
+    description: "Imarisha Jamii exists to provide a bridge for adults who stepped away from formal education. Our philosophy centers on respect, patience, and the belief that life experience is an asset in the classroom. We don't just teach subjects; we empower individuals to rewrite their futures.",
     image: "/hero_tertiary_portrait.jpg",
   },
   pillars: [
@@ -196,7 +196,7 @@ export interface StudentLifeConfig {
 export const studentLifeConfig: StudentLifeConfig = {
   hero: {
     title: "Learning Together. Growing Together.",
-    subtext: "At Imarisha Daima, you're not just a student—you're part of a community that supports your ambition.",
+    subtext: "At Imarisha Jamii, you're not just a student—you're part of a community that supports your ambition.",
   },
   values: ["Respect", "Support", "Flexibility", "Growth"],
 };
@@ -222,7 +222,7 @@ export const contactConfig: ContactConfig = {
   info: {
     phone: "+254 700 000 000",
     whatsapp: "+254 700 000 000",
-    email: "hello@imarishadaima.ac.ke",
+    email: "hello@imarishajamii.ac.ke",
     hours: "Mon-Fri: 9AM - 9PM, Sat: 9AM - 4PM",
     location: "Nairobi CBD, Kenya",
   },
@@ -335,7 +335,7 @@ export const featuredProjectsConfig = {
   ],
 };
 
-// Why Choose Me Section (Why Imarisha Daima)
+// Why Choose Me Section (Why Imarisha Jamii)
 export interface FeatureCard {
   image: string;
   imageAlt: string;
@@ -344,7 +344,7 @@ export interface FeatureCard {
 }
 
 export const whyChooseMeConfig = {
-  subtitle: "WHY IMARISHA DAIMA",
+  subtitle: "WHY IMARISHA JAMII",
   titleRegular: "Built for adults—",
   titleItalic: "not the other way around.",
   statsLabel: "By The Numbers",
@@ -442,7 +442,7 @@ export const footerConfig = {
     { iconName: "Mail", href: `mailto:${contactConfig.info.email}`, label: "Email" },
   ],
   tagline: "Your education. Your pace.\nYour comeback.",
-  copyright: "© Imarisha Daima Adult High School. All rights reserved.",
+  copyright: "© Imarisha Jamii Adult High School. All rights reserved.",
   bottomLinks: [
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Service", href: "#" },

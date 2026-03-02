@@ -162,7 +162,7 @@ export default function StudentLife() {
                 </div>
               </div>
               <p className="text-softblack/80 font-body leading-relaxed italic">
-                "I thought my time for education had passed. Imarisha Daima proved me wrong. The environment is so respectful—you never feel like 'just another student'."
+                "I thought my time for education had passed. Imarisha Jamii proved me wrong. The environment is so respectful—you never feel like 'just another student'."
               </p>
             </div>
 
@@ -199,7 +199,7 @@ export default function StudentLife() {
 
       <EmotionalCTA 
         title="Your community is waiting."
-        subtitle="Join Imarisha Daima"
+        subtitle="Join Imarisha Jamii"
         ctaText="Start My Application"
         ctaHref="/apply"
       />
