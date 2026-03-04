@@ -129,7 +129,7 @@ export default function AboutUs() {
           <div className="motto-spotlight opacity-0 inline-block py-2 px-6 rounded-full border border-bronze/20 bg-bronze/5 mb-8">
             <span className="text-bronze font-sans font-bold tracking-[0.3em] uppercase text-[10px]">The Imarisha Promise</span>
           </div>
-          <h2 className="motto-spotlight opacity-0 text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-sans font-extrabold text-softblack tracking-tighter leading-tight mb-4 uppercase whitespace-nowrap">
+          <h2 className="motto-spotlight opacity-0 text-[5.8vw] xs:text-[6.2vw] sm:text-5xl md:text-7xl lg:text-8xl font-sans font-extrabold text-softblack tracking-tighter leading-tight mb-4 uppercase whitespace-nowrap">
             "You <span className="text-bronze">Can</span> Dream Again."
           </h2>
           <div className="motto-spotlight opacity-0 w-24 h-1 bg-bronze mx-auto mt-12 opacity-50" />
