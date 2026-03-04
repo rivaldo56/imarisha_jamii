@@ -14,10 +14,10 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="relative min-h-screen">
       <ScrollToTop />
-      <div className="sticky top-0 z-50 w-full transition-all duration-300">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
         {isRibbonVisible && <IntakeRibbon onClose={() => setIsRibbonVisible(false)} />}
         <Navbar />
-      </div>
+      </header>
       <main>
         {children}
       </main>

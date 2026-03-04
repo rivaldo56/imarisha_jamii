@@ -12,7 +12,7 @@ export const mainNavLinks: NavLink[] = [
 ];
 
 export const intakeRibbonConfig = {
-  text: "January 2026 Intake is Now Open — Secure your spot today!",
+  text: "March 2026 Intake is Now Open — Secure your spot today!",
   ctaText: "Apply Now",
   ctaHref: "/apply",
   isVisible: true,
@@ -264,7 +264,7 @@ export const contactConfig: ContactConfig = {
 // Application
 export const applicationConfig = {
   hero: {
-    title: "Apply for January Intake",
+    title: "Apply for March Intake",
   },
 };
 
