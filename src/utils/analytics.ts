@@ -19,4 +19,5 @@ export const ANALYTICS_EVENTS = {
   CONTACT_INQUIRY: 'contact_inquiry',
   CTA_CLICK: 'cta_click',
   VIEW_PROGRAM: 'view_program',
+  CONTACT_FORM_SUBMIT: 'contact_form_submit',
 };

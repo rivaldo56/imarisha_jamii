@@ -1,21 +1,38 @@
-import { useRef, useState } from 'react';
-import { Send, Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import { contactConfig } from '../config';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
+import { PageTitle } from '../components/PageTitle';
+import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from '../components/ui/map';
+import gsap from 'gsap';
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.contact-card', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+      });
+    }, pageRef);
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
     
-    // In a real app, you would use formData here
     const formData = new FormData(formRef.current!);
     
-    trackEvent(ANALYTICS_EVENTS.CONTACT_INQUIRY, { 
-      subject: formData.get('subject') as string 
+    trackEvent(ANALYTICS_EVENTS.CONTACT_FORM_SUBMIT || 'contact_form_submit', { 
+      name: formData.get('name'),
+      email: formData.get('email')
     });
 
     // Mock submission
@@ -26,150 +43,254 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-offwhite py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 md:gap-24">
-          
-          {/* Contact Details */}
-          <div>
-            <h1 className="text-4xl md:text-6xl font-sans font-extrabold text-softblack mb-8 tracking-tight">
-              {contactConfig.hero.title}
-            </h1>
-            <p className="text-softblack/70 font-body text-lg md:text-xl leading-relaxed mb-12 max-w-lg">
-              Whether you have questions about our KCSE classes or need advice on which program is right for you, we're here to help.
-            </p>
+    <div ref={pageRef} className="min-h-screen bg-offwhite">
+      <PageTitle />
+      
+      {/* Hero Section */}
+      <section className="relative pt-44 pb-24 bg-forest-dark text-white overflow-hidden text-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          <h1 className="text-5xl md:text-7xl font-sans font-extrabold mb-8 tracking-tight uppercase leading-[0.9]">
+            {contactConfig.hero.title}
+          </h1>
+          <p className="text-xl md:text-2xl font-body text-white/80 max-w-2xl mx-auto leading-relaxed">
+            {contactConfig.hero.subtext}
+          </p>
+        </div>
+      </section>
 
-            <div className="space-y-8">
-              <div className="flex items-start gap-6">
-                <div className="w-12 h-12 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze flex-shrink-0">
-                  <Phone size={24} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-1">Call or WhatsApp</p>
-                  <p className="text-xl font-sans font-bold text-softblack">{contactConfig.info.phone}</p>
-                </div>
+      {/* Contact Cards Grid */}
+      <section className="py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid md:grid-cols-3 gap-8 -mt-32 relative z-20">
+            {/* Call Card */}
+            <a 
+              href={`tel:${contactConfig.info.phone.replace(/\s/g, '')}`}
+              onClick={() => trackEvent('contact_phone_click')}
+              className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-softblack/5 group"
+            >
+              <div className="w-14 h-14 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze mb-8 group-hover:scale-110 transition-transform">
+                <Phone size={28} />
               </div>
+              <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">Call Us</p>
+              <h3 className="text-3xl font-sans font-extrabold text-softblack mb-4">
+                {contactConfig.info.phone}
+              </h3>
+              <p className="text-softblack/60 font-body">We pick up. Come talk to a person.</p>
+            </a>
 
-              <div className="flex items-start gap-6">
-                <div className="w-12 h-12 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze flex-shrink-0">
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-1">Email Us</p>
-                  <p className="text-xl font-sans font-bold text-softblack">{contactConfig.info.email}</p>
-                </div>
+            {/* Email Card */}
+            <a 
+              href={`mailto:${contactConfig.info.email}`}
+              onClick={() => trackEvent('contact_email_click')}
+              className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-softblack/5 group"
+            >
+              <div className="w-14 h-14 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze mb-8 group-hover:scale-110 transition-transform">
+                <Mail size={28} />
               </div>
+              <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">Email Us</p>
+              <h3 className="text-2xl font-sans font-extrabold text-softblack mb-4 break-all">
+                {contactConfig.info.email}
+              </h3>
+              <p className="text-softblack/60 font-body">We respond within 24 hours.</p>
+            </a>
 
-              <div className="flex items-start gap-6">
-                <div className="w-12 h-12 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze flex-shrink-0">
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-1">Office Hours</p>
-                  <p className="text-xl font-sans font-bold text-softblack">{contactConfig.info.hours}</p>
-                </div>
+            {/* Visit Card */}
+            <div className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl transition-all duration-500 border border-softblack/5 group">
+              <div className="w-14 h-14 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze mb-8 group-hover:scale-110 transition-transform">
+                <MapPin size={28} />
               </div>
-
-              <div className="flex items-start gap-6">
-                <div className="w-12 h-12 bg-bronze/10 rounded-xl flex items-center justify-center text-bronze flex-shrink-0">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-1">Our Location</p>
-                  <p className="text-xl font-sans font-bold text-softblack">{contactConfig.info.location}</p>
-                </div>
-              </div>
+              <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">Find Us</p>
+              <h3 className="text-2xl font-sans font-extrabold text-softblack mb-4">
+                Umoja Innercore
+              </h3>
+              <p className="text-softblack/60 font-body">{contactConfig.info.location}</p>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-white p-8 md:p-12 rounded-2xl shadow-xl shadow-softblack/5 border border-softblack/5 h-fit">
-            {formStatus === 'success' ? (
-              <div className="py-12 flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6">
-                  <Send size={40} />
+          <div className="mt-24 grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            {/* Contact Form */}
+            <div className="bg-altwhite p-8 md:p-12 rounded-2xl shadow-sm border border-softblack/5 h-fit">
+              {formStatus === 'success' ? (
+                <div className="py-12 flex flex-col items-center justify-center text-center">
+                  <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6">
+                    <Send size={40} />
+                  </div>
+                  <h3 className="text-2xl font-sans font-bold text-softblack mb-4">Inquiry Received!</h3>
+                  <p className="text-softblack/60 font-body mb-8">
+                    We've got your message. Our team will guide you from here.
+                  </p>
+                  <button 
+                    onClick={() => setFormStatus('idle')}
+                    className="text-bronze font-bold hover:underline"
+                  >
+                    Send another question
+                  </button>
                 </div>
-                <h3 className="text-2xl font-sans font-bold text-softblack mb-4">Message Sent!</h3>
-                <p className="text-softblack/60 font-body mb-8">
-                  Thank you for your inquiry. A member of our admissions team will contact you within 24 hours.
-                </p>
-                <button 
-                  onClick={() => setFormStatus('idle')}
-                  className="text-bronze font-bold hover:underline"
-                >
-                  Send another message
-                </button>
-              </div>
-            ) : (
-              <>
-                <h3 className="text-2xl font-sans font-bold text-softblack mb-8">Send us a Message</h3>
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+              ) : (
+                <>
+                  <div className="mb-10">
+                    <h2 className="text-3xl font-sans font-bold text-softblack mb-4">Send Us a Message</h2>
+                    <p className="text-softblack/60 font-body">Tell us what you're looking for. We'll guide you from there.</p>
+                  </div>
+                  <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
                       <label htmlFor="full-name" className="text-sm font-bold text-softblack/70 ml-1">Full Name</label>
                       <input
                         id="full-name"
                         type="text"
                         name="name"
-                        placeholder="e.g. John Doe"
+                        placeholder="Your full name"
                         autoComplete="name"
-                        className="w-full bg-offwhite border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
+                        className="w-full bg-offwhite border border-softblack/5 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
                         required
                       />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label htmlFor="phone" className="text-sm font-bold text-softblack/70 ml-1">Phone Number</label>
+                        <input
+                          id="phone"
+                          type="tel"
+                          name="phone"
+                          placeholder="e.g. 0712 345 678"
+                          autoComplete="tel"
+                          className="w-full bg-offwhite border border-softblack/5 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="email" className="text-sm font-bold text-softblack/70 ml-1">Email Address (Optional)</label>
+                        <input
+                          id="email"
+                          type="email"
+                          name="email"
+                          placeholder="your@email.com"
+                          autoComplete="email"
+                          className="w-full bg-offwhite border border-softblack/5 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-bold text-softblack/70 ml-1">Email Address</label>
-                      <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        placeholder="your@email.com"
-                        autoComplete="email"
-                        className="w-full bg-offwhite border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
+                      <label htmlFor="message" className="text-sm font-bold text-softblack/70 ml-1">Message</label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        placeholder="What would you like to know about our programs?"
+                        rows={4}
+                        className="w-full bg-offwhite border border-softblack/5 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack resize-none"
                         required
                       />
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-bold text-softblack/70 ml-1">Subject</label>
-                    <input
-                      id="subject"
-                      type="text"
-                      name="subject"
-                      placeholder="How can we help?"
-                      className="w-full bg-offwhite border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-bold text-softblack/70 ml-1">Your Message</label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      placeholder="Tell us about your goals..."
-                      rows={5}
-                      className="w-full bg-offwhite border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack resize-none"
-                      required
-                    />
-                  </div>
-                  <button 
-                    type="submit"
-                    disabled={formStatus === 'submitting'}
-                    className="w-full bg-bronze text-white font-bold py-5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 ease-out flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg shadow-bronze/20"
-                  >
-                    {formStatus === 'submitting' ? (
-                      <>Sending Inquiry...</>
-                    ) : (
-                      <>Send My Inquiry <Send size={20} /></>
-                    )}
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
+                    <button 
+                      type="submit"
+                      disabled={formStatus === 'submitting'}
+                      className="w-full bg-bronze text-white font-bold py-5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 ease-out flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg"
+                    >
+                      {formStatus === 'submitting' ? "Sending Inquiry..." : "Send My Inquiry"} <ArrowRight size={20} />
+                    </button>
+                    <p className="text-center text-xs text-softblack/40 font-body italic">
+                      🔒 Your information is private and only used for admissions contact.
+                    </p>
+                  </form>
+                </>
+              )}
+            </div>
 
+            {/* Address & Hours */}
+            <div className="space-y-12">
+              <div className="bg-altwhite p-8 md:p-12 rounded-2xl border border-softblack/5 shadow-sm">
+                <h3 className="text-2xl font-sans font-bold text-softblack mb-6">Address</h3>
+                <div className="text-softblack/70 font-body leading-relaxed space-y-4 text-sm">
+                  <p className="font-bold text-softblack">Imarisha Jamii Centre C.B.O</p>
+                  <p>Umoja Innercore<br />Opposite Chiefs Camp<br />Within Friends Church Compound<br />Nairobi, Kenya</p>
+                  <a 
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${contactConfig.info.coordinates.lat},${contactConfig.info.coordinates.lng}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-bronze font-bold hover:underline mt-4 group"
+                  >
+                    Get Directions <ExternalLink size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-altwhite p-8 md:p-12 rounded-2xl border border-softblack/5 shadow-sm overflow-hidden text-sm">
+                <h3 className="text-2xl font-sans font-bold text-softblack mb-8 flex items-center gap-3">
+                  <Clock size={24} className="text-bronze" /> Office Hours
+                </h3>
+                <table className="w-full text-left font-body">
+                  <tbody className="divide-y divide-softblack/5">
+                    <tr>
+                      <td className="py-4 font-bold">Monday – Friday</td>
+                      <td className="py-4 text-softblack/60">{contactConfig.info.hours.weekday}</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 font-bold">Saturday</td>
+                      <td className="py-4 text-softblack/60">{contactConfig.info.hours.saturday}</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 font-bold">Sunday</td>
+                      <td className="py-4 text-softblack/60 italic">{contactConfig.info.hours.sunday}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Full Width Map Section */}
+      <section className="pb-24 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-altwhite rounded-3xl border border-softblack/5 shadow-xl overflow-hidden h-[500px] md:h-[600px] relative">
+            <Map 
+              center={[contactConfig.info.coordinates.lng, contactConfig.info.coordinates.lat]} 
+              zoom={15}
+              attributionControl={{ compact: true }}
+            >
+              <MapControls position="bottom-right" showZoom showLocate showFullscreen />
+              <MapMarker 
+                longitude={contactConfig.info.coordinates.lng} 
+                latitude={contactConfig.info.coordinates.lat}
+              >
+                <MarkerContent>
+                  <div className="relative group/marker">
+                    <div className="w-12 h-12 bg-bronze rounded-full flex items-center justify-center text-white shadow-2xl border-4 border-white group-hover/marker:scale-110 transition-transform duration-300">
+                      <MapPin size={24} />
+                    </div>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 bg-softblack text-white text-xs py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none font-bold">
+                      Imarisha Jamii Centre
+                    </div>
+                  </div>
+                </MarkerContent>
+                <MarkerPopup closeButton className="max-w-[220px]">
+                  <h4 className="font-sans font-bold text-softblack text-base mb-1">Imarisha Jamii Centre</h4>
+                  <p className="text-xs text-softblack/60 font-body leading-tight">
+                    Umoja Innercore, Within Friends Church Compound. Nairobi.
+                  </p>
+                </MarkerPopup>
+              </MapMarker>
+            </Map>
+          </div>
+        </div>
+      </section>
+
+      {/* Soft Close */}
+      <section className="pb-32 text-center px-6">
+        <div className="max-w-2xl mx-auto space-y-8">
+          <p className="text-2xl md:text-3xl font-sans font-bold text-softblack leading-tight">
+            Not sure where to start? That's okay. <br />
+            Call us and we'll figure it out together.
+          </p>
+          <a 
+            href={`tel:${contactConfig.info.phone.replace(/\s/g, '')}`}
+            className="text-4xl md:text-6xl font-sans font-extrabold text-bronze hover:scale-105 transition-transform inline-block"
+          >
+            {contactConfig.info.phone}
+          </a>
+        </div>
+      </section>
     </div>
   );
 }

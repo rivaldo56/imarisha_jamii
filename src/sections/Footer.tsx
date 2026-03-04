@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Twitter, Linkedin, Mail, type LucideIcon } from 'lucide-react';
-import { footerConfig } from '../config';
+import { footerConfig, siteConfig } from '../config';
 import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -64,10 +64,10 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Massive Logo */}
         {footerConfig.logoText && (
-          <div ref={logoRef} className="opacity-0 mb-16 md:mb-24">
+          <div ref={logoRef} className="opacity-0 mb-16 md:mb-24 px-4 md:px-0">
             <svg
-              viewBox="0 0 600 100"
-              className="w-full h-auto max-h-[25vh]"
+              viewBox="0 0 1000 100"
+              className="w-full h-auto max-h-[15vh] md:max-h-[20vh]"
               preserveAspectRatio="xMidYMid meet"
             >
               <text
@@ -77,7 +77,7 @@ export function Footer() {
                 textAnchor="middle"
                 className="fill-softblack font-sans font-extrabold"
                 style={{
-                  fontSize: '90px',
+                  fontSize: '80px',
                   letterSpacing: '-0.03em',
                 }}
               >
@@ -168,8 +168,8 @@ export function Footer() {
 
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-softblack/10 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-softblack/40 font-body text-sm">
-              {footerConfig.copyright || `\u00A9 ${new Date().getFullYear()} All rights reserved.`}
+            <p className="text-softblack/40 font-body text-sm text-center md:text-left">
+              © {new Date().getFullYear()} {siteConfig.siteTitle}. All rights reserved.
             </p>
             {footerConfig.bottomLinks && footerConfig.bottomLinks.length > 0 && (
               <div className="flex items-center gap-6 text-softblack/40 font-body text-sm">

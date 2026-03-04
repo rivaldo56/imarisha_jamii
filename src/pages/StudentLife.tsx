@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { studentLifeConfig } from '../config';
-import { Heart, Users, Sparkles, BookOpen, Quote } from 'lucide-react';
+import { studentLifeConfig, testimonialsConfig } from '../config';
+import { Heart, Users, Sparkles, BookOpen } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
+import { TestimonialsSection } from '../components/ui/testimonial-v2';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -143,59 +144,17 @@ export default function StudentLife() {
         </div>
       </section>
 
-      {/* Success Stories Slider (Simplified for now) */}
-      <section className="testimonials-section py-24 md:py-32 bg-altwhite overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="text-center mb-16 md:mb-24">
-            <h2 className="text-3xl md:text-5xl font-sans font-bold text-softblack tracking-tight mb-4">Voices of Growth</h2>
-            <p className="text-softblack/50 font-body uppercase tracking-widest text-sm">Real stories from our alumni</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="testimonial-card bg-offwhite p-10 rounded-2xl shadow-sm relative">
-              <Quote className="absolute top-8 right-8 text-bronze/20" size={40} />
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-forest-dark flex items-center justify-center text-white font-bold text-xl">MK</div>
-                <div>
-                  <h4 className="font-sans font-bold text-softblack">Mary K.</h4>
-                  <p className="text-softblack/50 text-xs uppercase tracking-wider">Class of '24</p>
-                </div>
-              </div>
-              <p className="text-softblack/80 font-body leading-relaxed italic">
-                "I thought my time for education had passed. Imarisha Jamii proved me wrong. The environment is so respectful—you never feel like 'just another student'."
-              </p>
-            </div>
-
-            <div className="testimonial-card bg-offwhite p-10 rounded-2xl shadow-sm relative">
-              <Quote className="absolute top-8 right-8 text-bronze/20" size={40} />
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-forest-dark flex items-center justify-center text-white font-bold text-xl">JO</div>
-                <div>
-                  <h4 className="font-sans font-bold text-softblack">James O.</h4>
-                  <p className="text-softblack/50 text-xs uppercase tracking-wider">Class of '23</p>
-                </div>
-              </div>
-              <p className="text-softblack/80 font-body leading-relaxed italic">
-                "The flexibility was the key. I could keep my job and still get my KCSE. Now I'm enrolled in college for a degree I've wanted for years."
-              </p>
-            </div>
-
-            <div className="testimonial-card bg-offwhite p-10 rounded-2xl shadow-sm relative">
-              <Quote className="absolute top-8 right-8 text-bronze/20" size={40} />
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-forest-dark flex items-center justify-center text-white font-bold text-xl">GN</div>
-                <div>
-                  <h4 className="font-sans font-bold text-softblack">Grace N.</h4>
-                  <p className="text-softblack/50 text-xs uppercase tracking-wider">Bridging Program</p>
-                </div>
-              </div>
-              <p className="text-softblack/80 font-body leading-relaxed italic">
-                "The mentorship here is incredible. The teachers actually care about your life goals, not just your grades."
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Success Stories Slider (Dynamic Scrolling) */}
+      <TestimonialsSection 
+        title="Voices of Growth"
+        subtitle="Real stories from our alumni"
+        testimonials={testimonialsConfig.testimonials.map(t => ({
+          text: t.quote,
+          image: t.image,
+          name: t.name,
+          role: t.role
+        }))}
+      />
 
       <EmotionalCTA 
         title="Your community is waiting."

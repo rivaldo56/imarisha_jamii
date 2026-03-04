@@ -28,9 +28,9 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   language: "en",
-  siteTitle: "Imarisha Jamii Adult High School",
-  siteDescription: "Flexible adult high school programs designed to help you finish strong. Evening & weekend classes for working adults in Nairobi.",
-  brandName: "Imarisha Jamii",
+  siteTitle: "Imarisha Jamii Centre for Adult Education",
+  siteDescription: "Flexible adult education programs designed to help you finish strong. Evening & weekend classes for working adults in Nairobi.",
+  brandName: "Imarisha Jamii Centre",
 };
 
 // Hero Section
@@ -61,12 +61,17 @@ export interface AboutConfig {
   hero: {
     title: string;
     subtext: string;
-    image: string;
+    ctaText: string;
+    ctaHref: string;
   };
-  mission: {
-    title: string;
-    description: string;
-    image: string;
+  whoWeAre: {
+    pullQuote: string;
+    body: string;
+  };
+  visionMissionMotto: {
+    vision: { title: string; body: string };
+    mission: { title: string; body: string };
+    motto: { title: string; body: string };
   };
   pillars: PillarItem[];
   stats: StatItem[];
@@ -74,41 +79,59 @@ export interface AboutConfig {
 
 export const aboutConfig: AboutConfig = {
   hero: {
-    title: "Education for Every Stage of Life",
-    subtext: "We believe that it is never too late to finish what you started. Our adult high school is designed for those balancing work, family, and ambition.",
-    image: "/hero_secondary_portrait.jpg",
+    title: "You Were Never Behind. You Were Just Waiting For The Right Door.",
+    subtext: "Imarisha Jamii Centre exists for every adult who thought their moment had passed. It hasn't. We built this place for you.",
+    ctaText: "See Our Programs →",
+    ctaHref: "/programs",
   },
-  mission: {
-    title: "Our Mission & Philosophy",
-    description: "Imarisha Jamii exists to provide a bridge for adults who stepped away from formal education. Our philosophy centers on respect, patience, and the belief that life experience is an asset in the classroom. We don't just teach subjects; we empower individuals to rewrite their futures.",
-    image: "/hero_tertiary_portrait.jpg",
+  whoWeAre: {
+    pullQuote: "We don't treat our students like children. We treat them like the adults they are — with real lives, real goals, and real potential.",
+    body: `Imarisha Jamii Centre C.B.O is a community-based adult education institution in Umoja Innercore, Nairobi. We were built from one simple belief: it is never too late to learn. 
+
+Our students are parents, workers, grandparents, and dreamers. They come carrying years of life experience and a hunger to finally finish what they started. We meet them exactly where they are. 
+
+Flexible schedules. Experienced instructors. A space built for adults. Not just a classroom — a launch pad.`,
+  },
+  visionMissionMotto: {
+    vision: {
+      title: "Our Vision",
+      body: "A first class adult education centre — committed to excellence, built for people the world once overlooked.",
+    },
+    mission: {
+      title: "Our Mission",
+      body: "To provide quality adult education that unlocks world class knowledge and hands it to every adult learner ready to reach for their foregone dreams.",
+    },
+    motto: {
+      title: "Our Motto",
+      body: '"You Can Dream Again."',
+    },
   },
   pillars: [
     {
       iconName: "Clock",
-      title: "Built for Your Schedule",
-      description: "Evening and weekend classes that respect your 9-to-5 commitments.",
+      title: "Built Around Your Life",
+      description: "Evening and weekend classes — because you have responsibilities, and so do we.",
     },
     {
-      iconName: "Heart",
-      title: "Non-Judgmental Space",
-      description: "Learn alongside peers who share your journey in a supportive community.",
-    },
-    {
-      iconName: "Target",
-      title: "Results-Oriented",
-      description: "Curriculum focused on KCSE success and practical career skills.",
+      iconName: "Users",
+      title: "Teachers Who Get It",
+      description: "Qualified instructors trained for adult learners. Progress without condescension.",
     },
     {
       iconName: "ShieldCheck",
-      title: "Accredited Excellence",
-      description: "Quality education that is recognized and respected by employers and colleges.",
+      title: "A Space That Feels Safe",
+      description: "Located within Friends Church Compound, Umoja. A community within a community.",
+    },
+    {
+      iconName: "Award",
+      title: "Real Outcomes. Real Credentials.",
+      description: "From High School completion to Computer Skills — programs that open actual doors.",
     },
   ],
   stats: [
-    { value: 15, suffix: "+", label: "Years of Operation" },
-    { value: 5000, suffix: "+", label: "Total Graduates" },
-    { value: 7, suffix: "", label: "Days a Week Support" },
+    { value: 15, suffix: "+", label: "Years of Excellence" },
+    { value: 5000, suffix: "+", label: "Graduates Reached" },
+    { value: 100, suffix: "%", label: "Adult Focused" },
   ],
 };
 
@@ -205,26 +228,36 @@ export const studentLifeConfig: StudentLifeConfig = {
 export interface ContactConfig {
   hero: {
     title: string;
+    subtext: string;
   };
   info: {
     phone: string;
-    whatsapp: string;
     email: string;
-    hours: string;
     location: string;
+    hours: {
+      weekday: string;
+      saturday: string;
+      sunday: string;
+    };
+    coordinates: { lat: number; lng: number };
   };
 }
 
 export const contactConfig: ContactConfig = {
   hero: {
-    title: "Let's Talk About Your Goals",
+    title: "We're Here. Ask Us Anything.",
+    subtext: "No long forms. No waiting weeks. Call, email, or stop by — we'd love to meet you.",
   },
   info: {
-    phone: "+254 700 000 000",
-    whatsapp: "+254 700 000 000",
-    email: "hello@imarishajamii.ac.ke",
-    hours: "Mon-Fri: 9AM - 9PM, Sat: 9AM - 4PM",
-    location: "Nairobi CBD, Kenya",
+    phone: "0791 925 619",
+    email: "imarishajamii@yahoo.com",
+    location: "Umoja Innercore, Opposite Chiefs Camp. Within Friends Church Compound, Nairobi",
+    hours: {
+      weekday: "8:00 AM – 6:00 PM",
+      saturday: "9:00 AM – 2:00 PM",
+      sunday: "Closed",
+    },
+    coordinates: { lat: -1.2808887, lng: 36.8933803 },
   },
 };
 
@@ -379,22 +412,43 @@ export const testimonialsConfig = {
       id: 1,
       name: "Mary K.",
       role: "KCSE Graduate",
-      image: "/success_testimonial_1.jpg",
+      image: "https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?auto=format&fit=crop&q=80&w=150&h=150",
       quote: "I thought it was too late. It wasn't. The evening classes fit perfectly with my work schedule, and the teachers never made me feel out of place.",
     },
     {
       id: 2,
       name: "James O.",
       role: "Bridging Graduate",
-      image: "/success_testimonial_2.jpg",
+      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150",
       quote: "Evening classes fit my job perfectly. I was able to upgrade my qualifications without taking time off work. The support was incredible.",
     },
     {
       id: 3,
       name: "Grace N.",
       role: "Skills Program",
-      image: "/success_testimonial_3.jpg",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150",
       quote: "The teachers treated us with respect. They understood we had families and jobs, and they worked with us every step of the way.",
+    },
+    {
+      id: 4,
+      name: "Samuel M.",
+      role: "Class of '22",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
+      quote: "The library lounge became my second home. Having a quiet place to study before my night shift made all the difference in my grades.",
+    },
+    {
+      id: 5,
+      name: "Phyllis W.",
+      role: "Computer Literacy",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
+      quote: "I came for the skills, but I found a community. We all have busy lives, but here, we are all dreamers together. It's truly life-changing.",
+    },
+    {
+      id: 6,
+      name: "David K.",
+      role: "KCSE Candidate",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150",
+      quote: "The flexible schedule allowed me to be a present father while still chasing my high school diploma. I'm finally finishing what I started.",
     },
   ],
 };
@@ -442,7 +496,7 @@ export const footerConfig = {
     { iconName: "Mail", href: `mailto:${contactConfig.info.email}`, label: "Email" },
   ],
   tagline: "Your education. Your pace.\nYour comeback.",
-  copyright: "© Imarisha Jamii Adult High School. All rights reserved.",
+  copyright: "© Imarisha Jamii Centre for Adult Education. All rights reserved.",
   bottomLinks: [
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Service", href: "#" },
