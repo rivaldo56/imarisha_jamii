@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { IntakeRibbon } from './IntakeRibbon';
@@ -9,11 +9,15 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
+  const [isRibbonVisible, setIsRibbonVisible] = useState(true);
+
   return (
     <div className="relative min-h-screen">
       <ScrollToTop />
-      <IntakeRibbon />
-      <Navbar />
+      <div className="sticky top-0 z-50 w-full transition-all duration-300">
+        {isRibbonVisible && <IntakeRibbon onClose={() => setIsRibbonVisible(false)} />}
+        <Navbar />
+      </div>
       <main>
         {children}
       </main>

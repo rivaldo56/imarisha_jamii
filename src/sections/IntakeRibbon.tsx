@@ -1,30 +1,31 @@
-import { useState } from 'react';
 import { X } from 'lucide-react';
 import { intakeRibbonConfig } from '../config';
 import { Link } from 'react-router-dom';
 
-export function IntakeRibbon() {
-  const [isVisible, setIsVisible] = useState(intakeRibbonConfig.isVisible);
+interface IntakeRibbonProps {
+  onClose: () => void;
+}
 
-  if (!isVisible) return null;
-
+export function IntakeRibbon({ onClose }: IntakeRibbonProps) {
   return (
-    <div className="bg-bronze/95 backdrop-blur-md text-white py-3 px-4 relative z-50 flex items-center justify-center text-sm md:text-base font-body border-b border-white/10">
-      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-center md:text-left">
-        <span className="font-medium">{intakeRibbonConfig.text}</span>
+    <div className="bg-bronze backdrop-blur-md text-white py-2.5 px-4 relative flex items-center justify-center border-b border-white/10 overflow-hidden">
+      <div className="flex items-center gap-3 md:gap-6 max-w-7xl w-full justify-center pr-8 md:pr-0">
+        <span className="text-[10px] sm:text-xs md:text-sm font-medium tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
+          {intakeRibbonConfig.text}
+        </span>
         <Link 
           to={intakeRibbonConfig.ctaHref}
-          className="bg-white text-bronze px-5 py-1.5 rounded-full font-bold hover:bg-white/90 transition-all duration-500 ease-out hover:scale-105 shadow-sm"
+          className="bg-white text-bronze px-3 md:px-5 py-1 rounded-full text-[10px] md:text-xs font-bold hover:bg-white/90 transition-all duration-500 ease-out hover:scale-105 shadow-sm shrink-0 uppercase tracking-wider"
         >
           {intakeRibbonConfig.ctaText}
         </Link>
       </div>
       <button 
-        onClick={() => setIsVisible(false)}
-        className="absolute right-4 hover:opacity-70 transition-opacity"
+        onClick={onClose}
+        className="absolute right-3 p-1 hover:bg-white/10 rounded-full transition-colors"
         aria-label="Close intake ribbon"
       >
-        <X size={18} />
+        <X size={16} />
       </button>
     </div>
   );

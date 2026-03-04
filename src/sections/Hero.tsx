@@ -74,7 +74,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-forest-dark"
+      className="relative h-[80vh] min-h-[600px] md:min-h-screen w-full flex items-center justify-center overflow-hidden bg-forest-dark"
     >
       {/* Layer 1: Background gradient */}
       <div 
@@ -93,7 +93,7 @@ export function Hero() {
       {/* Layer 2: Big Text (Decorative) */}
       <div
         ref={textRef}
-        className="absolute inset-0 flex flex-col items-start justify-center z-10 will-change-transform px-[2%] md:px-[4%]"
+        className="absolute inset-0 flex flex-col items-start justify-start pt-[15vh] md:justify-center md:pt-0 z-10 will-change-transform px-[4%] md:px-[4%]"
         aria-hidden="true"
       >
         {heroConfig.backgroundText.split('\n').map((line, index) => (
@@ -128,7 +128,7 @@ export function Hero() {
       {/* Layer 4: Overlay Text & CTAs */}
       <div
         ref={overlayTextRef}
-        className="absolute bottom-[10%] md:bottom-[15%] left-[8%] md:left-[12%] z-30 will-change-transform max-w-xl"
+        className="absolute bottom-[10%] sm:bottom-[15%] md:bottom-[20%] left-[6%] md:left-[12%] z-30 will-change-transform max-w-xl pr-6"
       >
         <h1 className="font-serif italic text-2xl md:text-4xl lg:text-5xl text-white/90 tracking-wide mb-8 leading-tight">
           {heroConfig.overlayText}
