@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink } from 'lucide-react';
+import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink, MessageCircle } from 'lucide-react';
 import { contactConfig } from '../config';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
 import { PageTitle } from '../components/PageTitle';
@@ -61,7 +61,7 @@ export default function Contact() {
       {/* Contact Cards Grid */}
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid md:grid-cols-3 gap-8 -mt-32 relative z-20">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 -mt-32 relative z-20">
             {/* Call Card */}
             <a 
               href={`tel:${contactConfig.info.phone.replace(/\s/g, '')}`}
@@ -92,6 +92,24 @@ export default function Contact() {
                 {contactConfig.info.email}
               </h3>
               <p className="text-softblack/60 font-body">We respond within 24 hours.</p>
+            </a>
+
+            {/* WhatsApp Card */}
+            <a 
+              href={`https://wa.me/${contactConfig.info.phone.replace(/\s/g, '').replace(/^0/, '254')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('contact_whatsapp_click')}
+              className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-softblack/5 group"
+            >
+              <div className="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center text-green-600 mb-8 group-hover:scale-110 transition-transform">
+                <MessageCircle size={28} />
+              </div>
+              <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">WhatsApp Us</p>
+              <h3 className="text-3xl font-sans font-extrabold text-softblack mb-4">
+                Chat Now
+              </h3>
+              <p className="text-softblack/60 font-body">Message us for a quick response on WhatsApp.</p>
             </a>
 
             {/* Visit Card */}

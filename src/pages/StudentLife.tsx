@@ -8,7 +8,16 @@ import { TestimonialsSection } from '../components/ui/testimonial-v2';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const successImageAnimConfigs = [
+  { clipFrom: 'inset(100% 0% 0% 0%)', rotation: 0, parallax: [0, 0], delay: 0 },
+  { clipFrom: 'inset(0% 100% 0% 0%)', rotation: -1.5, parallax: [-4, 4], delay: 0.1 },
+  { clipFrom: 'inset(0% 0% 100% 0%)', rotation: 1.2, parallax: [-3, 6], delay: 0.15 },
+  { clipFrom: 'inset(100% 0% 0% 0%)', rotation: -1, parallax: [-5, 5], delay: 0.2 },
+  { clipFrom: 'inset(0% 0% 0% 100%)', rotation: 1.5, parallax: [-4, 8], delay: 0.25 },
+];
+
 export default function StudentLife() {
+
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,7 +34,7 @@ export default function StudentLife() {
       gsap.from('.masonry-item', {
         scrollTrigger: {
           trigger: '.masonry-grid',
-          start: 'top 80%',
+          start: 'top 100%',
         },
         y: 60,
         opacity: 0,
@@ -46,7 +55,81 @@ export default function StudentLife() {
         stagger: 0.2,
         ease: 'power3.out',
       });
+      // ── Success Titles: mask-reveal ──
+      ScrollTrigger.create({
+        trigger: '#success-gallery',
+        start: 'top 85%',
+        onEnter: () => {
+          gsap.to('.success-title-line', {
+            yPercent: 0,
+            duration: 1.2,
+            ease: 'power4.out',
+            stagger: 0.15,
+          });
+        },
+        once: true,
+      });
+
+      // ── Success Items: premium intro-grid features ──
+      const successItems = document.querySelectorAll('.success-masonry-item');
+      successItems.forEach((item, i) => {
+        const img = item.querySelector('img');
+        const cfg = successImageAnimConfigs[i];
+        if (!cfg) return;
+
+        ScrollTrigger.create({
+          trigger: item,
+          start: 'top 90%',
+          onEnter: () => {
+            gsap.set(item, { opacity: 1 });
+            gsap.fromTo(
+              item,
+              { clipPath: cfg.clipFrom },
+              {
+                clipPath: 'inset(0% 0% 0% 0%)',
+                duration: 1.5,
+                ease: 'power4.inOut',
+                delay: cfg.delay,
+              }
+            );
+
+            if (img) {
+              gsap.fromTo(
+                img,
+                { scale: 1.4, rotate: cfg.rotation },
+                {
+                  scale: 1.1,
+                  rotate: 0,
+                  duration: 2,
+                  ease: 'power3.out',
+                  delay: cfg.delay,
+                }
+              );
+            }
+          },
+          once: true,
+        });
+
+        if (img) {
+          gsap.fromTo(
+            img,
+            { yPercent: cfg.parallax[0] },
+            {
+              yPercent: cfg.parallax[1],
+              ease: 'none',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.5,
+              },
+            }
+          );
+        }
+      });
     }, pageRef);
+
+
 
     return () => ctx.revert();
   }, []);
@@ -65,9 +148,18 @@ export default function StudentLife() {
           <h1 className="text-4xl md:text-7xl font-sans font-extrabold mb-8 uppercase tracking-tighter leading-none">
             {studentLifeConfig.hero.title}
           </h1>
-          <p className="text-xl md:text-2xl font-body max-w-2xl mx-auto opacity-90 leading-relaxed">
+          <p className="text-xl md:text-2xl font-body max-w-2xl mx-auto opacity-90 leading-relaxed mb-10">
             {studentLifeConfig.hero.subtext}
           </p>
+          <div className="flex justify-center">
+            <a 
+              href="/apply"
+              className="bg-bronze text-white px-8 py-4 rounded-full font-bold hover:bg-bronze/90 transition-all duration-500 ease-out shadow-lg hover:scale-105"
+            >
+              Apply Now
+            </a>
+          </div>
+
         </div>
       </section>
 
@@ -144,7 +236,98 @@ export default function StudentLife() {
         </div>
       </section>
 
+      {/* Success Testimonials Masonry Grid */}
+      <section className="py-24 md:py-32 bg-forest-dark text-white overflow-hidden" id="success-gallery">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* ── Title with split-line mask reveal ── */}
+          <div className="text-center mb-16 md:mb-24">
+            <div className="overflow-hidden mb-4">
+              <h2 className="success-title-line text-3xl md:text-5xl font-sans font-bold tracking-tight uppercase translate-y-[110%]">
+                Success in Motion
+              </h2>
+            </div>
+            <div className="overflow-hidden">
+              <p className="success-title-line text-white/60 font-body translate-y-[110%] italic">
+                Witness the growth of our graduates
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[280px] success-grid">
+            {/* Column 1: Graduate Paragraph */}
+            <div className="success-masonry-item lg:col-start-1 lg:row-span-2 flex flex-col justify-center py-8 opacity-0">
+              <p className="text-white/80 font-body leading-relaxed text-base md:text-lg italic">
+                "The journey at Imarisha Jamii has been transformative. Every graduate represented here is a story of persistence, balancing adult responsibilities with a fierce commitment to growth. We are proud to showcase our community's success."
+              </p>
+            </div>
+
+            {/* Column 2: Tall Image 1 */}
+            <div className="success-masonry-item lg:col-start-2 lg:row-span-2 relative overflow-hidden rounded-lg shadow-2xl group cursor-pointer opacity-0">
+              <img 
+                src="/success_testimonial_1.jpg" 
+                alt="Alumni Success 1" 
+                className="w-full h-full object-cover will-change-transform" 
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+            </div>
+
+            {/* Column 3 - Item 1 (Top) */}
+            <div className="success-masonry-item lg:col-start-3 lg:row-start-1 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
+              <img 
+                src="/success_testimonial_2.jpg" 
+                alt="Alumni Success 2" 
+                className="w-full h-full object-cover will-change-transform" 
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+            </div>
+
+            {/* Column 3 - Item 2 (Bottom) */}
+            <div className="success-masonry-item lg:col-start-3 lg:row-start-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
+              <img 
+                src="/success_top_left.jpg" 
+                alt="Alumni Success 3" 
+                className="w-full h-full object-cover will-change-transform" 
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+            </div>
+
+            {/* Column 4: Tall Image (Far Right) */}
+            <div className="success-masonry-item lg:col-start-4 lg:row-span-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
+              <img 
+                src="/success_testimonial_3.jpg" 
+                alt="Alumni Success 4" 
+                className="w-full h-full object-cover will-change-transform" 
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </section>
+
+
       {/* Success Stories Slider (Dynamic Scrolling) */}
+
       <TestimonialsSection 
         title="Voices of Growth"
         subtitle="Real stories from our alumni"

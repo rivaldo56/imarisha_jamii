@@ -23,18 +23,6 @@ export default function Programs() {
         ease: 'power3.out',
       });
 
-      // Card entrance
-      gsap.from('.program-card', {
-        scrollTrigger: {
-          trigger: '.programs-grid',
-          start: 'top 80%',
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: 'power3.out',
-      });
 
       // Detailed sections alternating
       const sections = gsap.utils.toArray('.detail-section');
@@ -78,48 +66,6 @@ export default function Programs() {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-bronze/5 skew-x-[-20deg] translate-x-1/2" />
       </section>
 
-      {/* Program Cards Grid */}
-      <section className="programs-grid py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {programsConfig.programs.map((program) => (
-              <div 
-                key={program.id}
-                className="program-card bg-altwhite rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group border border-softblack/5"
-              >
-                <div className="h-64 overflow-hidden relative">
-                  <img 
-                    src={program.image} 
-                    alt={program.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-softblack/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-sans font-bold text-softblack mb-4">
-                    {program.title}
-                  </h3>
-                  <p className="text-softblack/70 font-body mb-6 line-clamp-2">
-                    {program.overview}
-                  </p>
-                  <div className="space-y-3 mb-8 text-sm">
-                    <div className="flex justify-between items-center text-softblack/60 border-b border-softblack/10 pb-2">
-                      <span className="font-bold uppercase tracking-wider">Duration</span>
-                      <span>{program.duration}</span>
-                    </div>
-                  </div>
-                  <a 
-                    href={`#${program.id}`}
-                    className="flex items-center gap-2 text-bronze font-bold hover:gap-4 transition-all duration-500 ease-out"
-                  >
-                    See Program Details <ArrowRight size={18} />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Detailed Breakdown Sections */}
       {programsConfig.programs.map((program, idx) => (
@@ -158,10 +104,10 @@ export default function Programs() {
                     <p className="text-softblack/80 font-body leading-relaxed">{program.schedule}</p>
                   </div>
                   <Link 
-                    to="/apply"
+                    to={`/programs/${program.id}`}
                     className="inline-flex items-center gap-3 bg-bronze text-white px-8 py-4 rounded-full font-bold hover:bg-bronze/90 transition-all duration-500 ease-out shadow-lg"
                   >
-                    Start My Application <ArrowRight size={20} />
+                    Read More About {program.title} <ArrowRight size={20} />
                   </Link>
                 </div>
               </div>

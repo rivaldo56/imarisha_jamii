@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
-import { featuredProjectsConfig } from '../config';
+import { Link } from 'react-router-dom';
+import { featuredProjectsConfig, programsConfig } from '../config';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -206,15 +207,20 @@ export function FeaturedProjects() {
                   {project.description}
                 </p>
                 {featuredProjectsConfig.viewProjectText && (
-                  <a
-                    href="#contact"
-                    className={`project-text-item inline-flex items-center gap-2 text-white font-body text-sm border-b border-white/30 pb-1 hover:border-white transition-colors duration-300 group/link ${
-                      index % 2 === 1 ? 'md:flex-row-reverse' : ''
-                    }`}
-                  >
-                    {featuredProjectsConfig.viewProjectText}
-                    <ArrowUpRight className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300" />
-                  </a>
+                  (() => {
+                    const programId = programsConfig.programs.find(p => p.title.toLowerCase().includes(project.title.toLowerCase()))?.id || "high_school";
+                    return (
+                      <Link
+                        to={`/programs/${programId}`}
+                        className={`project-text-item inline-flex items-center gap-2 text-white font-body text-sm border-b border-white/30 pb-1 hover:border-white transition-colors duration-300 group/link ${
+                          index % 2 === 1 ? 'md:flex-row-reverse' : ''
+                        }`}
+                      >
+                        {featuredProjectsConfig.viewProjectText}
+                        <ArrowUpRight className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300" />
+                      </Link>
+                    );
+                  })()
                 )}
               </div>
             </div>

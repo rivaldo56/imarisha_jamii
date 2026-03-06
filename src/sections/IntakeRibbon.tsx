@@ -8,7 +8,8 @@ interface IntakeRibbonProps {
 
 export function IntakeRibbon({ onClose }: IntakeRibbonProps) {
   return (
-    <div className="bg-bronze backdrop-blur-md text-white py-2.5 px-4 relative flex items-center justify-center border-b border-white/10 overflow-hidden transition-all duration-500">
+    <div className="sticky top-0 z-[60] bg-bronze backdrop-blur-md text-white py-2.5 px-4 relative flex items-center justify-center border-b border-white/10 overflow-hidden transition-all duration-500">
+
       <div className="flex items-center gap-3 md:gap-6 max-w-7xl w-full justify-center pr-8 md:pr-0">
         <span className="text-[10px] sm:text-xs md:text-sm font-medium tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
           {intakeRibbonConfig.text}

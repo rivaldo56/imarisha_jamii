@@ -24,13 +24,15 @@ export interface SiteConfig {
   siteTitle: string;
   siteDescription: string;
   brandName: string;
+  keywords: string;
 }
 
 export const siteConfig: SiteConfig = {
   language: "en",
-  siteTitle: "Imarisha Jamii Centre for Adult Education",
-  siteDescription: "Flexible adult education programs designed to help you finish strong. Evening & weekend classes for working adults in Nairobi.",
+  siteTitle: "Imarisha Jamii Centre | Adult High School in Nairobi",
+  siteDescription: "Flexible adult education programs in Nairobi including KCSE completion and bridging courses. Apply today.",
   brandName: "Imarisha Jamii Centre",
+  keywords: "adult high school Nairobi, KCSE completion for adults, adult education Kenya, evening classes Nairobi, second chance education Kenya",
 };
 
 // Hero Section
@@ -95,11 +97,11 @@ Flexible schedules. Experienced instructors. A space built for adults. Not just 
   visionMissionMotto: {
     vision: {
       title: "Our Vision",
-      body: "A first class adult education centre — committed to excellence, built for people the world once overlooked.",
+      body: "First class adult education centre committed to excellence performance.",
     },
     mission: {
       title: "Our Mission",
-      body: "To provide quality adult education that unlocks world class knowledge and hands it to every adult learner ready to reach for their foregone dreams.",
+      body: "To provide quality adult education aiming at impacting world class knowledge to adult education seekers in order to enable them realize their fore gone dreams.",
     },
     motto: {
       title: "Our Motto",
@@ -145,6 +147,7 @@ export interface ProgramItem {
   image: string;
   whoItIsFor: string;
   schedule: string;
+  longDescription: string;
 }
 
 export interface ProgramsConfig {
@@ -152,6 +155,8 @@ export interface ProgramsConfig {
     title: string;
     subtext: string;
   };
+  metaDescription?: string;
+  keywords?: string;
   programs: ProgramItem[];
   faqs: FAQItem[];
 }
@@ -161,36 +166,85 @@ export const programsConfig: ProgramsConfig = {
     title: "Choose Your Path Forward",
     subtext: "From completing your KCSE to gaining new professional skills, we have a program tailored for your next step.",
   },
+  metaDescription: "Explore our flexible adult high school programs in Nairobi. We offer KCSE completion, bridging courses, and professional skills training.",
+  keywords: "KCSE completion, bridging courses Nairobi, adult education programs, professional skills Kenya",
   programs: [
     {
-      id: "kcse",
-      title: "KCSE Completion",
-      overview: "Complete your Kenya Certificate of Secondary Education with a flexible, condensed curriculum.",
-      duration: "6–18 Months",
-      requirements: "Previous Primary (KCPE) results or partial high school transcripts.",
+      id: "high_school",
+      title: "KCSE Compilation",
+      overview: "Complete your Kenya Certificate of Secondary Education with a flexible, condensed curriculum tailored for adults.",
+      duration: "1–2 Years",
+      requirements: "KCPE results or partial high school transcripts.",
       image: "/programs_left_portrait.jpg",
-      whoItIsFor: "Adults who did not finish high school and wish to qualify for college or better jobs.",
+      whoItIsFor: "Adults who did not finish high school and wish to qualify for college or professional career growth.",
       schedule: "Evenings (6-9 PM) & Saturdays (9-4 PM)",
+      longDescription: "Our KCSE Compilation program is specifically designed for adult learners who are returning to school after a break. We understand that your time is valuable, which is why we've condensed the curriculum to focus on essential concepts and effective exam preparation for the KCSE. Our instructors are experienced in working with adults, providing a supportive environment where you can learn at your own pace while balancing work and family responsibilities. This program is your bridge to higher education—opening doors to university degrees, diplomas, and enhanced career opportunities that once seemed out of reach.",
+    },
+    {
+      id: "post_literacy",
+      title: "Post Literacy (Primary)",
+      overview: "A foundational program for adults seeking to complete their primary level education or improve core literacy skills.",
+      duration: "1 Year",
+      requirements: "Open enrollment; diagnostic assessment provided.",
+      image: "/why_right_portrait.jpg",
+      whoItIsFor: "Adults starting their educational journey or returning after a long break.",
+      schedule: "Morning or Evening sessions available",
+      longDescription: "The Post Literacy program, focusing on the primary level, is a foundation for lifelong learning. It is tailored for adults who may have missed out on basic education or wish to refresh their fundamental skills in literacy and numeracy. We provide a gentle, non-judgmental atmosphere where you can gain the confidence needed to transition into secondary education. By focusing on practical, everyday application of knowledge, we ensure that every lesson you attend translates into immediate empowerment in your personal and professional life.",
+    },
+    {
+      id: "languages",
+      title: "Languages",
+      overview: "Become proficient in new languages with our intensive speaking and writing modules.",
+      duration: "4–6 Months",
+      requirements: "Passion for communication; beginner friendly.",
+      image: "/hero_secondary_portrait.jpg",
+      whoItIsFor: "Individuals looking to boost their local or international communication skills.",
+      schedule: "Flexible weekday options",
+      longDescription: "Our Language programs are intensive and immersive, designed to make you proficient in a new language in a short amount of time. Whether you're learning for business, travel, or personal growth, our speaking and writing modules focus on real-world communication. We offer various languages suited for the Nairobi business environment and international opportunities. Small class sizes ensure that you get personalized attention from our expert linguists, helping you master pronunciation and grammar with ease.",
+    },
+    {
+      id: "computer",
+      title: "Computer Packages",
+      overview: "Comprehensive training in essential digital tools including MS Office, Internet, and Basic IT.",
+      duration: "3 Months",
+      requirements: "No prior experience needed.",
+      image: "/life_bottom_left.jpg",
+      whoItIsFor: "Anyone looking to gain competitive digital skills for the modern workplace.",
+      schedule: "Daily or Weekend Intensive",
+      longDescription: "In today's digital age, computer literacy is no longer optional—it's essential. Our Computer Packages program offers a comprehensive 3-month journey through the most critical tools in the modern office. From mastering Microsoft Office (Word, Excel, PowerPoint) to understanding internet security and basic IT troubleshooting, we ensure you leave with the skills that employers are looking for. Our lab-based learning approach means you'll spend less time listening and more time doing, with hands-on practice on modern machines.",
+    },
+    {
+      id: "beginner",
+      title: "Literacy Beginner",
+      overview: "A gentle introduction to formal education for those with little to no previous schooling.",
+      duration: "4 Months",
+      requirements: "Open to all.",
+      image: "/hero_tertiary_portrait.jpg",
+      whoItIsFor: "Adults taking their very first step towards formal literacy and numeracy.",
+      schedule: "Morning or Evening options",
+      longDescription: "The Beginner program is a specially crafted entry point for those with little to no previous formal schooling. We start from the very basics, building a strong core in reading, writing, and basic arithmetic in a way that respects your life experience as an adult. Our instructors are patient and empathetic, ensuring that you feel comfortable and challenged in equal measure. This is where many of our most successful students started their journey before progressing to High School and beyond.",
     },
     {
       id: "bridging",
-      title: "Bridging Courses",
-      overview: "Strengthen your grades in specific subjects like Mathematics, English, or Sciences.",
+      title: "KCSE Bridging",
+      overview: "Targeted subject recovery to help you meet university entry requirements for specific degrees.",
       duration: "3–6 Months",
       requirements: "Current KCSE certificate with specific grade revision needs.",
       image: "/life_top_left.jpg",
-      whoItIsFor: "Graduates seeking to meet university entry requirements for specific degrees.",
+      whoItIsFor: "KCSE graduates looking to improve their grades in specific subjects.",
       schedule: "Flexible Morning or Evening Options",
+      longDescription: "Our KCSE Bridging courses are designed for students who have already completed their secondary education but need to upgrade their grades in specific subjects to qualify for their desired university or college placement. We offer targeted, high-impact tutorials in Mathematics, English, and Sciences, focusing on exam techniques and deep subject mastery. With flexible scheduling, you can focus on building the academic foundation you need to pursue your dream career in medicine, engineering, or business.",
     },
     {
-      id: "skills",
-      title: "Short Skills Programs",
-      overview: "Intensive training in Computer Literacy, Basic Accounting, and Communication.",
-      duration: "1–3 Months",
-      requirements: "Open enrollment; passion for learning new skills.",
-      image: "/life_bottom_left.jpg",
-      whoItIsFor: "Working adults looking to boost their employability in the modern office.",
-      schedule: "Weekend Intensives",
+      id: "tuition",
+      title: "Tuition & Lab Sessions",
+      overview: "Personalized academic support and practical science/IT sessions to reinforce classroom learning.",
+      duration: "Flexible",
+      requirements: "Currently enrolled in any academic program.",
+      image: "/success_top_left.jpg",
+      whoItIsFor: "Students needing extra help or hands-on practical experience in science/computers.",
+      schedule: "By appointment / Scheduled Lab times",
+      longDescription: "Tuition and Lab Sessions provide that extra layer of support that makes all the difference in student success. These are personalized academic coaching sessions where you can dive deeper into difficult topics or get hands-on experience in our science and computer labs. Whether you're conducting experiments for your biology coursework or practicing advanced software techniques, our labs are equipped and our tutors are ready to help you bridge the gap between theory and practice.",
     },
   ],
   faqs: [
@@ -230,6 +284,8 @@ export interface ContactConfig {
     title: string;
     subtext: string;
   };
+  metaDescription?: string;
+  keywords?: string;
   info: {
     phone: string;
     email: string;
@@ -248,6 +304,8 @@ export const contactConfig: ContactConfig = {
     title: "We're Here. Ask Us Anything.",
     subtext: "No long forms. No waiting weeks. Call, email, or stop by — we'd love to meet you.",
   },
+  metaDescription: "Contact Imarisha Jamii Centre in Umoja, Nairobi. Reach us via phone, email, or WhatsApp for adult education inquiries.",
+  keywords: "contact imarisha jamii, adult education nairobi location, umoja adult school, whatsapp adult classes",
   info: {
     phone: "0791 925 619",
     email: "imarishajamii@yahoo.com",
@@ -304,37 +362,37 @@ export interface ServiceItem {
 }
 
 export const servicesConfig = {
-  subtitle: "OUR PROGRAMS",
+  subtitle: "OUR SERVICES",
   titleLine1: "A bridge to your",
   titleLine2Italic: "future success.",
-  description: "Whether you need to finish your KCSE or build specific skills, our programs are designed to be efficient, effective, and adult-friendly.",
+  description: "Whether you need to finish your High School education, learn a new language, or gain computer skills, our programs are designed for adult success.",
   services: [
     {
-      iconName: "Diamond",
-      title: "KCSE Completion",
-      description: "Condensed high school curriculum focused on core subjects and exam preparation.",
+      iconName: "HighSchool",
+      title: "KCSE Compilation",
+      description: "Condensed 1-2 year curriculum focused on core subjects and exam preparation.",
     },
     {
-      iconName: "Users",
-      title: "Bridging Courses",
-      description: "Upgrade your grades in specific subjects to meet college entry requirements.",
+      iconName: "BookOpen",
+      title: "Post Literacy",
+      description: "Foundational primary level education for adults returning to school.",
     },
     {
-      iconName: "Sparkles",
-      title: "Skills Development",
-      description: "Short courses in digital literacy, communication, and business basics.",
+      iconName: "Languages",
+      title: "Languages",
+      description: "Proficiency modules in various languages to boost communication.",
     },
     {
-      iconName: "Camera",
-      title: "Career Guidance",
-      description: "Personalized advice to help you transition from education to employment.",
+      iconName: "Monitor",
+      title: "Computer Packages",
+      description: "Essential 3-month digital literacy and office application training.",
     },
   ],
 };
 
 // Featured Projects (Programs Overview)
 export const featuredProjectsConfig = {
-  subtitle: "FEATURED PATHS",
+  subtitle: "OUR PROGRAMS",
   titleRegular: "Programs built for",
   titleItalic: "real progress.",
   viewAllText: "View All Programs",
@@ -343,27 +401,27 @@ export const featuredProjectsConfig = {
   projects: [
     {
       id: 1,
-      title: "Evening KCSE Program",
+      title: "KCSE Compilation",
       category: "Academic",
-      year: "6-18 months",
+      year: "1-2 years",
       image: "/programs_left_portrait.jpg",
-      description: "Intensive evening classes covering the full high school syllabus at a pace that respects your daytime job.",
+      description: "Intensive classes covering the full high school syllabus at a pace that respects your adult life.",
     },
     {
       id: 2,
-      title: "Bridging Courses",
-      category: "Academic",
-      year: "3-6 months",
-      image: "/life_top_left.jpg",
-      description: "Targeted subject recovery to help you unlock higher education opportunities and degree placements.",
+      title: "Post Literacy",
+      category: "Primary",
+      year: "1 year",
+      image: "/why_right_portrait.jpg",
+      description: "Foundational learning for adults who need a strong primary-level base for future growth.",
     },
     {
       id: 3,
-      title: "Skills Programs",
+      title: "Computer Packages",
       category: "Professional",
-      year: "1-3 months",
+      year: "3 months",
       image: "/life_bottom_left.jpg",
-      description: "Short courses in computers, business basics, communication skills, and more to boost your career prospects.",
+      description: "Master the digital tools used in every modern workplace in just 12 weeks.",
     },
   ],
 };

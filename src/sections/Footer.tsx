@@ -110,6 +110,13 @@ export function Footer() {
                   {footerConfig.locationText}
                 </p>
               )}
+              <Link
+                to="/apply"
+                className="inline-flex mt-8 bg-bronze text-white px-8 py-3 rounded-full text-sm font-bold shadow-sm hover:scale-105 transition-all duration-500 ease-out"
+              >
+                Apply Now
+              </Link>
+
             </div>
 
             {/* Navigation */}

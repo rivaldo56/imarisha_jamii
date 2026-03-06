@@ -33,17 +33,30 @@ export default function Apply() {
     setStep(step - 1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    trackEvent(ANALYTICS_EVENTS.SUBMIT_APPLICATION);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = Object.fromEntries(formData.entries());
+    
+    trackEvent(ANALYTICS_EVENTS.SUBMIT_APPLICATION, data);
 
-    // Mock submission
-    setTimeout(() => {
+    try {
+      // Robust simulation of a submission pipeline
+      console.log('Submitting application:', data);
+      
+      // Simulating a fetch call to a webhook/backend
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       navigate('/thank-you');
-    }, 2000);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setIsSubmitting(false);
+      alert('There was a problem submitting your application. Please try again or call us.');
+    }
   };
+
 
   const steps = [
     { id: 1, name: 'Personal', icon: User },
@@ -102,23 +115,29 @@ export default function Apply() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Full Name</label>
-                      <input required type="text" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <input required type="text" name="full_name" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone Number</label>
-                      <input required type="tel" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <input required type="tel" name="phone" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
+
                   </div>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Email Address (Optional)</label>
-                      <input type="email" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <input type="email" name="email" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Location / Estate</label>
-                      <input required type="text" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Age</label>
+                      <input required type="number" name="age" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                   </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Location / Estate</label>
+                    <input required type="text" name="location" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                  </div>
+
                   <div className="flex justify-end">
                     <button type="button" onClick={nextStep} className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2">
                       Next Step <ChevronRight size={20} />
@@ -134,17 +153,18 @@ export default function Apply() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Last Grade Attained</label>
-                      <input required type="text" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <input required type="text" name="last_grade" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Year of KCPE (or Primary Exam)</label>
-                      <input required type="number" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                      <input required type="number" name="kcpe_year" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Previous School Attended</label>
-                    <input required type="text" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
+                    <input required type="text" name="previous_school" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                   </div>
+
                   <div className="flex justify-between">
                     <button type="button" onClick={prevStep} className="text-softblack font-bold py-4 px-10 rounded-full border border-softblack/10 hover:bg-offwhite transition-all flex items-center gap-2">
                       <ChevronLeft size={20} /> Back
@@ -160,15 +180,29 @@ export default function Apply() {
               {step === 3 && (
                 <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
                   <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Finalize Application</h3>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Selected Program</label>
-                    <select className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
-                      <option>KCSE Completion (Evening)</option>
-                      <option>KCSE Completion (Weekend Only)</option>
-                      <option>Bridging Courses (Mathematics/Science)</option>
-                      <option>Short Skills Program</option>
-                    </select>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Selected Program</label>
+                      <select name="program" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
+                        <option value="kcse">KCSE Compilation (Adult High School)</option>
+                        <option value="post_literacy">Post Literacy (Primary Completion)</option>
+                        <option value="languages">Languages (Communication Skills)</option>
+                        <option value="computer">Computer Packages (Digital Literacy)</option>
+                        <option value="beginner">Literacy Beginner (Foundation)</option>
+                        <option value="bridging">KCSE Bridging (Subject Upgrading)</option>
+                        <option value="tuition">Tuition & Lab Sessions</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Preferred Learning Mode</label>
+                      <select name="learning_mode" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
+                        <option>Physical Classes (In-person)</option>
+                        <option>Virtual / Online (Evening Only)</option>
+                        <option>Hybrid (Mixed)</option>
+                      </select>
+                    </div>
                   </div>
+
                   
                   <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl flex gap-4 text-amber-800">
                     <AlertCircle className="flex-shrink-0" />
