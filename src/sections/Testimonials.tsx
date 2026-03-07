@@ -9,6 +9,8 @@ import 'swiper/css';
 // @ts-ignore
 import 'swiper/css/free-mode';
 import { testimonialsConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +19,19 @@ export function Testimonials() {
   const headerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  if (!testimonialsConfig.titleRegular && testimonialsConfig.testimonials.length === 0) return null;
+  const { data: sanityTestimonials } = useSanityData<any[]>(QUERIES.testimonials, {}, []);
+  
+  const testimonials = sanityTestimonials?.length > 0
+    ? sanityTestimonials.map(t => ({
+        id: t._id,
+        quote: t.message,
+        name: t.name,
+        role: t.role,
+        image: t.image ? urlFor(t.image).url() : '/success_top_left.jpg'
+      }))
+    : testimonialsConfig.testimonials;
+
+  if (!testimonialsConfig.titleRegular && testimonials.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -105,7 +119,7 @@ export function Testimonials() {
           }}
           className="!px-6"
         >
-          {testimonialsConfig.testimonials.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
               <div className="group bg-altwhite rounded-2xl p-8 md:p-10 h-full transition-all duration-500 ease-out hover:bg-forest-dark hover:text-white">
                 {/* Quote icon */}

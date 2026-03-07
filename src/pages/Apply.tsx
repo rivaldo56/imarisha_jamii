@@ -4,12 +4,16 @@ import { applicationConfig } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, User, BookOpen, FileText, ChevronRight, AlertCircle, ChevronLeft } from 'lucide-react';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
 
 export default function Apply() {
   const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
+  const programs = sanityPrograms?.length > 0 ? sanityPrograms : [];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -184,13 +188,21 @@ export default function Apply() {
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Selected Program</label>
                       <select name="program" className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
-                        <option value="kcse">KCSE Compilation (Adult High School)</option>
-                        <option value="post_literacy">Post Literacy (Primary Completion)</option>
-                        <option value="languages">Languages (Communication Skills)</option>
-                        <option value="computer">Computer Packages (Digital Literacy)</option>
-                        <option value="beginner">Literacy Beginner (Foundation)</option>
-                        <option value="bridging">KCSE Bridging (Subject Upgrading)</option>
-                        <option value="tuition">Tuition & Lab Sessions</option>
+                        {programs.length > 0 ? (
+                          programs.map((p) => (
+                            <option key={p._id} value={p._id}>{p.name}</option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="kcse">KCSE Compilation (Adult High School)</option>
+                            <option value="post_literacy">Post Literacy (Primary Completion)</option>
+                            <option value="languages">Languages (Communication Skills)</option>
+                            <option value="computer">Computer Packages (Digital Literacy)</option>
+                            <option value="beginner">Literacy Beginner (Foundation)</option>
+                            <option value="bridging">KCSE Bridging (Subject Upgrading)</option>
+                            <option value="tuition">Tuition & Lab Sessions</option>
+                          </>
+                        )}
                       </select>
                     </div>
                     <div className="space-y-2">

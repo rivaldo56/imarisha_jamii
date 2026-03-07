@@ -154,6 +154,10 @@ export interface ProgramsConfig {
   hero: {
     title: string;
     subtext: string;
+    backgroundText: string;
+    heroImage: string;
+    heroImageAlt: string;
+    overlayText: string;
   };
   metaDescription?: string;
   keywords?: string;
@@ -165,6 +169,10 @@ export const programsConfig: ProgramsConfig = {
   hero: {
     title: "Choose Your Path Forward",
     subtext: "From completing your KCSE to gaining new professional skills, we have a program tailored for your next step.",
+    backgroundText: "DREAM,\nCHOOSE,\nACHIEVE",
+    heroImage: "/programs_hero_portrait.jpg",
+    heroImageAlt: "Adult student looking at programs list",
+    overlayText: "Your Path to Progress",
   },
   metaDescription: "Explore our flexible adult high school programs in Nairobi. We offer KCSE completion, bridging courses, and professional skills training.",
   keywords: "KCSE completion, bridging courses Nairobi, adult education programs, professional skills Kenya",

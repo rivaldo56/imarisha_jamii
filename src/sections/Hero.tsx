@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { heroConfig } from '../config';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +15,12 @@ export function Hero() {
   const modelRef = useRef<HTMLDivElement>(null);
   const overlayTextRef = useRef<HTMLDivElement>(null);
 
-  if (!heroConfig.backgroundText && !heroConfig.heroImage && heroConfig.navLinks.length === 0) return null;
+  const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
+  
+  const hero = homepageData?.hero || heroConfig;
+  const heroImage = hero.heroImage?.asset ? urlFor(hero.heroImage).url() : heroConfig.heroImage;
+
+  if (!hero.backgroundText && !heroImage && heroConfig.navLinks.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -90,13 +97,12 @@ export function Hero() {
         }}
       />
 
-      {/* Layer 2: Big Text (Decorative) */}
       <div
         ref={textRef}
         className="absolute inset-0 flex flex-col items-start justify-start pt-[15vh] md:justify-center md:pt-0 z-10 will-change-transform px-[4%] md:px-[4%]"
         aria-hidden="true"
       >
-        {heroConfig.backgroundText.split('\n').map((line, index) => (
+        {hero.backgroundText.split('\n').map((line: string, index: number) => (
           <div 
             key={index}
             className="text-[12vw] md:text-[8vw] lg:text-[8.5vw] font-sans font-extrabold text-white tracking-tighter leading-[0.8] select-none text-left uppercase"
@@ -107,15 +113,15 @@ export function Hero() {
       </div>
 
       {/* Layer 3: Hero Model Image (Cutout) */}
-      {heroConfig.heroImage && (
+      {heroImage && (
         <div
           ref={modelRef}
           className="absolute inset-0 flex items-end justify-end z-20 will-change-transform pr-0"
         >
           <div className="relative w-[65vw] md:w-[50vw] lg:w-[40vw] max-w-[700px]">
             <img
-              src={heroConfig.heroImage}
-              alt={heroConfig.heroImageAlt}
+              src={heroImage}
+              alt={hero.heroImageAlt || heroConfig.heroImageAlt}
               className="w-full h-auto object-contain"
               loading="eager"
             />
@@ -131,7 +137,7 @@ export function Hero() {
         className="absolute bottom-[10%] sm:bottom-[15%] md:bottom-[20%] left-[6%] md:left-[12%] z-30 will-change-transform max-w-xl pr-6"
       >
         <h1 className="font-serif italic text-2xl md:text-4xl lg:text-5xl text-white/90 tracking-wide mb-8 leading-tight">
-          {heroConfig.overlayText}
+          {hero.overlayText}
         </h1>
         
         <div className="flex flex-wrap gap-4 md:gap-6">

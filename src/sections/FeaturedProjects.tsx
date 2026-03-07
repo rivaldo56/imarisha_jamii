@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { featuredProjectsConfig, programsConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +14,21 @@ export function FeaturedProjects() {
   const headerRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
 
-  if (!featuredProjectsConfig.titleRegular && featuredProjectsConfig.projects.length === 0) return null;
+  const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
+
+  // Use sanity data if available, otherwise fallback to config
+  const displayPrograms = sanityPrograms?.length > 0 
+    ? sanityPrograms.slice(0, 3).map(p => ({
+        id: p._id,
+        title: p.name,
+        category: p.category || 'Academic',
+        year: p.duration,
+        description: p.description,
+        image: p.image ? urlFor(p.image).url() : '/programs_left_portrait.jpg'
+      }))
+    : featuredProjectsConfig.projects;
+
+  if (!featuredProjectsConfig.titleRegular && displayPrograms.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -154,7 +170,7 @@ export function FeaturedProjects() {
 
         {/* Projects Grid */}
         <div ref={projectsRef} className="space-y-20 md:space-y-32">
-          {featuredProjectsConfig.projects.map((project, index) => (
+          {displayPrograms.map((project, index) => (
             <div
               key={project.id}
               className={`project-card grid md:grid-cols-2 gap-8 md:gap-12 items-center ${

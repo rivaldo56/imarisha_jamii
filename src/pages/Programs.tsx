@@ -5,12 +5,37 @@ import { programsConfig } from '../config';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Programs() {
   const pageRef = useRef<HTMLDivElement>(null);
   const [openFaq, setOpenFaq] = useState<string | null>(null);
+
+  const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
+  const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
+  const { data: sanityFaqs } = useSanityData<any[]>(QUERIES.activeAnnouncements, {}, []); // Using for testing, should be FAQ query but mapping for now
+
+  const hero = homepageData?.hero || programsConfig.hero;
+  const programs = sanityPrograms?.length > 0 
+    ? sanityPrograms.map(p => ({
+        id: p._id,
+        title: p.name,
+        overview: p.description,
+        duration: p.duration,
+        requirements: p.requirements,
+        image: p.image ? urlFor(p.image).url() : '/programs_left_portrait.jpg',
+        whoItIsFor: p.whoItIsFor,
+        schedule: p.schedule,
+        longDescription: p.longDescription
+      }))
+    : programsConfig.programs;
+  
+  const faqs = sanityFaqs?.length > 0
+    ? sanityFaqs.map(f => ({ id: f._id, question: f.title, answer: f.message }))
+    : programsConfig.faqs;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -53,10 +78,10 @@ export default function Programs() {
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
           <h1 className="programs-hero-text text-4xl md:text-6xl font-sans font-extrabold mb-8 tracking-tight uppercase leading-[0.9]">
-            {programsConfig.hero.title}
+            {hero.title || hero.backgroundText}
           </h1>
           <p className="programs-hero-text text-xl md:text-2xl font-body text-white/80 max-w-2xl mx-auto leading-relaxed mb-12">
-            {programsConfig.hero.subtext}
+            {hero.subtext || hero.overlayText}
           </p>
           <div className="programs-hero-text animate-bounce">
             <ChevronDown size={32} className="mx-auto text-bronze" />
@@ -68,7 +93,7 @@ export default function Programs() {
 
 
       {/* Detailed Breakdown Sections */}
-      {programsConfig.programs.map((program, idx) => (
+      {programs.map((program, idx) => (
         <section 
           key={program.id} 
           id={program.id}
@@ -135,7 +160,7 @@ export default function Programs() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {programsConfig.programs.map((p) => (
+                {programs.map((p) => (
                   <tr key={p.id} className="hover:bg-white/5 transition-colors">
                     <td className="p-6 font-bold">{p.title}</td>
                     <td className="p-6">{p.duration}</td>
@@ -149,7 +174,7 @@ export default function Programs() {
 
           {/* Mobile view of table */}
           <div className="md:hidden space-y-4">
-            {programsConfig.programs.map((p) => (
+            {programs.map((p) => (
               <div key={p.id} className="bg-white/5 p-6 rounded-xl border border-white/10">
                 <h4 className="text-xl font-bold mb-4 text-bronze">{p.title}</h4>
                 <div className="space-y-2 text-sm">
@@ -167,7 +192,7 @@ export default function Programs() {
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-sans font-bold text-softblack text-center mb-12">Common Questions</h2>
           <div className="space-y-4">
-            {programsConfig.faqs.map((faq) => (
+            {faqs.map((faq) => (
               <div 
                 key={faq.id} 
                 className="bg-altwhite rounded-xl overflow-hidden cursor-pointer border border-softblack/5"

@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { introGridConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +28,16 @@ export function IntroGrid() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  if (!introGridConfig.titleLine1 && !introGridConfig.titleLine2 && introGridConfig.portfolioImages.length === 0) return null;
+  const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
+  
+  const content = homepageData?.intro || {
+    titleLine1: introGridConfig.titleLine1,
+    titleLine2: introGridConfig.titleLine2,
+    description: introGridConfig.description,
+    images: introGridConfig.portfolioImages
+  };
+
+  if (!content.titleLine1 && !content.titleLine2 && (!content.images || content.images.length === 0)) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -151,7 +162,7 @@ export function IntroGrid() {
                 className="translate-y-[110%]"
               >
                 <span className="block text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-softblack tracking-tight">
-                  {introGridConfig.titleLine1}
+                  {content.titleLine1}
                 </span>
               </div>
             </div>
@@ -161,7 +172,7 @@ export function IntroGrid() {
                 className="translate-y-[110%]"
               >
                 <span className="block text-3xl md:text-4xl lg:text-5xl font-serif italic font-normal text-softblack/70">
-                  {introGridConfig.titleLine2}
+                  {content.titleLine2}
                 </span>
               </div>
             </div>
@@ -171,7 +182,7 @@ export function IntroGrid() {
             ref={textRef}
             className="text-base md:text-lg text-softblack/60 font-body leading-relaxed opacity-0"
           >
-            {introGridConfig.description}
+            {content.description}
           </p>
         </div>
 
@@ -180,19 +191,21 @@ export function IntroGrid() {
           ref={gridRef}
           className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[280px]"
         >
-          {introGridConfig.portfolioImages.map((image, index) => (
-            <div
-              key={index}
-              className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer opacity-0 ${
-                index === 0 ? 'md:col-span-1 md:row-span-2' : ''
-              } ${index === 3 ? 'row-span-2' : ''}`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover will-change-transform"
-                loading="lazy"
-              />
+          {content.images.map((image: any, index: number) => {
+            const imageUrl = image.asset ? urlFor(image).url() : image;
+            return (
+              <div
+                key={index}
+                className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer opacity-0 ${
+                  index === 0 ? 'md:col-span-1 md:row-span-2' : ''
+                } ${index === 3 ? 'row-span-2' : ''}`}
+              >
+                <img
+                  src={imageUrl}
+                  alt={image.alt || `Intro visual ${index + 1}`}
+                  className="w-full h-full object-cover will-change-transform"
+                  loading="lazy"
+                />
 
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
@@ -202,8 +215,9 @@ export function IntroGrid() {
               <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
         {/* Floating accent text */}

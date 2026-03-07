@@ -28,6 +28,31 @@ export default function StudentLife() {
         opacity: 0,
         duration: 1,
         ease: 'power3.out',
+        overwrite: 'auto'
+      });
+
+      // Hero Parallax
+      gsap.to('.student-hero-image', {
+        yPercent: 15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.student-hero-image-wrap',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+
+      gsap.to('.student-hero-content', {
+        opacity: 0,
+        y: -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.student-hero-image-wrap', // Stable trigger
+          start: 'top top',
+          end: '40% top',
+          scrub: 1,
+        },
       });
 
       // Masonry grid items
@@ -137,13 +162,15 @@ export default function StudentLife() {
   return (
     <div ref={pageRef} className="bg-offwhite min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-forest-dark/40 z-10" />
-        <img 
-          src="/hero_tertiary_portrait.jpg" 
-          alt="Student Life Hero" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-forest-dark">
+        <div className="absolute inset-0 bg-forest-dark/50 z-10" />
+        <div className="absolute inset-0 student-hero-image-wrap">
+          <img 
+            src="/student_life_hero.png" 
+            alt="Student Life Hero" 
+            className="w-full h-full object-cover student-hero-image scale-110"
+          />
+        </div>
         <div className="relative z-20 max-w-5xl mx-auto px-6 text-center student-hero-content text-white">
           <h1 className="text-4xl md:text-7xl font-sans font-extrabold mb-8 uppercase tracking-tighter leading-none">
             {studentLifeConfig.hero.title}
@@ -159,7 +186,6 @@ export default function StudentLife() {
               Apply Now
             </a>
           </div>
-
         </div>
       </section>
 
