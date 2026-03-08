@@ -6,8 +6,8 @@ export default defineConfig({
   name: 'default',
   title: 'Imarisha Jamii Admin',
 
-  projectId: 'your-project-id', 
-  dataset: 'production',
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'your-project-id', 
+  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
   basePath: '/admin',
 
   plugins: [deskTool()],

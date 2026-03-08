@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink, MessageCircle } from 'lucide-react';
 import { contactConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
 import { PageTitle } from '../components/PageTitle';
 import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from '../components/ui/map';
@@ -10,6 +11,14 @@ export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
+  const { data: settingsData } = useSanityData<any>(QUERIES.settings, {}, null);
+  
+  const contactInfo = settingsData?.contactInfo || {
+    phone: contactConfig.info.phone,
+    email: contactConfig.info.email,
+    address: contactConfig.info.location,
+    hours: contactConfig.info.hours,
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -64,7 +73,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 -mt-32 relative z-20">
             {/* Call Card */}
             <a 
-              href={`tel:${contactConfig.info.phone.replace(/\s/g, '')}`}
+              href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
               onClick={() => trackEvent('contact_phone_click')}
               className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-softblack/5 group"
             >
@@ -73,14 +82,14 @@ export default function Contact() {
               </div>
               <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">Call Us</p>
               <h3 className="text-3xl font-sans font-extrabold text-softblack mb-4">
-                {contactConfig.info.phone}
+                {contactInfo.phone}
               </h3>
               <p className="text-softblack/60 font-body">We pick up. Come talk to a person.</p>
             </a>
 
             {/* Email Card */}
             <a 
-              href={`mailto:${contactConfig.info.email}`}
+              href={`mailto:${contactInfo.email}`}
               onClick={() => trackEvent('contact_email_click')}
               className="contact-card bg-altwhite p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-softblack/5 group"
             >
@@ -89,14 +98,14 @@ export default function Contact() {
               </div>
               <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-2 font-sans">Email Us</p>
               <h3 className="text-2xl font-sans font-extrabold text-softblack mb-4 break-all">
-                {contactConfig.info.email}
+                {contactInfo.email}
               </h3>
               <p className="text-softblack/60 font-body">We respond within 24 hours.</p>
             </a>
 
             {/* WhatsApp Card */}
             <a 
-              href={`https://wa.me/${contactConfig.info.phone.replace(/\s/g, '').replace(/^0/, '254')}`}
+              href={`https://wa.me/${contactInfo.phone.replace(/\s/g, '').replace(/^0/, '254')}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent('contact_whatsapp_click')}
@@ -121,7 +130,7 @@ export default function Contact() {
               <h3 className="text-2xl font-sans font-extrabold text-softblack mb-4">
                 Umoja Innercore
               </h3>
-              <p className="text-softblack/60 font-body">{contactConfig.info.location}</p>
+              <p className="text-softblack/60 font-body">{contactInfo.address}</p>
             </div>
           </div>
 
@@ -240,15 +249,15 @@ export default function Contact() {
                   <tbody className="divide-y divide-softblack/5">
                     <tr>
                       <td className="py-4 font-bold">Monday – Friday</td>
-                      <td className="py-4 text-softblack/60">{contactConfig.info.hours.weekday}</td>
+                      <td className="py-4 text-softblack/60">{contactInfo.hours?.weekday || contactConfig.info.hours.weekday}</td>
                     </tr>
                     <tr>
                       <td className="py-4 font-bold">Saturday</td>
-                      <td className="py-4 text-softblack/60">{contactConfig.info.hours.saturday}</td>
+                      <td className="py-4 text-softblack/60">{contactInfo.hours?.saturday || contactConfig.info.hours.saturday}</td>
                     </tr>
                     <tr>
                       <td className="py-4 font-bold">Sunday</td>
-                      <td className="py-4 text-softblack/60 italic">{contactConfig.info.hours.sunday}</td>
+                      <td className="py-4 text-softblack/60 italic">{contactInfo.hours?.sunday || contactConfig.info.hours.sunday}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -302,10 +311,10 @@ export default function Contact() {
             Call us and we'll figure it out together.
           </p>
           <a 
-            href={`tel:${contactConfig.info.phone.replace(/\s/g, '')}`}
+            href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
             className="text-4xl md:text-6xl font-sans font-extrabold text-bronze hover:scale-105 transition-transform inline-block"
           >
-            {contactConfig.info.phone}
+            {contactInfo.phone}
           </a>
         </div>
       </section>

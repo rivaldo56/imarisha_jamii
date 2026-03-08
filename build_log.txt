@@ -4,8 +4,8 @@
 
 vite v6.4.1 building for production...
 transforming...
-✓ 1873 modules transformed.
-✗ Build failed in 17.51s
+✓ 1875 modules transformed.
+✗ Build failed in 12.74s
 error during build:
 [vite]: Rollup failed to resolve import "styled-components" from "/home/rivaldo/codes/Kimi_Agent_Imarisha Adult School PRD/app/node_modules/sanity/lib/_chunks-es/TooltipDelayGroupProvider.js".
 This is most likely unintended because it can break your application at runtime.

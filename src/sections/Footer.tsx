@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Twitter, Linkedin, Mail, type LucideIcon } from 'lucide-react';
-import { footerConfig, siteConfig } from '../config';
+import { footerConfig, siteConfig, contactConfig } from '../config';
 import { Link } from 'react-router-dom';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,7 +20,17 @@ export function Footer() {
   const logoRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  if (!footerConfig.logoText && !footerConfig.email && footerConfig.navLinks.length === 0) return null;
+  const { data: settingsData } = useSanityData<any>(QUERIES.settings, {}, null);
+  
+  const contact = settingsData?.contactInfo || {
+    phone: contactConfig.info.phone,
+    email: footerConfig.email,
+    address: footerConfig.locationText,
+  };
+
+  const logoText = settingsData?.siteTitle || footerConfig.logoText;
+
+  if (!logoText && !contact.email && footerConfig.navLinks.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -81,7 +92,7 @@ export function Footer() {
                   letterSpacing: '-0.03em',
                 }}
               >
-                {footerConfig.logoText}
+                {logoText}
               </text>
             </svg>
           </div>
@@ -97,17 +108,17 @@ export function Footer() {
                   {footerConfig.contactLabel}
                 </p>
               )}
-              {footerConfig.email && (
+              {contact.email && (
                 <a
-                  href={`mailto:${footerConfig.email}`}
+                  href={`mailto:${contact.email}`}
                   className="text-xl md:text-2xl font-sans font-semibold text-softblack hover:text-softblack/70 transition-colors duration-300"
                 >
-                  {footerConfig.email}
+                  {contact.email}
                 </a>
               )}
-              {footerConfig.locationText && (
+              {contact.address && (
                 <p className="mt-4 text-softblack/60 font-body text-sm whitespace-pre-line">
-                  {footerConfig.locationText}
+                  {contact.address}
                 </p>
               )}
               <Link
