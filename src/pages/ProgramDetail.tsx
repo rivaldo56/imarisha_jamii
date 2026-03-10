@@ -4,19 +4,43 @@ import gsap from 'gsap';
 import { programsConfig } from '../config';
 import { ArrowLeft, ArrowRight, Clock, Calendar, GraduationCap, CheckCircle2 } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 export default function ProgramDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
-  
-  const program = programsConfig.programs.find(p => p.id === id);
+
+  // Check static config
+  const staticProgram = programsConfig.programs.find(p => p.id === id);
+
+  // Fetch from Sanity
+  const { data: sanityProgram, loading: sanityLoading } = useSanityData<any>(
+    QUERIES.programById,
+    { id: id },
+    null
+  );
+
+  const program = staticProgram || (sanityProgram ? {
+    id: sanityProgram._id,
+    title: sanityProgram.name || sanityProgram.title,
+    overview: sanityProgram.overview || sanityProgram.description,
+    duration: sanityProgram.duration,
+    requirements: sanityProgram.requirements,
+    image: sanityProgram.image ? urlFor(sanityProgram.image).url() : '/programs_left_portrait.jpg',
+    whoItIsFor: sanityProgram.whoItIsFor,
+    schedule: sanityProgram.schedule,
+    longDescription: sanityProgram.longDescription
+  } : null);
 
   useEffect(() => {
-    if (!program) {
+    if (!sanityLoading && !program) {
       navigate('/programs');
       return;
     }
+
+    if (!program) return;
 
     const ctx = gsap.context(() => {
       gsap.from('.detail-fade-in', {
@@ -36,7 +60,15 @@ export default function ProgramDetail() {
     }, pageRef);
 
     return () => ctx.revert();
-  }, [program, navigate]);
+  }, [program, sanityLoading, navigate]);
+
+  if (sanityLoading && !staticProgram) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-offwhite">
+        <div className="w-12 h-12 border-4 border-bronze/20 border-t-bronze rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   if (!program) return null;
 

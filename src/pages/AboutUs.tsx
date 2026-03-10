@@ -10,8 +10,14 @@ import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+
 export default function AboutUs() {
   const pageRef = useRef<HTMLDivElement>(null);
+
+  const { data: aboutData, loading } = useSanityData<any>(QUERIES.aboutPage, {}, null);
+  
+  const content = aboutData || aboutConfig;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -82,18 +88,18 @@ export default function AboutUs() {
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
           <h1 className="about-hero-text text-4xl md:text-6xl font-sans font-extrabold mb-8 tracking-tight uppercase leading-[0.9] max-w-4xl mx-auto">
-            {aboutConfig.hero.title}
+            {content.hero?.title || aboutConfig.hero.title}
           </h1>
           <p className="about-hero-text text-xl md:text-2xl font-body text-white/80 max-w-2xl mx-auto leading-relaxed mb-12">
-            {aboutConfig.hero.subtext}
+            {content.hero?.subtext || aboutConfig.hero.subtext}
           </p>
           <div className="about-hero-text">
             <Link 
-              to={aboutConfig.hero.ctaHref}
+              to={content.hero?.ctaHref || aboutConfig.hero.ctaHref}
               onClick={() => trackEvent('about_hero_cta_click')}
               className="inline-flex items-center gap-3 bg-bronze text-white px-10 py-5 rounded-full font-bold hover:scale-105 transition-all duration-500 ease-out shadow-lg"
             >
-              {aboutConfig.hero.ctaText}
+              {content.hero?.ctaText || aboutConfig.hero.ctaText}
             </Link>
           </div>
         </div>
@@ -110,13 +116,13 @@ export default function AboutUs() {
               <div className="pull-quote relative p-8 md:p-12 bg-altwhite rounded-2xl border-l-8 border-bronze shadow-sm">
                 <Icons.Quote className="absolute top-6 right-6 text-bronze/10" size={64} />
                 <p className="text-2xl md:text-3xl font-sans font-bold text-softblack italic leading-tight relative z-10">
-                  {aboutConfig.whoWeAre.pullQuote}
+                  {content.whoWeAre?.pullQuote || aboutConfig.whoWeAre.pullQuote}
                 </p>
               </div>
             </div>
             <div className="w-full lg:w-2/3">
               <div className="prose prose-xl text-softblack/80 font-body leading-relaxed whitespace-pre-wrap">
-                {aboutConfig.whoWeAre.body}
+                {content.whoWeAre?.body || aboutConfig.whoWeAre.body}
               </div>
             </div>
           </div>
@@ -146,10 +152,10 @@ export default function AboutUs() {
                 <Icons.Eye size={28} />
               </div>
               <h3 className="text-2xl font-sans font-bold text-softblack mb-4">
-                {aboutConfig.visionMissionMotto.vision.title}
+                {content.visionMissionMotto.vision.title}
               </h3>
               <p className="text-softblack/70 font-body leading-relaxed">
-                {aboutConfig.visionMissionMotto.vision.body}
+                {content.visionMissionMotto.vision.body}
               </p>
             </div>
 
@@ -159,10 +165,10 @@ export default function AboutUs() {
                 <Icons.Target size={28} />
               </div>
               <h3 className="text-2xl font-sans font-bold text-softblack mb-4">
-                {aboutConfig.visionMissionMotto.mission.title}
+                {content.visionMissionMotto.mission.title}
               </h3>
               <p className="text-softblack/70 font-body leading-relaxed">
-                {aboutConfig.visionMissionMotto.mission.body}
+                {content.visionMissionMotto.mission.body}
               </p>
             </div>
 
@@ -172,10 +178,10 @@ export default function AboutUs() {
                 <Icons.Sparkles size={28} />
               </div>
               <h3 className="text-2xl font-sans font-bold text-white mb-4">
-                {aboutConfig.visionMissionMotto.motto.title}
+                {content.visionMissionMotto?.motto?.title || aboutConfig.visionMissionMotto.motto.title}
               </h3>
               <p className="text-white/80 font-sans font-bold text-xl italic leading-relaxed">
-                {aboutConfig.visionMissionMotto.motto.body}
+                {content.visionMissionMotto?.motto?.body || aboutConfig.visionMissionMotto.motto.body}
               </p>
             </div>
           </div>
@@ -193,7 +199,7 @@ export default function AboutUs() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5">
-            {aboutConfig.pillars.map((pillar, idx) => {
+            {content.pillars.map((pillar: any, idx: number) => {
               const Icon = (Icons as any)[pillar.iconName] || Icons.CheckCircle2;
               return (
                 <div key={idx} className="service-card group bg-forest-dark p-8 md:p-10 transition-all duration-500 hover:bg-forest-mid cursor-pointer group">

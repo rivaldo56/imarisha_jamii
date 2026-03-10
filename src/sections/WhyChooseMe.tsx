@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whyChooseMeConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,7 +61,25 @@ export function WhyChooseMe() {
   const wideRef = useRef<HTMLDivElement>(null);
   const [shouldAnimateStats, setShouldAnimateStats] = useState(false);
 
-  if (!whyChooseMeConfig.titleRegular && whyChooseMeConfig.stats.length === 0 && whyChooseMeConfig.featureCards.length === 0) return null;
+  const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
+
+  const content = {
+    subtitle: homepageData?.whyChooseMe?.subtitle || whyChooseMeConfig.subtitle,
+    titleRegular: homepageData?.whyChooseMe?.titleRegular || whyChooseMeConfig.titleRegular,
+    titleItalic: homepageData?.whyChooseMe?.titleItalic || whyChooseMeConfig.titleItalic,
+    stats: homepageData?.whyChooseMe?.stats || whyChooseMeConfig.stats || [],
+    featureCards: (homepageData?.whyChooseMe?.featureCards || whyChooseMeConfig.featureCards || []).map((card: any) => ({
+      ...card,
+      image: card.image?.asset ? urlFor(card.image).url() : (card.image || '')
+    })),
+    wideImage: homepageData?.whyChooseMe?.wideImage?.asset 
+      ? urlFor(homepageData.whyChooseMe.wideImage).url() 
+      : whyChooseMeConfig.wideImage,
+    wideTitle: homepageData?.whyChooseMe?.wideTitle || whyChooseMeConfig.wideTitle,
+    wideDescription: homepageData?.whyChooseMe?.wideDescription || whyChooseMeConfig.wideDescription,
+  };
+
+  if (!content.titleRegular && content.stats.length === 0 && content.featureCards.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -223,7 +243,7 @@ export function WhyChooseMe() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [content.featureCards, content.stats, content.wideImage]);
 
   return (
     <section
@@ -234,25 +254,25 @@ export function WhyChooseMe() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div ref={headerRef} className="text-center mb-16 md:mb-20 opacity-0">
-          {whyChooseMeConfig.subtitle && (
+          {content.subtitle && (
             <p className="text-softblack/50 text-sm font-body uppercase tracking-widest mb-4">
-              {whyChooseMeConfig.subtitle}
+              {content.subtitle}
             </p>
           )}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-softblack tracking-tight">
-            {whyChooseMeConfig.titleRegular} <span className="font-serif italic font-normal">{whyChooseMeConfig.titleItalic}</span>
+            {content.titleRegular} <span className="font-serif italic font-normal">{content.titleItalic}</span>
           </h2>
         </div>
 
         {/* Three Cards Row */}
         <div ref={cardsRef} className="grid md:grid-cols-3 gap-6 md:gap-8">
           {/* Feature Cards with Images */}
-          {whyChooseMeConfig.featureCards.map((card, index) => (
+          {content.featureCards.map((card: any, index: number) => (
             <div key={index} className="feature-card-image opacity-0 group">
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-forest-dark">
                 <img
                   src={card.image}
-                  alt={card.imageAlt}
+                  alt={card.title}
                   className="w-full h-full object-cover will-change-transform"
                   loading="lazy"
                 />
@@ -270,7 +290,7 @@ export function WhyChooseMe() {
           ))}
 
           {/* Stats Card */}
-          {whyChooseMeConfig.stats.length > 0 && (
+          {content.stats.length > 0 && (
             <div
               ref={statsRef}
               className="feature-card-stats opacity-0 bg-altwhite rounded-lg p-8 md:p-10 flex flex-col justify-between"
@@ -282,7 +302,7 @@ export function WhyChooseMe() {
                   </p>
                 )}
                 <div className="space-y-8">
-                  {whyChooseMeConfig.stats.map((stat, index) => (
+                  {content.stats.map((stat: any, index: number) => (
                     <div key={index} className="border-b border-softblack/10 pb-6 last:border-0">
                       <p className="text-4xl md:text-5xl font-sans font-bold text-softblack tracking-tight">
                         <Counter
@@ -303,27 +323,27 @@ export function WhyChooseMe() {
         </div>
 
         {/* Wide Landscape Image */}
-        {whyChooseMeConfig.wideImage && (
+        {content.wideImage && (
           <div ref={wideRef} className="mt-16 md:mt-24 relative rounded-lg overflow-hidden group opacity-0">
             <div className="aspect-[21/9] md:aspect-[3/1] overflow-hidden">
               <img
-                src={whyChooseMeConfig.wideImage}
-                alt={whyChooseMeConfig.wideImageAlt}
+                src={content.wideImage}
+                alt={content.wideTitle || "Success story"}
                 className="w-full h-full object-cover will-change-transform"
                 loading="lazy"
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-forest-dark/60 via-transparent to-transparent" />
-            {(whyChooseMeConfig.wideTitle || whyChooseMeConfig.wideDescription) && (
+            {(content.wideTitle || content.wideDescription) && (
               <div className="wide-text-overlay absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-md opacity-0">
-                {whyChooseMeConfig.wideTitle && (
+                {content.wideTitle && (
                   <p className="text-white/90 font-sans font-bold text-2xl md:text-3xl mb-3">
-                    {whyChooseMeConfig.wideTitle}
+                    {content.wideTitle}
                   </p>
                 )}
-                {whyChooseMeConfig.wideDescription && (
+                {content.wideDescription && (
                   <p className="text-white/70 font-body text-sm md:text-base">
-                    {whyChooseMeConfig.wideDescription}
+                    {content.wideDescription}
                   </p>
                 )}
               </div>

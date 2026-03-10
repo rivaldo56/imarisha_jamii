@@ -25,9 +25,9 @@ export function Navbar() {
 
   return (
     <nav 
-      className={`relative w-full z-50 transition-all duration-500 ${
+      className={`sticky top-0 w-full z-50 transition-all duration-500 border-b border-transparent ${
         isScrolled 
-          ? 'bg-offwhite/95 backdrop-blur-md py-3 shadow-sm' 
+          ? 'bg-offwhite/80 backdrop-blur-lg py-3 shadow-md border-softblack/5' 
           : 'bg-transparent py-4 md:py-6'
       }`}
     >

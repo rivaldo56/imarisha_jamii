@@ -5,6 +5,8 @@ import { studentLifeConfig, testimonialsConfig } from '../config';
 import { Heart, Users, Sparkles, BookOpen } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
 import { TestimonialsSection } from '../components/ui/testimonial-v2';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,8 +19,26 @@ const successImageAnimConfigs = [
 ];
 
 export default function StudentLife() {
-
   const pageRef = useRef<HTMLDivElement>(null);
+
+  const { data: pageData } = useSanityData<any>(QUERIES.studentLife, {}, null);
+  const { data: sanityTestimonials } = useSanityData<any[]>(QUERIES.testimonials, {}, []);
+
+  const content = pageData || studentLifeConfig;
+  const heroImage = content.hero?.image?.asset ? urlFor(content.hero.image).url() : "/student_life_hero.png";
+  const testimonials = (sanityTestimonials && sanityTestimonials.length > 0)
+    ? sanityTestimonials.map(t => ({
+        name: t.name || t.studentName || 'Anonymous',
+        role: t.role || 'Former Student',
+        text: t.quote || t.message || '',
+        image: t.image?.asset ? urlFor(t.image).url() : (t.photo?.asset ? urlFor(t.photo).url() : `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name || t.studentName || 'A')}`),
+      }))
+    : testimonialsConfig.testimonials.map(t => ({
+        name: t.name,
+        role: t.role,
+        text: t.quote,
+        image: t.image
+      }));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -164,19 +184,21 @@ export default function StudentLife() {
       {/* Hero Section */}
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-forest-dark">
         <div className="absolute inset-0 bg-forest-dark/50 z-10" />
-        <div className="absolute inset-0 student-hero-image-wrap">
+        {/* Navbar Contrast Overlay: Dark gradient from top */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/60 to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 top-0 student-hero-image-wrap">
           <img 
-            src="/student_life_hero.png" 
+            src={heroImage} 
             alt="Student Life Hero" 
             className="w-full h-full object-cover student-hero-image scale-110"
           />
         </div>
         <div className="relative z-20 max-w-5xl mx-auto px-6 text-center student-hero-content text-white">
           <h1 className="text-4xl md:text-7xl font-sans font-extrabold mb-8 uppercase tracking-tighter leading-none">
-            {studentLifeConfig.hero.title}
+            {content.hero?.title || studentLifeConfig.hero.title}
           </h1>
           <p className="text-xl md:text-2xl font-body max-w-2xl mx-auto opacity-90 leading-relaxed mb-10">
-            {studentLifeConfig.hero.subtext}
+            {content.hero?.subtext || studentLifeConfig.hero.subtext}
           </p>
           <div className="flex justify-center">
             <a 
@@ -192,7 +214,7 @@ export default function StudentLife() {
       {/* Community Values Strip */}
       <section className="bg-altwhite py-8 border-y border-softblack/5">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-wrap justify-center gap-8 md:gap-16">
-          {studentLifeConfig.values.map((value, idx) => (
+          {(content.values || studentLifeConfig.values).map((value: string, idx: number) => (
             <div key={idx} className="flex items-center gap-3 text-softblack/40 font-sans font-bold uppercase tracking-[0.2em] text-sm">
               <span className="w-1.5 h-1.5 bg-bronze rounded-full" />
               {value}
@@ -357,12 +379,7 @@ export default function StudentLife() {
       <TestimonialsSection 
         title="Voices of Growth"
         subtitle="Real stories from our alumni"
-        testimonials={testimonialsConfig.testimonials.map(t => ({
-          text: t.quote,
-          image: t.image,
-          name: t.name,
-          role: t.role
-        }))}
+        testimonials={testimonials}
       />
 
       <EmotionalCTA 

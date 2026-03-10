@@ -36,8 +36,12 @@ export function useSanityData<T>(query: string, params = {}, initialData: T): { 
 // Common queries
 export const QUERIES = {
   allPrograms: `*[_type == "program"] | order(name asc)`,
+  programById: `*[_type == "program" && _id == $id][0]`,
   activeAnnouncements: `*[_type == "announcement" && active == true] | order(startDate desc)`,
   homepage: `*[_type == "homepage"][0]`,
   settings: `*[_type == "settings"][0]`,
   testimonials: `*[_type == "testimonial"] | order(year desc)`,
+  aboutPage: `*[_type == "aboutPage"][0]`,
+  studentLife: `*[_type == "studentLife"][0]`,
+  faqs: `*[_type == "faq"] | order(order asc)`,
 };

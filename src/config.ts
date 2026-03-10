@@ -29,10 +29,10 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   language: "en",
-  siteTitle: "Imarisha Jamii Centre | Adult High School in Nairobi",
+  siteTitle: "Imarisha Jamii Centre | Adult School in Nairobi",
   siteDescription: "Flexible adult education programs in Nairobi including KCSE completion and bridging courses. Apply today.",
   brandName: "Imarisha Jamii Centre",
-  keywords: "adult high school Nairobi, KCSE completion for adults, adult education Kenya, evening classes Nairobi, second chance education Kenya",
+  keywords: "adult school Nairobi, KCSE completion for adults, adult education Kenya, evening classes Nairobi, second chance education Kenya",
 };
 
 // Hero Section

@@ -14,21 +14,25 @@ export function FeaturedProjects() {
   const headerRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
 
+  const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
   const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
 
   // Use sanity data if available, otherwise fallback to config
-  const displayPrograms = sanityPrograms?.length > 0 
+  const displayPrograms = (sanityPrograms && sanityPrograms.length > 0)
     ? sanityPrograms.slice(0, 3).map(p => ({
         id: p._id,
         title: p.name,
         category: p.category || 'Academic',
         year: p.duration,
-        description: p.description,
-        image: p.image ? urlFor(p.image).url() : '/programs_left_portrait.jpg'
+        description: p.overview || p.description || "",
+        image: p.image?.asset ? urlFor(p.image).url() : '/programs_left_portrait.jpg'
       }))
     : featuredProjectsConfig.projects;
 
-  if (!featuredProjectsConfig.titleRegular && displayPrograms.length === 0) return null;
+  // Ensure we have a safe object for the header content
+  const headerContent = homepageData?.featuredSection || featuredProjectsConfig;
+
+  if (!headerContent.titleRegular && displayPrograms.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -137,7 +141,7 @@ export function FeaturedProjects() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [displayPrograms, headerContent]);
 
   return (
     <section
@@ -148,13 +152,13 @@ export function FeaturedProjects() {
         {/* Section Header */}
         <div ref={headerRef} className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-20 opacity-0">
           <div>
-            {featuredProjectsConfig.subtitle && (
+            {headerContent.subtitle && (
               <p className="text-white/50 text-sm font-body uppercase tracking-widest mb-4">
-                {featuredProjectsConfig.subtitle}
+                {headerContent.subtitle}
               </p>
             )}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-white tracking-tight">
-              {featuredProjectsConfig.titleRegular} <span className="font-serif italic font-normal text-white/80">{featuredProjectsConfig.titleItalic}</span>
+              {headerContent.titleRegular} <span className="font-serif italic font-normal text-white/80">{headerContent.titleItalic}</span>
             </h2>
           </div>
           {featuredProjectsConfig.viewAllText && (
@@ -224,7 +228,8 @@ export function FeaturedProjects() {
                 </p>
                 {featuredProjectsConfig.viewProjectText && (
                   (() => {
-                    const programId = programsConfig.programs.find(p => p.title.toLowerCase().includes(project.title.toLowerCase()))?.id || "high_school";
+                    const title = project.title || "";
+                    const programId = programsConfig.programs.find(p => p.title?.toLowerCase().includes(title.toLowerCase()))?.id || "high_school";
                     return (
                       <Link
                         to={`/programs/${programId}`}

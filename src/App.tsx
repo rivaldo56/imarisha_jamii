@@ -40,21 +40,25 @@ function App() {
       <Router>
         <PageTitle />
         <SchemaMarkup />
-        <Layout>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/programs" element={<Programs />} />
-              <Route path="/programs/:id" element={<ProgramDetail />} />
-              <Route path="/student-life" element={<StudentLife />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/apply" element={<Apply />} />
-              <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="/admin/*" element={<Admin />} />
-            </Routes>
-          </Suspense>
-        </Layout>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/admin/*" element={<Admin />} />
+            <Route path="/*" element={
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/programs" element={<Programs />} />
+                  <Route path="/programs/:id" element={<ProgramDetail />} />
+                  <Route path="/student-life" element={<StudentLife />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/apply" element={<Apply />} />
+                  <Route path="/thank-you" element={<ThankYou />} />
+                </Routes>
+              </Layout>
+            } />
+          </Routes>
+        </Suspense>
       </Router>
     </ThemeProvider>
   );

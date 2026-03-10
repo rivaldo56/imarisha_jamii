@@ -18,7 +18,11 @@ export function Hero() {
   const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
   
   const hero = homepageData?.hero || heroConfig;
-  const heroImage = hero.heroImage?.asset ? urlFor(hero.heroImage).url() : heroConfig.heroImage;
+  const heroImage = (hero.heroImage?.asset || hero.heroImage?.asset?._ref) 
+    ? urlFor(hero.heroImage).url() 
+    : (typeof hero.heroImage === 'string' ? hero.heroImage : heroConfig.heroImage);
+
+  const backgroundLines = (hero.backgroundText || heroConfig.backgroundText || "").split('\n');
 
   if (!hero.backgroundText && !heroImage && heroConfig.navLinks.length === 0) return null;
 
@@ -89,6 +93,9 @@ export function Hero() {
         style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #16263F 100%)' }}
       />
 
+      {/* Navbar Contrast Overlay: Dark gradient from top */}
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/60 to-transparent z-20 pointer-events-none" />
+
       {/* Subtle texture overlay */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -102,7 +109,7 @@ export function Hero() {
         className="absolute inset-0 flex flex-col items-start justify-start pt-[15vh] md:justify-center md:pt-0 z-10 will-change-transform px-[4%] md:px-[4%]"
         aria-hidden="true"
       >
-        {hero.backgroundText.split('\n').map((line: string, index: number) => (
+        {backgroundLines.map((line: string, index: number) => (
           <div 
             key={index}
             className="text-[12vw] md:text-[8vw] lg:text-[8.5vw] font-sans font-extrabold text-white tracking-tighter leading-[0.8] select-none text-left uppercase"

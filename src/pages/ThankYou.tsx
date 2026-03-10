@@ -51,7 +51,7 @@ export default function ThankYou() {
               <h3 className="font-sans font-bold text-softblack">Campus Visit</h3>
             </div>
             <p className="text-sm font-body text-softblack/60">
-              You can also visit our CBD campus between 9 AM and 4 PM (Mon–Sat) for an immediate consultation.
+              You can also visit our Umoja Innercore campus between 9 AM and 4 PM (Mon–Sat) for an immediate consultation.
             </p>
           </div>
         </div>

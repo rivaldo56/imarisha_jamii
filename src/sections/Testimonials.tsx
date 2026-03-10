@@ -24,10 +24,10 @@ export function Testimonials() {
   const testimonials = sanityTestimonials?.length > 0
     ? sanityTestimonials.map(t => ({
         id: t._id,
-        quote: t.message,
-        name: t.name,
-        role: t.role,
-        image: t.image ? urlFor(t.image).url() : '/success_top_left.jpg'
+        quote: t.quote || t.message || '',
+        name: t.name || t.studentName || 'Anonymous',
+        role: t.role || 'Former Student',
+        image: t.image?.asset ? urlFor(t.image).url() : (t.photo?.asset ? urlFor(t.photo).url() : '/success_top_left.jpg')
       }))
     : testimonialsConfig.testimonials;
 

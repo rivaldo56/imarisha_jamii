@@ -30,14 +30,14 @@ export function IntroGrid() {
 
   const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
   
-  const content = homepageData?.intro || {
-    titleLine1: introGridConfig.titleLine1,
-    titleLine2: introGridConfig.titleLine2,
-    description: introGridConfig.description,
-    images: introGridConfig.portfolioImages
+  const content = {
+    titleLine1: homepageData?.intro?.titleLine1 || introGridConfig.titleLine1,
+    titleLine2: homepageData?.intro?.titleLine2 || introGridConfig.titleLine2,
+    description: homepageData?.intro?.description || introGridConfig.description,
+    portfolioImages: homepageData?.intro?.portfolioImages || introGridConfig.portfolioImages
   };
 
-  if (!content.titleLine1 && !content.titleLine2 && (!content.images || content.images.length === 0)) return null;
+  if (!content.titleLine1 && !content.titleLine2 && (!content.portfolioImages || content.portfolioImages.length === 0)) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -144,7 +144,7 @@ export function IntroGrid() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [content.portfolioImages]);
 
   return (
     <section
@@ -191,8 +191,9 @@ export function IntroGrid() {
           ref={gridRef}
           className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[280px]"
         >
-          {content.images.map((image: any, index: number) => {
-            const imageUrl = image.asset ? urlFor(image).url() : image;
+          {(content.portfolioImages || []).map((image: any, index: number) => {
+            const imageUrl = image?.asset ? urlFor(image).url() : (image?.src || image || '');
+            const altText = image?.alt || (image?.image?.alt) || `Intro visual ${index + 1}`;
             return (
               <div
                 key={index}
@@ -202,7 +203,7 @@ export function IntroGrid() {
               >
                 <img
                   src={imageUrl}
-                  alt={image.alt || `Intro visual ${index + 1}`}
+                  alt={altText}
                   className="w-full h-full object-cover will-change-transform"
                   loading="lazy"
                 />

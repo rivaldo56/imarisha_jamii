@@ -4,17 +4,17 @@ export const testimonial = {
   type: 'document',
   fields: [
     {
-      name: 'studentName',
+      name: 'name',
       title: 'Student Name',
       type: 'string',
     },
     {
-      name: 'message',
+      name: 'quote',
       title: 'Testimonial Text',
       type: 'text',
     },
     {
-      name: 'photo',
+      name: 'image',
       title: 'Student Photo',
       type: 'image',
       options: {
