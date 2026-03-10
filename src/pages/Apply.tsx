@@ -24,7 +24,6 @@ import {
   ChevronLeft,
   AlertCircle
 } from 'lucide-react';
-import { useSanityData, QUERIES } from '../lib/useSanityData';
 
 // Google Form Entry IDs for headless submission
 const GOOGLE_FORM_ENTRIES = {

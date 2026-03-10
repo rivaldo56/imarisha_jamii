@@ -15,7 +15,7 @@ import { useSanityData, QUERIES } from '../lib/useSanityData';
 export default function AboutUs() {
   const pageRef = useRef<HTMLDivElement>(null);
 
-  const { data: aboutData, loading } = useSanityData<any>(QUERIES.aboutPage, {}, null);
+  const { data: aboutData } = useSanityData<any>(QUERIES.aboutPage, {}, null);
   
   const content = aboutData || aboutConfig;
 
