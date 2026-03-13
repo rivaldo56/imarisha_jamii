@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://imarisha-jamii.vercel.app/sitemap.xml
+Sitemap: https://imarishajamiicentre.co.ke/sitemap.xml

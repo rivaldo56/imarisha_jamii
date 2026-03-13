@@ -453,13 +453,13 @@ export default function Apply() {
           
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <a 
-              href="tel:+254700000000" 
+              href="tel:+254791925619" 
               className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-8 py-5 rounded-full font-bold transition-all border border-white/10"
             >
               <Phone size={20} className="text-bronze" /> Call Us
             </a>
             <a 
-              href="https://wa.me/254700000000" 
+              href="https://wa.me/254791925619" 
               className="flex items-center gap-3 bg-white text-forest-dark px-8 py-5 rounded-full font-bold hover:bg-bronze hover:text-white transition-all shadow-xl"
             >
               <MessageCircle size={20} className="text-green-600" /> WhatsApp
