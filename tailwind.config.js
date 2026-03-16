@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
         serif: ['Cormorant Garamond', 'serif'],
       },
       colors: {
