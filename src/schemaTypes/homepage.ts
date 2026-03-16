@@ -32,16 +32,16 @@ export const homepage = {
         { name: 'titleLine2', title: 'Title Line 2', type: 'string' },
         { name: 'description', title: 'Description', type: 'text' },
         {
-          name: 'portfolioImages',
-          title: 'Portfolio Images',
+          name: 'galleryImages',
+          title: 'Gallery Images',
           type: 'array',
           of: [{ type: 'image', fields: [{ name: 'alt', title: 'Alt Text', type: 'string' }] }],
         },
       ],
     },
     {
-      name: 'whyChooseMe',
-      title: 'Why Choose Me Section',
+      name: 'whyChooseUs',
+      title: 'Why Choose Us Section',
       type: 'object',
       fields: [
         { name: 'subtitle', title: 'Subtitle', type: 'string' },

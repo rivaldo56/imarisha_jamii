@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Camera, Diamond, Users, Sparkles, type LucideIcon } from 'lucide-react';
+import { GraduationCap, BookOpen, Languages, Monitor, type LucideIcon } from 'lucide-react';
 import { servicesConfig } from '../config';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const iconMap: Record<string, LucideIcon> = {
-  Camera,
-  Diamond,
-  Users,
-  Sparkles,
+  HighSchool: GraduationCap,
+  BookOpen,
+  Languages,
+  Monitor,
 };
 
 export function Services() {
@@ -95,7 +95,7 @@ export function Services() {
           {/* Right Column - Services Grid */}
           <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5">
             {servicesConfig.services.map((service, index) => {
-              const Icon = iconMap[service.iconName] || Camera;
+              const Icon = iconMap[service.iconName] || GraduationCap;
               return (
                 <div
                   key={index}

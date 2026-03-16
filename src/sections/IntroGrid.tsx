@@ -34,10 +34,10 @@ export function IntroGrid() {
     titleLine1: homepageData?.intro?.titleLine1 || introGridConfig.titleLine1,
     titleLine2: homepageData?.intro?.titleLine2 || introGridConfig.titleLine2,
     description: homepageData?.intro?.description || introGridConfig.description,
-    portfolioImages: homepageData?.intro?.portfolioImages || introGridConfig.portfolioImages
+    galleryImages: homepageData?.intro?.galleryImages || introGridConfig.galleryImages
   };
 
-  if (!content.titleLine1 && !content.titleLine2 && (!content.portfolioImages || content.portfolioImages.length === 0)) return null;
+  if (!content.titleLine1 && !content.titleLine2 && (!content.galleryImages || content.galleryImages.length === 0)) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -144,7 +144,7 @@ export function IntroGrid() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [content.portfolioImages]);
+  }, [content.galleryImages]);
 
   return (
     <section
@@ -191,7 +191,7 @@ export function IntroGrid() {
           ref={gridRef}
           className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[280px]"
         >
-          {(content.portfolioImages || []).map((image: any, index: number) => {
+          {(content.galleryImages || []).map((image: any, index: number) => {
             const imageUrl = image?.asset ? urlFor(image).url() : (image?.src || image || '');
             const altText = image?.alt || (image?.image?.alt) || `Intro visual ${index + 1}`;
             return (

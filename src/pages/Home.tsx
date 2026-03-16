@@ -1,8 +1,8 @@
 import { Hero } from '../sections/Hero';
 import { IntroGrid } from '../sections/IntroGrid';
 import { Services } from '../sections/Services';
-import { WhyChooseMe } from '../sections/WhyChooseMe';
-import { FeaturedProjects } from '../sections/FeaturedProjects';
+import { WhyChooseUs } from '../sections/WhyChooseUs';
+import { ProgramsSection } from '../sections/ProgramsSection';
 import { Testimonials } from '../sections/Testimonials';
 import { FAQ } from '../sections/FAQ';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
@@ -19,11 +19,11 @@ export default function Home() {
       {/* Services - Dark Section */}
       <Services />
 
-      {/* Why Choose Me & Stats - White Section */}
-      <WhyChooseMe />
+      {/* Why Choose Us & Stats - White Section */}
+      <WhyChooseUs />
 
-      {/* Featured Projects - Dark Section */}
-      <FeaturedProjects />
+      {/* Programs Section - Dark Section */}
+      <ProgramsSection />
 
       {/* Testimonials Carousel - White Section */}
       <Testimonials />

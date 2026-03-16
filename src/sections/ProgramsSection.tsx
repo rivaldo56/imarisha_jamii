@@ -9,7 +9,7 @@ import { urlFor } from '../lib/sanity';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function FeaturedProjects() {
+export function ProgramsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);

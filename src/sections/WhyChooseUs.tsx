@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { whyChooseMeConfig } from '../config';
+import { whyChooseUsConfig } from '../config';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { urlFor } from '../lib/sanity';
 
@@ -53,7 +53,7 @@ function Counter({ end, suffix = '', duration = 2, shouldAnimate }: CounterProps
   );
 }
 
-export function WhyChooseMe() {
+export function WhyChooseUs() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -64,19 +64,19 @@ export function WhyChooseMe() {
   const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
 
   const content = {
-    subtitle: homepageData?.whyChooseMe?.subtitle || whyChooseMeConfig.subtitle,
-    titleRegular: homepageData?.whyChooseMe?.titleRegular || whyChooseMeConfig.titleRegular,
-    titleItalic: homepageData?.whyChooseMe?.titleItalic || whyChooseMeConfig.titleItalic,
-    stats: homepageData?.whyChooseMe?.stats || whyChooseMeConfig.stats || [],
-    featureCards: (homepageData?.whyChooseMe?.featureCards || whyChooseMeConfig.featureCards || []).map((card: any) => ({
+    subtitle: homepageData?.whyChooseUs?.subtitle || whyChooseUsConfig.subtitle,
+    titleRegular: homepageData?.whyChooseUs?.titleRegular || whyChooseUsConfig.titleRegular,
+    titleItalic: homepageData?.whyChooseUs?.titleItalic || whyChooseUsConfig.titleItalic,
+    stats: homepageData?.whyChooseUs?.stats || whyChooseUsConfig.stats || [],
+    featureCards: (homepageData?.whyChooseUs?.featureCards || whyChooseUsConfig.featureCards || []).map((card: any) => ({
       ...card,
       image: card.image?.asset ? urlFor(card.image).url() : (card.image || '')
     })),
-    wideImage: homepageData?.whyChooseMe?.wideImage?.asset 
-      ? urlFor(homepageData.whyChooseMe.wideImage).url() 
-      : whyChooseMeConfig.wideImage,
-    wideTitle: homepageData?.whyChooseMe?.wideTitle || whyChooseMeConfig.wideTitle,
-    wideDescription: homepageData?.whyChooseMe?.wideDescription || whyChooseMeConfig.wideDescription,
+    wideImage: homepageData?.whyChooseUs?.wideImage?.asset 
+      ? urlFor(homepageData.whyChooseUs.wideImage).url() 
+      : whyChooseUsConfig.wideImage,
+    wideTitle: homepageData?.whyChooseUs?.wideTitle || whyChooseUsConfig.wideTitle,
+    wideDescription: homepageData?.whyChooseUs?.wideDescription || whyChooseUsConfig.wideDescription,
   };
 
   if (!content.titleRegular && content.stats.length === 0 && content.featureCards.length === 0) return null;
@@ -296,9 +296,9 @@ export function WhyChooseMe() {
               className="feature-card-stats opacity-0 bg-altwhite rounded-lg p-8 md:p-10 flex flex-col justify-between"
             >
               <div>
-                {whyChooseMeConfig.statsLabel && (
+                {whyChooseUsConfig.statsLabel && (
                   <p className="text-softblack/50 text-sm font-body uppercase tracking-widest mb-8">
-                    {whyChooseMeConfig.statsLabel}
+                    {whyChooseUsConfig.statsLabel}
                   </p>
                 )}
                 <div className="space-y-8">

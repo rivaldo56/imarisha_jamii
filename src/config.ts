@@ -353,7 +353,7 @@ export const introGridConfig = {
   titleLine2: "your busy life.",
   description: "We provide the environment, resources, and support you need to complete your high school education while managing your work and family commitments.",
   accentText: "EST. 2011 • NAIROBI",
-  portfolioImages: [
+  galleryImages: [
     { src: "/hero_main_portrait.jpg", alt: "Focused adult learner" },
     { src: "/hero_secondary_portrait.jpg", alt: "Small group discussion" },
     { src: "/hero_tertiary_portrait.jpg", alt: "One-on-one mentorship" },
@@ -442,7 +442,7 @@ export interface FeatureCard {
   description: string;
 }
 
-export const whyChooseMeConfig = {
+export const whyChooseUsConfig = {
   subtitle: "WHY IMARISHA JAMII",
   titleRegular: "Built for adults—",
   titleItalic: "not the other way around.",
