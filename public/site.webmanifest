@@ -1,0 +1,21 @@
+{
+  "name": "Imarisha Jamii Adult High School",
+  "short_name": "Imarisha Jamii",
+  "description": "You Can Dream Again — Adult education programmes in Kenya.",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0D1B2A",
+  "background_color": "#F7F4EF",
+  "display": "standalone",
+  "start_url": "/"
+}
