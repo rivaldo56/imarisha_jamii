@@ -352,7 +352,7 @@ export const introGridConfig = {
   titleLine1: "Flexible learning for",
   titleLine2: "your busy life.",
   description: "We provide the environment, resources, and support you need to complete your high school education while managing your work and family commitments.",
-  accentText: "EST. 2011 • NAIROBI CBD",
+  accentText: "EST. 2011 • NAIROBI",
   portfolioImages: [
     { src: "/hero_main_portrait.jpg", alt: "Focused adult learner" },
     { src: "/hero_secondary_portrait.jpg", alt: "Small group discussion" },
@@ -564,7 +564,7 @@ export const footerConfig = {
   tagline: "Your education. Your pace.\nYour comeback.",
   copyright: "© Imarisha Jamii Centre for Adult Education. All rights reserved.",
   bottomLinks: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
   ],
 };
