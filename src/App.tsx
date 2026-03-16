@@ -17,6 +17,8 @@ const Apply = lazy(() => import('./pages/Apply'));
 const ThankYou = lazy(() => import('./pages/ThankYou'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
 const Admin = lazy(() => import('./pages/Admin'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function LoadingSpinner() {
@@ -54,6 +56,8 @@ function App() {
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/apply" element={<Layout><Apply /></Layout>} />
             <Route path="/thank-you" element={<Layout><ThankYou /></Layout>} />
+            <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
+            <Route path="/terms" element={<Layout><Terms /></Layout>} />
 
             {/* NotFound Route with Layout */}
             <Route path="*" element={<Layout><NotFound /></Layout>} />

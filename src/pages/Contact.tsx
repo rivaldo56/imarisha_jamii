@@ -179,7 +179,7 @@ export default function Contact() {
                           id="phone"
                           type="tel"
                           name="phone"
-                          placeholder="e.g. 0712 345 678"
+                          placeholder="e.g. 0791 925 619"
                           autoComplete="tel"
                           className="w-full bg-offwhite border border-softblack/5 rounded-xl px-6 py-4 focus:ring-2 focus:ring-bronze outline-none transition-all font-body text-softblack"
                           required

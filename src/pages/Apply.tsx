@@ -338,7 +338,7 @@ export default function Apply() {
                       </div>
                       <div className="space-y-2">
                         <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone Number</label>
-                        <input required type="tel" name={GOOGLE_FORM_ENTRIES.phone} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="e.g. 0700 000 000" />
+                        <input required type="tel" name={GOOGLE_FORM_ENTRIES.phone} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="e.g. 0791 925 619" />
                       </div>
                     </div>
                     <div className="grid md:grid-cols-2 gap-8">
