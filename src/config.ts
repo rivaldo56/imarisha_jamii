@@ -174,7 +174,7 @@ export const programsConfig: ProgramsConfig = {
     heroImageAlt: "Adult student looking at programs list",
     overlayText: "Your Path to Progress",
   },
-  metaDescription: "Explore our flexible adult high school programs in Nairobi. We offer KCSE completion, bridging courses, and professional skills training.",
+  metaDescription: "Explore our flexible adult school programs in Nairobi. We offer KCSE completion, bridging courses, and professional skills training.",
   keywords: "KCSE completion, bridging courses Nairobi, adult education programs, professional skills Kenya",
   programs: [
     {
