@@ -2,24 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
 import { 
-  CheckCircle2, 
-  Terminal, 
-  Briefcase, 
-  TrendingUp, 
-  Users, 
-  Lightbulb, 
-  UserPlus, 
-  Clock, 
-  MapPin, 
-  ShieldCheck, 
-  LifeBuoy,
+  CheckCircle2,
+  Users,
+  ShieldCheck,
   Phone,
   MessageCircle,
   Building2,
   ArrowDown,
   User,
-  BookOpen,
-  FileText,
   ChevronRight,
   ChevronLeft,
   AlertCircle
@@ -27,22 +17,34 @@ import {
 
 // Google Form Entry IDs for headless submission
 const GOOGLE_FORM_ENTRIES = {
-  fullName: 'entry.87824769',
-  phone: 'entry.1205564995',
-  email: 'entry.654765305',
-  age: 'entry.1372965812',
-  location: 'entry.189271865',
-  lastGrade: 'entry.1875280849',
-  kcpeYear: 'entry.1281371902',
-  previousSchool: 'entry.889077615',
-  program: 'entry.1177752645',
-  learningMode: 'entry.830234381'
+  // Student
+  fullName: 'entry.831866712',
+  dob: 'entry.865766690',
+  gender: 'entry.975007391',
+  admissionNumber: 'entry.310837518',
+  classToJoin: 'entry.2078485954',
+  previousLevel: 'entry.1125825804',
+  idNumber: 'entry.2052566900',
+  phone: 'entry.1637443900',
+  email: 'entry.1782088536',
+  residence: 'entry.298256966',
+  
+  // Guardian
+  guardianName: 'entry.883582360',
+  guardianId: 'entry.258784839',
+  guardianRelation: 'entry.2066221568',
+
+  // Next of Kin
+  kinName: 'entry.867721170',
+  kinRelation: 'entry.565499972',
+  kinPhone: 'entry.1740552569'
 };
 
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeLrj2fC0PHNQL_TFlDVmyQrDOome3tUpl0j0jivtWSwcmEgQ/formResponse";
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScL59QAejn_i_3-BW0lK2Vk0RPkPRoySkDl8-5s23WM8Y0avA/formResponse";
 
 export default function Apply() {
   const pageRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,7 +86,23 @@ export default function Apply() {
     }
   };
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = () => {
+    if (formRef.current) {
+      const currentStepWrapper = formRef.current.querySelector(`div[data-step="${step}"]`);
+      if (currentStepWrapper) {
+        const inputs = Array.from(
+          currentStepWrapper.querySelectorAll('input, select, textarea')
+        ) as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[];
+
+        const firstInvalid = inputs.find(input => !input.checkValidity());
+        if (firstInvalid) {
+          firstInvalid.reportValidity();
+          return;
+        }
+      }
+    }
+    setStep(step + 1);
+  };
   const prevStep = () => setStep(step - 1);
 
   const handleCustomSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,6 +115,10 @@ export default function Apply() {
     formData.forEach((value, key) => {
       data.append(key, value.toString());
     });
+    
+    // For multi-page Google Forms, we must explicitly send pageHistory
+    // otherwise fields on pages 2 and 3 (Sections B and C) are ignored by Google Forms
+    data.append('pageHistory', '0,1,2');
 
     try {
       await fetch(GOOGLE_FORM_URL, {
@@ -117,9 +139,9 @@ export default function Apply() {
   };
 
   const steps = [
-    { id: 1, name: 'Personal', icon: User },
-    { id: 2, name: 'Academic', icon: BookOpen },
-    { id: 3, name: 'Program', icon: FileText },
+    { id: 1, name: 'Student', icon: User },
+    { id: 2, name: 'Guardian', icon: Users },
+    { id: 3, name: 'Next of Kin', icon: ShieldCheck },
   ];
 
   return (
@@ -159,135 +181,6 @@ export default function Apply() {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-bronze/5 to-transparent pointer-events-none" />
       </section>
 
-      {/* 2. PROGRAM BENEFITS SECTION */}
-      <section className="apply-section py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-sans font-bold text-softblack mb-4">Why Train With Us?</h2>
-            <div className="w-20 h-1.5 bg-bronze mx-auto rounded-full" />
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              {
-                icon: Terminal,
-                title: "Practical Skills Training",
-                desc: "Hands-on training designed to prepare you for real jobs."
-              },
-              {
-                icon: Briefcase,
-                title: "Industry-Relevant Curriculum",
-                desc: "Learn skills that employers and businesses actually need."
-              },
-              {
-                icon: TrendingUp,
-                title: "Career Opportunities",
-                desc: "Build a foundation for employment, freelancing, or entrepreneurship."
-              }
-            ].map((benefit, i) => (
-              <div key={i} className="bg-altwhite p-10 rounded-3xl border border-softblack/5 shadow-sm hover:shadow-md transition-shadow group">
-                <div className="w-16 h-16 bg-bronze/10 rounded-2xl flex items-center justify-center text-bronze mb-8 group-hover:scale-110 transition-transform">
-                  <benefit.icon size={32} />
-                </div>
-                <h3 className="text-2xl font-sans font-bold text-softblack mb-4">{benefit.title}</h3>
-                <p className="text-softblack/60 leading-relaxed font-body">{benefit.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. WHO CAN APPLY SECTION */}
-      <section className="apply-section py-24 md:py-32 bg-altwhite">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="lg:w-1/2">
-              <h2 className="text-3xl md:text-5xl font-sans font-bold text-softblack mb-8 leading-tight">
-                Empowering the Next Generation of <span className="text-bronze italic">Doers</span>.
-              </h2>
-              <p className="text-lg text-softblack/70 mb-10 leading-relaxed">
-                Our programs are specifically designed for motivated individuals who want to bridge the skills gap and take control of their career path.
-              </p>
-              
-              <div className="space-y-4">
-                {[
-                  "Youth and young professionals",
-                  "Beginners interested in digital skills",
-                  "Entrepreneurs who want to grow their business",
-                  "Anyone motivated to learn practical skills"
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 bg-white p-5 rounded-2xl border border-softblack/5 shadow-sm">
-                    <div className="w-8 h-8 bg-bronze text-white rounded-full flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 size={18} />
-                    </div>
-                    <span className="font-bold text-softblack/80">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="lg:w-1/2 w-full">
-              <div className="aspect-square relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-bronze/5 rounded-[40px] rotate-3 scale-95" />
-                <div className="bg-forest-dark text-white p-12 rounded-[40px] shadow-2xl relative z-10 w-full">
-                  <h3 className="text-3xl font-sans font-bold mb-8">What we look for:</h3>
-                  <div className="grid grid-cols-2 gap-8">
-                    {[
-                      { icon: Users, label: "Community Mindset" },
-                      { icon: Lightbulb, label: "Creative Drive" },
-                      { icon: UserPlus, label: "Growth Potential" },
-                      { icon: ShieldCheck, label: "Integrity" }
-                    ].map((val, i) => (
-                      <div key={i} className="space-y-3">
-                        <div className="text-bronze"><val.icon size={28} /></div>
-                        <p className="font-bold text-sm tracking-wide uppercase">{val.label}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. PROGRAM HIGHLIGHTS */}
-      <section className="apply-section py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Clock,
-                title: "Duration",
-                val: "4–12 weeks depending on program"
-              },
-              {
-                icon: Users,
-                title: "Learning Mode",
-                val: "In-person training"
-              },
-              {
-                icon: MapPin,
-                title: "Location",
-                val: "Imarisha Jamii Training Center"
-              },
-              {
-                icon: LifeBuoy,
-                title: "Support",
-                val: "Mentorship and project-based learning"
-              }
-            ].map((highlight, i) => (
-              <div key={i} className="text-center p-8 bg-white rounded-3xl border border-softblack/5 shadow-sm flex flex-col items-center">
-                <div className="text-bronze mb-6">
-                  <highlight.icon size={40} strokeWidth={1.5} />
-                </div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-softblack/30 mb-2">{highlight.title}</h4>
-                <p className="text-lg font-sans font-bold text-softblack leading-tight">{highlight.val}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 5. APPLICATION FORM SECTION - CUSTOM UI */}
       <section id="application-form" className="apply-section py-24 md:py-32 bg-offwhite border-t border-softblack/5">
@@ -325,118 +218,160 @@ export default function Apply() {
 
             <div className="bg-white p-8 md:p-16 rounded-[40px] shadow-2xl border border-softblack/5 relative overflow-hidden">
               <form 
+                ref={formRef}
                 onSubmit={handleCustomSubmit}
                 className="space-y-12"
               >
-                {/* Step 1: Personal Details */}
-                <div className={`${step === 1 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
-                    <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Personal Details</h3>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Full Name</label>
-                        <input required type="text" name={GOOGLE_FORM_ENTRIES.fullName} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Your Full Name" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone Number</label>
-                        <input required type="tel" name={GOOGLE_FORM_ENTRIES.phone} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="e.g. 0791 925 619" />
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Email Address (Optional)</label>
-                        <input type="email" name={GOOGLE_FORM_ENTRIES.email} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="your@email.com" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Age</label>
-                        <input required type="number" name={GOOGLE_FORM_ENTRIES.age} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Your Age" />
-                      </div>
+                {/* Step 1: Student Details */}
+                <div data-step="1" className={`${step === 1 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
+                  <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Student Details</h3>
+                  
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Full Name *</label>
+                      <input required type="text" name={GOOGLE_FORM_ENTRIES.fullName} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Your Full Name" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Location / Estate</label>
-                      <input required type="text" name={GOOGLE_FORM_ENTRIES.location} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Where do you live?" />
-                    </div>
-
-                    <div className="flex justify-end">
-                      <button type="button" onClick={nextStep} className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2">
-                        Next Step <ChevronRight size={20} />
-                      </button>
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Date of Birth *</label>
+                      <input required type="date" name={GOOGLE_FORM_ENTRIES.dob} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" />
                     </div>
                   </div>
 
-                {/* Step 2: Academic History */}
-                <div className={`${step === 2 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
-                    <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Academic History</h3>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Last Grade Attained</label>
-                        <input required type="text" name={GOOGLE_FORM_ENTRIES.lastGrade} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="e.g. Form 4, Grade 8" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Year of KCPE (or Primary Exam)</label>
-                        <input required type="number" name={GOOGLE_FORM_ENTRIES.kcpeYear} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Year completed" />
-                      </div>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Gender</label>
+                      <select name={GOOGLE_FORM_ENTRIES.gender} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                      </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Previous School Attended</label>
-                      <input required type="text" name={GOOGLE_FORM_ENTRIES.previousSchool} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Name of school" />
-                    </div>
-
-                    <div className="flex justify-between">
-                      <button type="button" onClick={prevStep} className="text-softblack font-bold py-4 px-10 rounded-full border border-softblack/10 hover:bg-offwhite transition-all flex items-center gap-2">
-                        <ChevronLeft size={20} /> Back
-                      </button>
-                      <button type="button" onClick={nextStep} className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2">
-                        Next Step <ChevronRight size={20} />
-                      </button>
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Admission Number</label>
+                      <input type="text" name={GOOGLE_FORM_ENTRIES.admissionNumber} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Admission Number" />
                     </div>
                   </div>
 
-                {/* Step 3: Program & Finalize */}
-                <div className={`${step === 3 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
-                    <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Finalize Application</h3>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Selected Program</label>
-                        <select required name={GOOGLE_FORM_ENTRIES.program} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
-                          <option value="KCSE Compilation">KCSE Compilation (Adult High School)</option>
-                          <option value="Post Literacy(Primary)">Post Literacy (Primary Completion)</option>
-                          <option value="Languages">Languages (Communication Skills)</option>
-                          <option value="Computer Packages">Computer Packages (Digital Literacy)</option>
-                          <option value="Literacy Beginner">Literacy Beginner (Foundation)</option>
-                          <option value="KCSE Bridging">KCSE Bridging (Subject Upgrading)</option>
-                          <option value="Tuition & Lab Session">Tuition & Lab Sessions</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Preferred Learning Mode</label>
-                        <select required name={GOOGLE_FORM_ENTRIES.learningMode} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
-                          <option value="Phycical Classes">Physical Classes (In-person)</option>
-                          <option value="Virtual/Online(Evening Classes)">Virtual / Online (Evening Only)</option>
-                          <option value="Hybrid (Mix)">Hybrid (Mixed)</option>
-                        </select>
-                      </div>
-                    </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Class to Join *</label>
+                    <select required name={GOOGLE_FORM_ENTRIES.classToJoin} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none">
+                      <option value="">Select a Class</option>
+                      <option value="HIGH SCHOOL/KCSE EXAM BOOKING">HIGH SCHOOL/KCSE EXAM BOOKING</option>
+                      <option value="KCSE Bridging">KCSE Bridging</option>
+                      <option value="Computer Packages/Graphic Design">Computer Packages/Graphic Design</option>
+                      <option value="Languages">Languages</option>
+                      <option value="Life Skill Development And Teenage Counselling">Life Skill Development And Teenage Counselling</option>
+                      <option value="Literacy Beginner">Literacy Beginner</option>
+                      <option value="Post Literacy (Primary)">Post Literacy (Primary)</option>
+                      <option value="Tuition & Lab Sessions">Tuition & Lab Sessions</option>
+                    </select>
+                  </div>
 
-                    <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl flex gap-4 text-amber-800">
-                      <AlertCircle className="flex-shrink-0" />
-                      <p className="text-sm font-body">
-                        <strong>Important:</strong> Please bring your original certificates and national ID (or birth certificate) when invited for the placement interview.
-                      </p>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Previous Level of Study</label>
+                      <input type="text" name={GOOGLE_FORM_ENTRIES.previousLevel} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Previous Level" />
                     </div>
-
-                    <div className="flex justify-between">
-                      <button type="button" onClick={prevStep} className="text-softblack font-bold py-4 px-10 rounded-full border border-softblack/10 hover:bg-offwhite transition-all flex items-center gap-2">
-                        <ChevronLeft size={20} /> Back
-                      </button>
-                      <button 
-                        type="submit" 
-                        disabled={isSubmitting}
-                        className="bg-bronze text-white font-bold py-4 px-10 rounded-xl hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2 disabled:opacity-50"
-                      >
-                        {isSubmitting ? 'Submitting Application...' : 'Start My Application'} <CheckCircle2 size={20} />
-                      </button>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">ID/Passport/Birth Cert Number *</label>
+                      <input required type="text" name={GOOGLE_FORM_ENTRIES.idNumber} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="ID/Passport/Birth Cert" />
                     </div>
                   </div>
+
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone Number *</label>
+                      <input required type="tel" name={GOOGLE_FORM_ENTRIES.phone} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="e.g. 0791 925 619" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Email (optional)</label>
+                      <input type="email" name={GOOGLE_FORM_ENTRIES.email} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="your@email.com" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Place Of Residence *</label>
+                    <input required type="text" name={GOOGLE_FORM_ENTRIES.residence} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Where do you live?" />
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button type="button" onClick={nextStep} className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2">
+                      Next Step <ChevronRight size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 2: Guardian Details */}
+                <div data-step="2" className={`${step === 2 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
+                  <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Parent/Guardian</h3>
+                  
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Name of Parent/Guardian</label>
+                      <input type="text" name={GOOGLE_FORM_ENTRIES.guardianName} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Guardian Name" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">ID/Passport of Parent/Guardian *</label>
+                      <input required type="text" name={GOOGLE_FORM_ENTRIES.guardianId} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="ID or Passport" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">How are you related</label>
+                    <input type="text" name={GOOGLE_FORM_ENTRIES.guardianRelation} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Relationship" />
+                  </div>
+
+                  <div className="flex justify-between">
+                    <button type="button" onClick={prevStep} className="text-softblack font-bold py-4 px-10 rounded-full border border-softblack/10 hover:bg-offwhite transition-all flex items-center gap-2">
+                      <ChevronLeft size={20} /> Back
+                    </button>
+                    <button type="button" onClick={nextStep} className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2">
+                      Next Step <ChevronRight size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 3: Next of Kin */}
+                <div data-step="3" className={`${step === 3 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
+                  <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Next of Kin</h3>
+                  
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Full Name</label>
+                      <input type="text" name={GOOGLE_FORM_ENTRIES.kinName} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Full Name" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">How are you related</label>
+                      <input type="text" name={GOOGLE_FORM_ENTRIES.kinRelation} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Relationship" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone Number</label>
+                    <input type="tel" name={GOOGLE_FORM_ENTRIES.kinPhone} className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack" placeholder="Phone Number" />
+                  </div>
+
+                  <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl flex gap-4 text-amber-800">
+                    <AlertCircle className="flex-shrink-0" />
+                    <p className="text-sm font-body">
+                      <strong>Important:</strong> Please bring your original certificates and national ID (or birth certificate) when invited for the placement interview.
+                    </p>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <button type="button" onClick={prevStep} className="text-softblack font-bold py-4 px-10 rounded-full border border-softblack/10 hover:bg-offwhite transition-all flex items-center gap-2">
+                      <ChevronLeft size={20} /> Back
+                    </button>
+                    <button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="bg-bronze text-white font-bold py-4 px-10 rounded-xl hover:scale-105 transition-all duration-500 ease-out flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {isSubmitting ? 'Submitting...' : 'Submit Form'} <CheckCircle2 size={20} />
+                    </button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
