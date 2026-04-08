@@ -6,6 +6,7 @@ import { settings } from './settings';
 import { aboutPage } from './aboutPage';
 import { studentLife } from './studentLife';
 import { faq } from './faq';
+import { homeFaq } from './homeFaq';
 
 export const schemaTypes = [
   program, 
@@ -15,5 +16,6 @@ export const schemaTypes = [
   settings,
   aboutPage,
   studentLife,
-  faq
+  faq,
+  homeFaq
 ];

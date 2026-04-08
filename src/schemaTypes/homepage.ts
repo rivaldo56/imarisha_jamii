@@ -79,5 +79,11 @@ export const homepage = {
         },
       ],
     },
+    {
+      name: 'portfolioImages',
+      title: 'Portfolio / Gallery Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true }, fields: [{ name: 'alt', title: 'Alt Text', type: 'string' }] }],
+    },
   ],
 };

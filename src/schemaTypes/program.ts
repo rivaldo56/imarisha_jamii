@@ -47,6 +47,20 @@ export const program = {
       type: 'text',
     },
     {
+      name: 'certification',
+      title: 'Certification',
+      type: 'string',
+      description: 'Type of certificate awarded upon completion',
+      options: {
+        list: [
+          { title: 'KCSE Certificate', value: 'KCSE Certificate' },
+          { title: 'Certificate', value: 'Certificate' },
+          { title: 'Certificate of Completion', value: 'Certificate of Completion' },
+        ],
+      },
+      initialValue: 'Certificate',
+    },
+    {
       name: 'category',
       title: 'Category',
       type: 'string',

@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { studentLifeConfig, testimonialsConfig } from '../config';
 import { Heart, Users, Sparkles, BookOpen } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
+import { PageFAQ } from '../sections/PageFAQ';
 import { TestimonialsSection } from '../components/ui/testimonial-v2';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { urlFor } from '../lib/sanity';
@@ -381,6 +382,8 @@ export default function StudentLife() {
         subtitle="Real stories from our alumni"
         testimonials={testimonials}
       />
+
+      <PageFAQ page="student-life" title="Student Life — FAQs" />
 
       <EmotionalCTA 
         title="Your community is waiting."

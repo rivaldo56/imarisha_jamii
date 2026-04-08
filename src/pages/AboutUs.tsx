@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { aboutConfig } from '../config';
 import * as Icons from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
+import { PageFAQ } from '../sections/PageFAQ';
 import { PageTitle } from '../components/PageTitle';
 import { trackEvent } from '../utils/analytics';
 import { Link } from 'react-router-dom';
@@ -223,6 +224,9 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
+
+      {/* Page FAQ */}
+      <PageFAQ page="about" title="About Imarisha — FAQs" />
 
       {/* Bottom CTA */}
       <EmotionalCTA 

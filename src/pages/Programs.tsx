@@ -16,7 +16,7 @@ export default function Programs() {
 
   const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
   const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
-  const { data: sanityFaqs } = useSanityData<any[]>(QUERIES.activeAnnouncements, {}, []); // Using for testing, should be FAQ query but mapping for now
+  const { data: sanityFaqs } = useSanityData<any[]>(QUERIES.faqsByPage, { page: 'programs' }, []);
 
   const hero = homepageData?.hero || programsConfig.hero;
   const programs = sanityPrograms?.length > 0 
@@ -29,12 +29,13 @@ export default function Programs() {
         image: p.image ? urlFor(p.image).url() : '/programs_left_portrait.jpg',
         whoItIsFor: p.whoItIsFor,
         schedule: p.schedule,
-        longDescription: p.longDescription
+        longDescription: p.longDescription,
+        certification: p.certification || (p.name?.toLowerCase().includes('kcse') || p.name?.toLowerCase().includes('bridging') ? 'KCSE Certificate' : 'Certificate'),
       }))
     : programsConfig.programs;
   
   const faqs = sanityFaqs?.length > 0
-    ? sanityFaqs.map(f => ({ id: f._id, question: f.title, answer: f.message }))
+    ? sanityFaqs.map(f => ({ id: f._id, question: f.question, answer: f.answer }))
     : programsConfig.faqs;
 
   useEffect(() => {
@@ -165,7 +166,7 @@ export default function Programs() {
                     <td className="p-6 font-bold">{p.title}</td>
                     <td className="p-6">{p.duration}</td>
                     <td className="p-6">{p.schedule}</td>
-                    <td className="p-6">{p.id === 'skills' ? 'Certificate of Completion' : 'KCSE Certificate'}</td>
+                    <td className="p-6">{p.certification}</td>
                   </tr>
                 ))}
               </tbody>
@@ -180,6 +181,7 @@ export default function Programs() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="opacity-50">Duration</span><span>{p.duration}</span></div>
                   <div className="flex justify-between"><span className="opacity-50">Schedule</span><span>{p.schedule}</span></div>
+                  <div className="flex justify-between"><span className="opacity-50">Certification</span><span className="text-bronze font-medium">{p.certification}</span></div>
                 </div>
               </div>
             ))}

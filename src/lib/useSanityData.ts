@@ -44,4 +44,6 @@ export const QUERIES = {
   aboutPage: `*[_type == "aboutPage"][0]`,
   studentLife: `*[_type == "studentLife"][0]`,
   faqs: `*[_type == "faq"] | order(order asc)`,
+  faqsByPage: `*[_type == "faq" && $page in pages] | order(order asc)`,
+  homeFaq: `*[_type == "homeFaq"][0]`,
 };

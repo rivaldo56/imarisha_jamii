@@ -30,14 +30,23 @@ export function IntroGrid() {
 
   const { data: homepageData } = useSanityData<any>(QUERIES.homepage, {}, null);
   
+  const portfolioImages = homepageData?.portfolioImages?.filter((img: any) => img?.asset) || [];
+  const introImages = homepageData?.intro?.galleryImages?.filter((img: any) => img?.asset) || [];
+  
+  const validImages = portfolioImages.length > 0 
+    ? portfolioImages 
+    : introImages.length > 0 
+      ? introImages 
+      : introGridConfig.galleryImages;
+
   const content = {
     titleLine1: homepageData?.intro?.titleLine1 || introGridConfig.titleLine1,
     titleLine2: homepageData?.intro?.titleLine2 || introGridConfig.titleLine2,
     description: homepageData?.intro?.description || introGridConfig.description,
-    galleryImages: homepageData?.intro?.galleryImages || introGridConfig.galleryImages
+    galleryImages: validImages
   };
 
-  if (!content.titleLine1 && !content.titleLine2 && (!content.galleryImages || content.galleryImages.length === 0)) return null;
+  if (!content.titleLine1 && !content.titleLine2 && validImages.length === 0) return null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -144,7 +153,7 @@ export function IntroGrid() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [content.galleryImages]);
+  }, [validImages]);
 
   return (
     <section
@@ -191,7 +200,7 @@ export function IntroGrid() {
           ref={gridRef}
           className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[280px]"
         >
-          {(content.galleryImages || []).map((image: any, index: number) => {
+          {validImages.map((image: any, index: number) => {
             const imageUrl = image?.asset ? urlFor(image).url() : (image?.src || image || '');
             const altText = image?.alt || (image?.image?.alt) || `Intro visual ${index + 1}`;
             return (

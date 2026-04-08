@@ -148,6 +148,7 @@ export interface ProgramItem {
   whoItIsFor: string;
   schedule: string;
   longDescription: string;
+  certification: string;
 }
 
 export interface ProgramsConfig {
@@ -187,6 +188,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Adults who did not finish high school and wish to qualify for college or professional career growth.",
       schedule: "Evenings (6-9 PM) & Saturdays (9-4 PM)",
       longDescription: "Our KCSE Compilation program is specifically designed for adult learners who are returning to school after a break. We understand that your time is valuable, which is why we've condensed the curriculum to focus on essential concepts and effective exam preparation for the KCSE. Our instructors are experienced in working with adults, providing a supportive environment where you can learn at your own pace while balancing work and family responsibilities. This program is your bridge to higher education—opening doors to university degrees, diplomas, and enhanced career opportunities that once seemed out of reach.",
+      certification: "KCSE Certificate",
     },
     {
       id: "post_literacy",
@@ -198,6 +200,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Adults starting their educational journey or returning after a long break.",
       schedule: "Morning or Evening sessions available",
       longDescription: "The Post Literacy program, focusing on the primary level, is a foundation for lifelong learning. It is tailored for adults who may have missed out on basic education or wish to refresh their fundamental skills in literacy and numeracy. We provide a gentle, non-judgmental atmosphere where you can gain the confidence needed to transition into secondary education. By focusing on practical, everyday application of knowledge, we ensure that every lesson you attend translates into immediate empowerment in your personal and professional life.",
+      certification: "Certificate",
     },
     {
       id: "languages",
@@ -209,6 +212,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Individuals looking to boost their local or international communication skills.",
       schedule: "Flexible weekday options",
       longDescription: "Our Language programs are intensive and immersive, designed to make you proficient in a new language in a short amount of time. Whether you're learning for business, travel, or personal growth, our speaking and writing modules focus on real-world communication. We offer various languages suited for the Nairobi business environment and international opportunities. Small class sizes ensure that you get personalized attention from our expert linguists, helping you master pronunciation and grammar with ease.",
+      certification: "Certificate",
     },
     {
       id: "computer",
@@ -220,6 +224,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Anyone looking to gain competitive digital skills for the modern workplace.",
       schedule: "Daily or Weekend Intensive",
       longDescription: "In today's digital age, computer literacy is no longer optional—it's essential. Our Computer Packages program offers a comprehensive 3-month journey through the most critical tools in the modern office. From mastering Microsoft Office (Word, Excel, PowerPoint) to understanding internet security and basic IT troubleshooting, we ensure you leave with the skills that employers are looking for. Our lab-based learning approach means you'll spend less time listening and more time doing, with hands-on practice on modern machines.",
+      certification: "Certificate",
     },
     {
       id: "beginner",
@@ -231,6 +236,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Adults taking their very first step towards formal literacy and numeracy.",
       schedule: "Morning or Evening options",
       longDescription: "The Beginner program is a specially crafted entry point for those with little to no previous formal schooling. We start from the very basics, building a strong core in reading, writing, and basic arithmetic in a way that respects your life experience as an adult. Our instructors are patient and empathetic, ensuring that you feel comfortable and challenged in equal measure. This is where many of our most successful students started their journey before progressing to High School and beyond.",
+      certification: "Certificate",
     },
     {
       id: "bridging",
@@ -242,6 +248,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "KCSE graduates looking to improve their grades in specific subjects.",
       schedule: "Flexible Morning or Evening Options",
       longDescription: "Our KCSE Bridging courses are designed for students who have already completed their secondary education but need to upgrade their grades in specific subjects to qualify for their desired university or college placement. We offer targeted, high-impact tutorials in Mathematics, English, and Sciences, focusing on exam techniques and deep subject mastery. With flexible scheduling, you can focus on building the academic foundation you need to pursue your dream career in medicine, engineering, or business.",
+      certification: "KCSE Certificate",
     },
     {
       id: "tuition",
@@ -253,6 +260,7 @@ export const programsConfig: ProgramsConfig = {
       whoItIsFor: "Students needing extra help or hands-on practical experience in science/computers.",
       schedule: "By appointment / Scheduled Lab times",
       longDescription: "Tuition and Lab Sessions provide that extra layer of support that makes all the difference in student success. These are personalized academic coaching sessions where you can dive deeper into difficult topics or get hands-on experience in our science and computer labs. Whether you're conducting experiments for your biology coursework or practicing advanced software techniques, our labs are equipped and our tutors are ready to help you bridge the gap between theory and practice.",
+      certification: "Certificate",
     },
   ],
   faqs: [

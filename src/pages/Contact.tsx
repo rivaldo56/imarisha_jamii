@@ -6,6 +6,7 @@ import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
 import { PageTitle } from '../components/PageTitle';
 import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from '../components/ui/map';
 import gsap from 'gsap';
+import { PageFAQ } from '../sections/PageFAQ';
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -302,6 +303,9 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Page FAQ */}
+      <PageFAQ page="contact" title="Contact — FAQs" />
 
       {/* Soft Close */}
       <section className="pb-32 text-center px-6">
