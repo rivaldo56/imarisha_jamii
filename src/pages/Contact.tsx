@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink, MessageCircle } from 'lucide-react';
+import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { contactConfig } from '../config';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
@@ -10,7 +10,12 @@ import { PageFAQ } from '../sections/PageFAQ';
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [feedbackStatus, setFeedbackStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [feedbackCategory, setFeedbackCategory] = useState('Teachers conduct');
+
   const formRef = useRef<HTMLFormElement>(null);
+  const feedbackFormRef = useRef<HTMLFormElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
   const { data: settingsData } = useSanityData<any>(QUERIES.settings, {}, null);
   
@@ -50,6 +55,47 @@ export default function Contact() {
       setFormStatus('success');
       formRef.current?.reset();
     }, 1500);
+  };
+
+  // FEEDBACK FORM LOGIC
+  const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfY2ymSH78EHEEWpRX8uWsIhW0xVE2GRYgz_1nnQ_ZvXQ1ukQ/formResponse";
+  const FEEDBACK_FORM_ENTRIES = {
+    message:   "entry.521826196",    // Message / Feedback
+    category:  "entry.965276845",    // Category
+    name:      "entry.708882392",    // name
+    contact:   "entry.1375990561",   // Phone/Email
+    anonymous: "entry.415299389",    // Anonymous
+  };
+
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFeedbackStatus('submitting');
+
+    const formData = new FormData(feedbackFormRef.current!);
+    const data = new URLSearchParams();
+
+    // Mapping fields
+    data.append(FEEDBACK_FORM_ENTRIES.message, formData.get('message') as string);
+    data.append(FEEDBACK_FORM_ENTRIES.category, feedbackCategory);
+    data.append(FEEDBACK_FORM_ENTRIES.name, isAnonymous ? "" : (formData.get('name') as string || ""));
+    data.append(FEEDBACK_FORM_ENTRIES.contact, isAnonymous ? "" : (formData.get('contact') as string || ""));
+    data.append(FEEDBACK_FORM_ENTRIES.anonymous, isAnonymous ? "yes" : "No");
+
+    trackEvent('feedback_form_submit', { category: feedbackCategory });
+
+    try {
+      await fetch(FEEDBACK_FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data,
+      });
+      setFeedbackStatus('success');
+      feedbackFormRef.current?.reset();
+    } catch (err) {
+      console.error('Feedback submission error:', err);
+      // As per instructions: "On any response (including network error), navigate to success state — do not block the user."
+      setFeedbackStatus('success');
+    }
   };
 
   return (
@@ -264,6 +310,134 @@ export default function Contact() {
                 </table>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Feedback & Reporting Section */}
+      <section className="py-24 md:py-32 bg-offwhite border-t border-softblack/5">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="text-center mb-12">
+            <p className="text-sm font-bold text-softblack/40 uppercase tracking-widest mb-4">FEEDBACK & REPORTING</p>
+            <h2 className="text-4xl md:text-5xl font-sans font-extrabold text-softblack mb-4 tracking-tight">Something to say? We're listening.</h2>
+            <p className="text-softblack/60 font-body">All feedback is confidential and reviewed by admin only.</p>
+          </div>
+
+          <div className="bg-altwhite p-8 md:p-12 rounded-2xl border border-softblack/5 shadow-sm">
+            {feedbackStatus === 'success' ? (
+              <div className="py-12 flex flex-col items-center justify-center text-center">
+                <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6">
+                  <CheckCircle2 size={40} />
+                </div>
+                <h3 className="text-2xl font-sans font-bold text-softblack mb-4">Feedback Received!</h3>
+                <p className="text-softblack/60 font-body">
+                  Thank you. Your feedback has been received and will be reviewed.
+                </p>
+                <button 
+                  onClick={() => setFeedbackStatus('idle')}
+                  className="mt-8 text-bronze font-bold hover:underline"
+                >
+                  Send more feedback
+                </button>
+              </div>
+            ) : (
+              <form ref={feedbackFormRef} onSubmit={handleFeedbackSubmit} className="space-y-8">
+                {/* Message / Feedback */}
+                <div className="space-y-2">
+                  <label htmlFor="feedback-message" className="text-xs font-bold uppercase tracking-widest text-softblack/40">Message / Feedback *</label>
+                  <textarea
+                    id="feedback-message"
+                    name="message"
+                    required
+                    minLength={10}
+                    maxLength={500}
+                    rows={4}
+                    placeholder="Your message here (max 500 chars)"
+                    className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack resize-none"
+                  />
+                </div>
+
+                {/* Category */}
+                <div className="space-y-2">
+                  <label htmlFor="feedback-category" className="text-xs font-bold uppercase tracking-widest text-softblack/40">Category *</label>
+                  <select
+                    id="feedback-category"
+                    name="category"
+                    required
+                    value={feedbackCategory}
+                    onChange={(e) => setFeedbackCategory(e.target.value)}
+                    className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack appearance-none"
+                  >
+                    <option value="Teachers conduct">Teachers conduct</option>
+                    <option value="School services">School services</option>
+                    <option value="Suggestion">Suggestion</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                {/* Anonymous Toggle */}
+                <div className="space-y-4">
+                  <label className="flex items-center gap-3 cursor-pointer group w-fit">
+                    <input
+                      type="checkbox"
+                      checked={isAnonymous}
+                      onChange={(e) => setIsAnonymous(e.target.checked)}
+                      className="w-5 h-5 rounded border-softblack/10 text-bronze focus:ring-bronze"
+                    />
+                    <span className="text-sm font-bold text-softblack/70 group-hover:text-softblack transition-colors">Submit anonymously</span>
+                  </label>
+
+                  {/* Collapsible Name/Contact Fields */}
+                  <div 
+                    className={`grid transition-all duration-500 ease-out ${isAnonymous ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}
+                  >
+                    <div className="overflow-hidden space-y-8">
+                      <div className="grid md:grid-cols-2 gap-8 pt-4">
+                        <div className="space-y-2">
+                          <label htmlFor="feedback-name" className="text-xs font-bold uppercase tracking-widest text-softblack/40">Name</label>
+                          <input
+                            id="feedback-name"
+                            type="text"
+                            name="name"
+                            disabled={isAnonymous}
+                            placeholder="Your name"
+                            className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label htmlFor="feedback-contact" className="text-xs font-bold uppercase tracking-widest text-softblack/40">Phone or Email</label>
+                          <input
+                            id="feedback-contact"
+                            type="text"
+                            name="contact"
+                            disabled={isAnonymous}
+                            placeholder="your@email.com or 07xx..."
+                            className="w-full bg-offwhite border-b-2 border-softblack/10 focus:border-bronze outline-none py-3 px-1 transition-colors font-body text-softblack"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {isAnonymous && (
+                    <p className="text-xs text-softblack/40 font-body italic text-center animate-in fade-in duration-500">
+                      "Your identity will not be included in this submission."
+                    </p>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex justify-center pt-8">
+                  <button 
+                    type="submit"
+                    disabled={feedbackStatus === 'submitting'}
+                    className="bg-bronze text-white font-bold py-4 px-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-500 ease-out disabled:opacity-50 shadow-lg flex items-center gap-3"
+                  >
+                    {feedbackStatus === 'submitting' ? "Sending..." : "Send My Feedback"}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </section>
