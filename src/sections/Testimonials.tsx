@@ -27,7 +27,7 @@ export function Testimonials() {
         quote: t.quote || t.message || '',
         name: t.name || t.studentName || 'Anonymous',
         role: t.role || 'Former Student',
-        image: t.image?.asset ? urlFor(t.image).url() : (t.photo?.asset ? urlFor(t.photo).url() : '/success_top_left.jpg')
+        image: t.image?.asset ? urlFor(t.image).url() : ''
       }))
     : testimonialsConfig.testimonials;
 

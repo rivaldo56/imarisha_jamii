@@ -25,7 +25,7 @@ export function ProgramsSection() {
         category: p.category || 'Academic',
         year: p.duration,
         description: p.overview || p.description || "",
-        image: p.image?.asset ? urlFor(p.image).url() : '/programs_left_portrait.jpg'
+        image: p.image?.asset ? urlFor(p.image).url() : ''
       }))
     : featuredProjectsConfig.projects;
 

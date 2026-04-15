@@ -28,7 +28,7 @@ export default function ProgramDetail() {
     overview: sanityProgram.overview || sanityProgram.description,
     duration: sanityProgram.duration,
     requirements: sanityProgram.requirements,
-    image: sanityProgram.image ? urlFor(sanityProgram.image).url() : '/programs_left_portrait.jpg',
+    image: sanityProgram.image ? urlFor(sanityProgram.image).url() : '',
     whoItIsFor: sanityProgram.whoItIsFor,
     schedule: sanityProgram.schedule,
     longDescription: sanityProgram.longDescription

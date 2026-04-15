@@ -26,7 +26,7 @@ export default function StudentLife() {
   const { data: sanityTestimonials } = useSanityData<any[]>(QUERIES.testimonials, {}, []);
 
   const content = pageData || studentLifeConfig;
-  const heroImage = content.hero?.image?.asset ? urlFor(content.hero.image).url() : "/student_life_hero.png";
+  const heroImage = content.hero?.image?.asset ? urlFor(content.hero.image).url() : "";
   const testimonials = (sanityTestimonials && sanityTestimonials.length > 0)
     ? sanityTestimonials.map(t => ({
         name: t.name || t.studentName || 'Anonymous',
@@ -237,7 +237,7 @@ export default function StudentLife() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
             {/* Item 1 - Large */}
             <div className="masonry-item lg:col-span-2 lg:row-span-2 relative group overflow-hidden rounded-2xl bg-forest-mid shadow-lg">
-              <img src="/programs_thumb_1.jpg" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <img src="" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
               <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20">
                 <Users className="text-bronze mb-4" size={32} />
                 <h3 className="text-2xl md:text-4xl font-sans font-bold text-white mb-4">Evening Togetherness</h3>
@@ -259,7 +259,7 @@ export default function StudentLife() {
 
             {/* Item 3 */}
             <div className="masonry-item relative group overflow-hidden rounded-2xl bg-altwhite border border-softblack/5 shadow-lg">
-              <img src="/programs_thumb_2.jpg" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
+              <img src="" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
               <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
                 <div className="flex flex-col gap-4">
                   <Sparkles className="text-bronze" size={32} />
@@ -313,7 +313,7 @@ export default function StudentLife() {
             {/* Column 2: Tall Image 1 */}
             <div className="success-masonry-item lg:col-start-2 lg:row-span-2 relative overflow-hidden rounded-lg shadow-2xl group cursor-pointer opacity-0">
               <img 
-                src="/success_testimonial_1.jpg" 
+                src="" 
                 alt="Alumni Success 1" 
                 className="w-full h-full object-cover will-change-transform" 
               />
@@ -327,7 +327,7 @@ export default function StudentLife() {
             {/* Column 3 - Item 1 (Top) */}
             <div className="success-masonry-item lg:col-start-3 lg:row-start-1 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="/success_testimonial_2.jpg" 
+                src="" 
                 alt="Alumni Success 2" 
                 className="w-full h-full object-cover will-change-transform" 
               />
@@ -341,7 +341,7 @@ export default function StudentLife() {
             {/* Column 3 - Item 2 (Bottom) */}
             <div className="success-masonry-item lg:col-start-3 lg:row-start-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="/success_top_left.jpg" 
+                src="" 
                 alt="Alumni Success 3" 
                 className="w-full h-full object-cover will-change-transform" 
               />
@@ -355,7 +355,7 @@ export default function StudentLife() {
             {/* Column 4: Tall Image (Far Right) */}
             <div className="success-masonry-item lg:col-start-4 lg:row-span-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="/success_testimonial_3.jpg" 
+                src="" 
                 alt="Alumni Success 4" 
                 className="w-full h-full object-cover will-change-transform" 
               />

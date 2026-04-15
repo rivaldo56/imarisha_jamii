@@ -26,7 +26,7 @@ export default function Programs() {
         overview: p.description,
         duration: p.duration,
         requirements: p.requirements,
-        image: p.image ? urlFor(p.image).url() : '/programs_left_portrait.jpg',
+        image: p.image ? urlFor(p.image).url() : '',
         whoItIsFor: p.whoItIsFor,
         schedule: p.schedule,
         longDescription: p.longDescription,
