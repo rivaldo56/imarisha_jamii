@@ -25,3 +25,8 @@ dist-ssr
 
 # Brain/Artifacts
 .gemini/antigravity/brain/*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
