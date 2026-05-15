@@ -1,5 +1,5 @@
 import { defineConfig } from 'sanity';
-import { deskTool } from 'sanity/desk';
+import { structureTool } from 'sanity/structure';
 import { schemaTypes } from './schemaTypes';
 
 export default defineConfig({
@@ -10,7 +10,7 @@ export default defineConfig({
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
   basePath: '/admin',
 
-  plugins: [deskTool()],
+  plugins: [structureTool()],
 
   schema: {
     types: schemaTypes,

@@ -55,9 +55,7 @@ export function Navbar() {
             alt={siteConfig.brandName}
             className="h-10 w-auto transition-all duration-300"
           />
-          <span className={`text-lg sm:text-xl font-sans font-bold tracking-tight transition-colors duration-300 ${
-            isScrolled || !isHome ? 'text-softblack' : 'text-softblack md:text-white'
-          }`}>
+          <span className={`text-lg sm:text-xl font-sans font-bold tracking-tight transition-colors duration-300 text-softblack`}>
             Imarisha Jamii Centre
           </span>
         </Link>
@@ -68,9 +66,7 @@ export function Navbar() {
             <Link
               key={link.label}
               to={link.href}
-              className={`text-sm font-body font-medium transition-colors duration-300 hover:text-bronze ${
-                isScrolled || !isHome ? 'text-softblack/80' : 'text-softblack/90 md:text-white/80'
-              }`}
+              className={`text-sm font-body font-medium transition-colors duration-300 hover:text-bronze text-softblack/80`}
             >
               {link.label}
             </Link>
@@ -85,9 +81,7 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button 
-          className={`md:hidden p-2 transition-colors ${
-            isScrolled || !isHome ? 'text-softblack' : 'text-softblack'
-          }`}
+          className={`md:hidden p-2 transition-colors text-softblack`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
