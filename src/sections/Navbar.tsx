@@ -21,7 +21,7 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  const isHome = location.pathname === '/';
+
 
 
   // Body scroll lock

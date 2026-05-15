@@ -16,7 +16,7 @@ interface Announcement {
 }
 
 export function IntakeRibbon({ onClose }: IntakeRibbonProps) {
-  const { data: announcements, loading } = useSanityData<Announcement[]>(
+  const { data: announcements } = useSanityData<Announcement[]>(
     QUERIES.activeAnnouncements,
     {},
     []
