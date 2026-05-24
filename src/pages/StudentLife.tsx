@@ -400,5 +400,6 @@ export default function StudentLife() {
         ctaHref="/apply"
       />
     </div>
+  </>
   );
 }

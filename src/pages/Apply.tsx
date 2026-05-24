@@ -420,5 +420,6 @@ export default function Apply() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/5 rounded-full pointer-events-none" />
       </section>
     </div>
+  </>
   );
 }

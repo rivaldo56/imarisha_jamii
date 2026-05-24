@@ -232,5 +232,6 @@ export default function Programs() {
         ctaHref="/apply"
       />
     </div>
+  </>
   );
 }

@@ -90,7 +90,6 @@ export default function AboutUs() {
         canonicalUrl="/about"
       />
     <div ref={pageRef} className="bg-offwhite min-h-screen">
-      <PageTitle />
       
       {/* Hero Section - Matching Home/Programs Hero Pattern */}
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">
@@ -243,5 +242,6 @@ export default function AboutUs() {
         ctaHref="/apply"
       />
     </div>
+  </>
   );
 }

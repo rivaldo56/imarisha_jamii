@@ -107,7 +107,6 @@ export default function Contact() {
         canonicalUrl="/contact"
       />
     <div ref={pageRef} className="min-h-screen bg-offwhite">
-      <PageTitle />
       
       {/* Hero Section */}
       <section className="relative pt-44 pb-24 bg-forest-dark text-white overflow-hidden text-center">
@@ -504,5 +503,6 @@ export default function Contact() {
         </div>
       </section>
     </div>
+  </>
   );
 }

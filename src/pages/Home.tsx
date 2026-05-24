@@ -17,7 +17,7 @@ export default function Home() {
         keywords="adult education Nairobi, KCSE completion, adult learning Kenya, evening classes Nairobi, Imarisha Jamii Centre"
         canonicalUrl="/"
       />
-    <>
+
       {/* Hero Section - Parallax Layering */}
       <Hero />
 
@@ -49,3 +49,4 @@ export default function Home() {
     </>
   );
 }
+

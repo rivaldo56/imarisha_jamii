@@ -189,5 +189,6 @@ export default function ProgramDetail() {
         ctaHref="/contact"
       />
     </div>
+  </>
   );
 }
