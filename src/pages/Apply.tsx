@@ -1,3 +1,4 @@
+import { SEO } from '../components/SEO';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
@@ -145,6 +146,13 @@ export default function Apply() {
   ];
 
   return (
+    <>
+      <SEO
+        title="Apply Now | Enrol at Imarisha Jamii Centre"
+        description="Ready to start your education journey? Apply to Imarisha Jamii Centre online today. Our adult education programs in Nairobi include KCSE, computer packages, and professional courses."
+        keywords="apply Imarisha Jamii, adult school application Kenya, enrol KCSE Nairobi, online application adult school, register adult learning"
+        canonicalUrl="/apply"
+      />
     <div ref={pageRef} className="bg-offwhite min-h-screen font-body">
       {/* 1. HERO SECTION */}
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">

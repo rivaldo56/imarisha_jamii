@@ -5,7 +5,7 @@ import { aboutConfig } from '../config';
 import * as Icons from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
 import { PageFAQ } from '../sections/PageFAQ';
-import { PageTitle } from '../components/PageTitle';
+import { SEO } from '../components/SEO';
 import { trackEvent } from '../utils/analytics';
 import { Link } from 'react-router-dom';
 
@@ -82,6 +82,13 @@ export default function AboutUs() {
   }, []);
 
   return (
+    <>
+      <SEO
+        title="About Us | Imarisha Jamii Centre – Our Mission & Story"
+        description="Learn about Imarisha Jamii Centre — a community-driven adult education school in Nairobi. Discover our mission to empower adults through flexible, affordable learning programs."
+        keywords="about Imarisha Jamii, community school Nairobi, adult school Kenya, Nairobi adult education centre, school mission"
+        canonicalUrl="/about"
+      />
     <div ref={pageRef} className="bg-offwhite min-h-screen">
       <PageTitle />
       

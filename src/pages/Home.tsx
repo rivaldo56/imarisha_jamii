@@ -1,3 +1,4 @@
+import { SEO } from '../components/SEO';
 import { Hero } from '../sections/Hero';
 import { IntroGrid } from '../sections/IntroGrid';
 import { Services } from '../sections/Services';
@@ -9,6 +10,13 @@ import { EmotionalCTA } from '../sections/EmotionalCTA';
 
 export default function Home() {
   return (
+    <>
+      <SEO
+        title="Imarisha Jamii Centre | Adult Education & KCSE in Nairobi"
+        description="Imarisha Jamii Centre empowers adult learners in Nairobi with flexible KCSE completion, computer packages, and professional skills programs. Enrol today and transform your future."
+        keywords="adult education Nairobi, KCSE completion, adult learning Kenya, evening classes Nairobi, Imarisha Jamii Centre"
+        canonicalUrl="/"
+      />
     <>
       {/* Hero Section - Parallax Layering */}
       <Hero />

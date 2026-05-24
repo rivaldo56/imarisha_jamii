@@ -1,3 +1,4 @@
+import { SEO } from '../components/SEO';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -74,6 +75,13 @@ export default function Programs() {
   };
 
   return (
+    <>
+      <SEO
+        title="Our Programs | Imarisha Jamii Centre – KCSE, Computer & Professional Courses"
+        description="Explore flexible adult education programs at Imarisha Jamii Centre. Choose from KCSE Completion, Computer Packages, Business Skills, and more. Day and evening classes available."
+        keywords="adult programs Nairobi, KCSE completion Kenya, computer courses for adults, evening classes adult school, professional skills Nairobi"
+        canonicalUrl="/programs"
+      />
     <div ref={pageRef} className="bg-offwhite min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">

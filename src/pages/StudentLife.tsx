@@ -1,3 +1,4 @@
+import { SEO } from '../components/SEO';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -181,6 +182,13 @@ export default function StudentLife() {
   }, []);
 
   return (
+    <>
+      <SEO
+        title="Student Life | Imarisha Jamii Centre – Community, Events & Support"
+        description="Experience the vibrant student community at Imarisha Jamii Centre. From peer support and school events to mentorship and alumni success stories — see why our learners thrive."
+        keywords="student life Kenya, adult school community, Nairobi student experience, school events, peer learning, adult learner support"
+        canonicalUrl="/student-life"
+      />
     <div ref={pageRef} className="bg-offwhite min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-forest-dark">

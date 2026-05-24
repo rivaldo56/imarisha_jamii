@@ -1,3 +1,4 @@
+import { SEO } from '../components/SEO';
 import { useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
@@ -72,7 +73,19 @@ export default function ProgramDetail() {
 
   if (!program) return null;
 
+  const seoTitle = `${program.title} | Imarisha Jamii Centre`;
+  const seoDescription = program.overview
+    ? `${program.overview.slice(0, 140)}... Enrol now at Imarisha Jamii Centre, Nairobi.`
+    : `Learn about the ${program.title} program at Imarisha Jamii Centre. Flexible adult learning in Nairobi, Kenya.`;
+
   return (
+    <>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={`${program.title}, adult education Nairobi, ${program.title} Kenya, Imarisha Jamii program`}
+        canonicalUrl={`/programs/${id}`}
+      />
     <div ref={pageRef} className="bg-offwhite min-h-screen">
       {/* Hero Header */}
       <section className="relative pt-44 pb-32 bg-forest-dark text-white overflow-hidden">

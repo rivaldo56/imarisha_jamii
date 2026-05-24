@@ -3,7 +3,7 @@ import { Send, Phone, Mail, MapPin, Clock, ArrowRight, ExternalLink, MessageCirc
 import { contactConfig } from '../config';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
-import { PageTitle } from '../components/PageTitle';
+import { SEO } from '../components/SEO';
 import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from '../components/ui/map';
 import gsap from 'gsap';
 import { PageFAQ } from '../sections/PageFAQ';
@@ -99,6 +99,13 @@ export default function Contact() {
   };
 
   return (
+    <>
+      <SEO
+        title="Contact Us | Imarisha Jamii Centre – Nairobi, Kenya"
+        description="Get in touch with Imarisha Jamii Centre. Call us, WhatsApp, or visit our campus in Nairobi. We're here to answer your questions about enrolment, programs, and schedules."
+        keywords="contact Imarisha Jamii, adult school Nairobi contact, enrolment enquiry Kenya, school phone number, school location Nairobi"
+        canonicalUrl="/contact"
+      />
     <div ref={pageRef} className="min-h-screen bg-offwhite">
       <PageTitle />
       
