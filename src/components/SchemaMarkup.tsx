@@ -1,12 +1,27 @@
 import { siteConfig, contactConfig, programsConfig } from '../config';
+import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { urlFor } from '../lib/sanity';
+
+const SITE_URL = "https://imarishajamiicentre.co.ke";
 
 export function SchemaMarkup() {
+  const { data: sanityPrograms } = useSanityData<any[]>(QUERIES.allPrograms, {}, []);
+  
+  const programs = sanityPrograms?.length > 0 
+    ? sanityPrograms.map(p => ({
+        id: p._id,
+        title: p.name,
+        overview: p.description,
+        image: p.image ? urlFor(p.image).url() : '',
+      }))
+    : programsConfig.programs;
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     "name": siteConfig.brandName,
-    "url": window.location.origin,
-    "logo": `${window.location.origin}/logo.png`, // Assuming a logo.png exists in public
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/images/logo.png`, // Assuming a logo.png exists in public/images
     "description": siteConfig.siteDescription,
     "address": {
       "@type": "PostalAddress",
@@ -26,9 +41,9 @@ export function SchemaMarkup() {
     "@context": "https://schema.org",
     "@type": "AdultEducationCenter",
     "name": siteConfig.brandName,
-    "image": `${window.location.origin}/hero_main_portrait.jpg`,
-    "@id": window.location.origin,
-    "url": window.location.origin,
+    "image": `${SITE_URL}/hero_main_portrait.jpg`,
+    "@id": SITE_URL,
+    "url": SITE_URL,
     "telephone": contactConfig.info.phone,
     "address": {
       "@type": "PostalAddress",
@@ -60,20 +75,30 @@ export function SchemaMarkup() {
   const courseSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "itemListElement": programsConfig.programs.map((program, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
+    "itemListElement": programs.map((program, index) => {
+      const courseItem: any = {
         "@type": "Course",
         "name": program.title,
         "description": program.overview,
+        "url": `${SITE_URL}/programs/${program.id}`,
         "provider": {
           "@type": "Organization",
           "name": siteConfig.brandName,
-          "sameAs": window.location.origin
+          "sameAs": SITE_URL
         }
+      };
+
+      if (program.image) {
+        courseItem.image = program.image;
       }
-    }))
+
+      return {
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `${SITE_URL}/programs/${program.id}`,
+        "item": courseItem
+      };
+    })
   };
 
   const schemas = [organizationSchema, localBusinessSchema, courseSchema];
