@@ -99,3 +99,15 @@ a {
 .swiper-wrapper {
   transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
 }
+
+/* YouTube style top loader */
+@keyframes yt-loader {
+  0% { transform: scaleX(0); }
+  40% { transform: scaleX(0.4); }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+.animate-yt-loader {
+  animation: yt-loader 1.5s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+

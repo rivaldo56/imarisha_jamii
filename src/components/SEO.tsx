@@ -16,7 +16,9 @@ export function SEO({
   canonicalUrl = "", 
   ogImage = "/images/logo.png" 
 }: SEOProps) {
-  
+  const swahiliKeywords = "elimu ya watu wazima, kujiendeleza, kurudia KCSE Nairobi, shule ya watu wazima";
+  const finalKeywords = keywords.includes(swahiliKeywords) ? keywords : `${keywords}, ${swahiliKeywords}`;
+
   const siteUrl = "https://imarishajamiicentre.co.ke";
   const fullUrl = `${siteUrl}${canonicalUrl}`;
   const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
@@ -50,7 +52,7 @@ export function SEO({
     // Primary Meta Tags
     setMetaTag('name', 'title', title);
     setMetaTag('name', 'description', description);
-    setMetaTag('name', 'keywords', keywords);
+    setMetaTag('name', 'keywords', finalKeywords);
     setLinkTag('canonical', fullUrl);
 
     // Open Graph / Facebook / WhatsApp
