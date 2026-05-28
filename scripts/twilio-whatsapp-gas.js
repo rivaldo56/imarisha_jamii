@@ -245,9 +245,9 @@ function getOrCreateLogSheet() {
 function setupProperties() {
   const props = PropertiesService.getScriptProperties();
   props.setProperties({
-    'TWILIO_ACCOUNT_SID': 'ACb62ca145d86c326b581163c713f05b10',
-    'TWILIO_AUTH_TOKEN': '4de24e91365504898ebd996b4bd4e6be',
-    'TWILIO_WHATSAPP_NUMBER': 'whatsapp:+14155238886',
+    'TWILIO_ACCOUNT_SID': 'AC769458c528381f4183513e3360e46857',
+    'TWILIO_AUTH_TOKEN': '1bb7ab2b81c2036c178e9fcd1edf8e5e',
+    'TWILIO_WHATSAPP_NUMBER': 'whatsapp:+254791925619',
     'ADMIN_WHATSAPP_NUMBER': 'whatsapp:+254715076230'
   });
   Logger.log("Properties configured successfully.");
