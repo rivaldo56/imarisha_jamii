@@ -66,8 +66,16 @@ function onFormSubmit(e) {
       }
     }
 
+    // Append ALL Raw Data for context guarantee
+    messageBody += `\n\n--- *Full Details Submitted* ---\n`;
+    for (let key in namedValues) {
+      if (key !== "Timestamp" && namedValues[key] && namedValues[key][0]) {
+        messageBody += `_${key}:_ ${namedValues[key][0]}\n`;
+      }
+    }
+
     // Append the link to the Google Sheet to the bottom of EVERY message
-    messageBody += `\n\n🔗 *View Responses in Sheet:*\n${sheetUrl}`;
+    messageBody += `\n🔗 *View Responses in Sheet:*\n${sheetUrl}`;
 
     // Send WhatsApp notification
     const twilioResponse = sendWhatsAppMessage(messageBody);
@@ -159,18 +167,29 @@ ${dateStr}`;
  * Helper to get the first matching field value from namedValues
  */
 function getFieldValue(namedValues, possibleKeys) {
-  // Create a lowercase map of namedValues for case-insensitive matching
-  const lowerCaseValues = {};
+  const cleanValues = {};
   for (let key in namedValues) {
-    lowerCaseValues[key.toLowerCase()] = namedValues[key];
+    cleanValues[key.trim().toLowerCase()] = namedValues[key];
   }
   
+  // 1. Exact case-insensitive match
   for (let key of possibleKeys) {
-    const lowerKey = key.toLowerCase();
-    if (lowerCaseValues[lowerKey] && lowerCaseValues[lowerKey][0]) {
-      return lowerCaseValues[lowerKey][0];
+    const lowerKey = key.trim().toLowerCase();
+    if (cleanValues[lowerKey] && cleanValues[lowerKey][0]) {
+      return cleanValues[lowerKey][0];
     }
   }
+
+  // 2. Fuzzy match (e.g., if sheet column is "Your Message" and we look for "Message")
+  for (let sheetKey in cleanValues) {
+    for (let posKey of possibleKeys) {
+      const pKey = posKey.trim().toLowerCase();
+      if ((sheetKey.includes(pKey) || pKey.includes(sheetKey)) && cleanValues[sheetKey] && cleanValues[sheetKey][0]) {
+        return cleanValues[sheetKey][0];
+      }
+    }
+  }
+  
   return "N/A";
 }
 
