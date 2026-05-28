@@ -179,9 +179,12 @@ function sendWhatsAppMessage(body) {
 
   const url = `https://api.twilio.com/2010-04-01/Accounts/${config.TWILIO_ACCOUNT_SID}/Messages.json`;
   
+  const cleanFrom = (config.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886').replace(/\s+/g, '');
+  const cleanTo = (config.ADMIN_WHATSAPP_NUMBER || '').replace(/\s+/g, '');
+
   const payload = {
-    "From": config.TWILIO_WHATSAPP_NUMBER.startsWith('whatsapp:') ? config.TWILIO_WHATSAPP_NUMBER : `whatsapp:${config.TWILIO_WHATSAPP_NUMBER}`,
-    "To": config.ADMIN_WHATSAPP_NUMBER.startsWith('whatsapp:') ? config.ADMIN_WHATSAPP_NUMBER : `whatsapp:${config.ADMIN_WHATSAPP_NUMBER}`,
+    "From": cleanFrom.startsWith('whatsapp:') ? cleanFrom : `whatsapp:${cleanFrom}`,
+    "To": cleanTo.startsWith('whatsapp:') ? cleanTo : `whatsapp:${cleanTo}`,
     "Body": body
   };
 
@@ -247,8 +250,8 @@ function setupProperties() {
   props.setProperties({
     'TWILIO_ACCOUNT_SID': 'AC769458c528381f4183513e3360e46857',
     'TWILIO_AUTH_TOKEN': '1bb7ab2b81c2036c178e9fcd1edf8e5e',
-    'TWILIO_WHATSAPP_NUMBER': 'whatsapp:+254791925619',
-    'ADMIN_WHATSAPP_NUMBER': 'whatsapp:+254715076230'
+    'TWILIO_WHATSAPP_NUMBER': 'whatsapp:+14155238886',
+    'ADMIN_WHATSAPP_NUMBER': 'whatsapp:+254791925619',
   });
   Logger.log("Properties configured successfully.");
 }
