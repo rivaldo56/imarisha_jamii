@@ -45,22 +45,22 @@ export default function StudentLife() {
 
   const defaultGalleryImages = [
     {
-      imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/success_testimonial_1.jpg",
       alt: "Graduation Celebration",
       caption: "Class of 2025 celebrating graduation"
     },
     {
-      imageUrl: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/success_testimonial_2.jpg",
       alt: "Adult Classroom Study",
       caption: "Focused group discussions during evening hours"
     },
     {
-      imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/success_testimonial_3.jpg",
       alt: "Student Mentorship",
       caption: "One-on-one mentorship session with instructors"
     },
     {
-      imageUrl: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/success_testimonial_1.jpg",
       alt: "Computer Lab Practice",
       caption: "Hands-on computer training packages"
     }
@@ -286,7 +286,7 @@ export default function StudentLife() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
             {/* Item 1 - Large */}
             <div className="masonry-item lg:col-span-2 lg:row-span-2 relative group overflow-hidden rounded-2xl bg-forest-mid shadow-lg">
-              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=800" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <img src="/life_top_left.jpg" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
               <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20">
                 <Users className="text-bronze mb-4" size={32} />
                 <h3 className="text-2xl md:text-4xl font-sans font-bold text-white mb-4">Evening Togetherness</h3>
@@ -308,7 +308,7 @@ export default function StudentLife() {
 
             {/* Item 3 */}
             <div className="masonry-item relative group overflow-hidden rounded-2xl bg-altwhite border border-softblack/5 shadow-lg">
-              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
+              <img src="/why_bottom_small.jpg" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
               <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
                 <div className="flex flex-col gap-4">
                   <Sparkles className="text-bronze" size={32} />
