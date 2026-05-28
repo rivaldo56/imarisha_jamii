@@ -159,9 +159,16 @@ ${dateStr}`;
  * Helper to get the first matching field value from namedValues
  */
 function getFieldValue(namedValues, possibleKeys) {
+  // Create a lowercase map of namedValues for case-insensitive matching
+  const lowerCaseValues = {};
+  for (let key in namedValues) {
+    lowerCaseValues[key.toLowerCase()] = namedValues[key];
+  }
+  
   for (let key of possibleKeys) {
-    if (namedValues[key] && namedValues[key][0]) {
-      return namedValues[key][0];
+    const lowerKey = key.toLowerCase();
+    if (lowerCaseValues[lowerKey] && lowerCaseValues[lowerKey][0]) {
+      return lowerCaseValues[lowerKey][0];
     }
   }
   return "N/A";
