@@ -25,9 +25,10 @@ export default function StudentLife() {
 
   const { data: pageData } = useSanityData<any>(QUERIES.studentLife, {}, null);
   const { data: sanityTestimonials } = useSanityData<any[]>(QUERIES.testimonials, {}, []);
+  const { data: galleryData } = useSanityData<any[]>(QUERIES.studentLifeGallery, {}, []);
 
   const content = pageData || studentLifeConfig;
-  const heroImage = content.hero?.image?.asset ? urlFor(content.hero.image).url() : "";
+  const heroImage = content.heroImageUrl || (content.hero?.image?.asset ? urlFor(content.hero.image).url() : "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1200");
   const testimonials = (sanityTestimonials && sanityTestimonials.length > 0)
     ? sanityTestimonials.map(t => ({
         name: t.name || t.studentName || 'Anonymous',
@@ -41,6 +42,46 @@ export default function StudentLife() {
         text: t.quote,
         image: t.image
       }));
+
+  const defaultGalleryImages = [
+    {
+      imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
+      alt: "Graduation Celebration",
+      caption: "Class of 2025 celebrating graduation"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+      alt: "Adult Classroom Study",
+      caption: "Focused group discussions during evening hours"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+      alt: "Student Mentorship",
+      caption: "One-on-one mentorship session with instructors"
+    },
+    {
+      imageUrl: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&q=80&w=800",
+      alt: "Computer Lab Practice",
+      caption: "Hands-on computer training packages"
+    }
+  ];
+
+  const getGalleryImage = (index: number) => {
+    if (galleryData && galleryData[index]) {
+      const item = galleryData[index];
+      return {
+        imageUrl: item.imageUrl || defaultGalleryImages[index].imageUrl,
+        alt: item.alt || defaultGalleryImages[index].alt,
+        caption: item.caption || defaultGalleryImages[index].caption
+      };
+    }
+    return defaultGalleryImages[index];
+  };
+
+  const img1 = getGalleryImage(0);
+  const img2 = getGalleryImage(1);
+  const img3 = getGalleryImage(2);
+  const img4 = getGalleryImage(3);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -245,7 +286,7 @@ export default function StudentLife() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
             {/* Item 1 - Large */}
             <div className="masonry-item lg:col-span-2 lg:row-span-2 relative group overflow-hidden rounded-2xl bg-forest-mid shadow-lg">
-              <img src="" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=800" alt="Evening Classes" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
               <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20">
                 <Users className="text-bronze mb-4" size={32} />
                 <h3 className="text-2xl md:text-4xl font-sans font-bold text-white mb-4">Evening Togetherness</h3>
@@ -267,7 +308,7 @@ export default function StudentLife() {
 
             {/* Item 3 */}
             <div className="masonry-item relative group overflow-hidden rounded-2xl bg-altwhite border border-softblack/5 shadow-lg">
-              <img src="" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Group Study" className="w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700 ease-out" />
               <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
                 <div className="flex flex-col gap-4">
                   <Sparkles className="text-bronze" size={32} />
@@ -321,57 +362,85 @@ export default function StudentLife() {
             {/* Column 2: Tall Image 1 */}
             <div className="success-masonry-item lg:col-start-2 lg:row-span-2 relative overflow-hidden rounded-lg shadow-2xl group cursor-pointer opacity-0">
               <img 
-                src="" 
-                alt="Alumni Success 1" 
+                src={img1.imageUrl} 
+                alt={img1.alt} 
                 className="w-full h-full object-cover will-change-transform" 
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500" />
               <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              {img1.caption && (
+                <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-20">
+                  <p className="text-white text-xs font-sans font-bold bg-black/60 px-3 py-1.5 rounded backdrop-blur-sm inline-block">
+                    {img1.caption}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Column 3 - Item 1 (Top) */}
             <div className="success-masonry-item lg:col-start-3 lg:row-start-1 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="" 
-                alt="Alumni Success 2" 
+                src={img2.imageUrl} 
+                alt={img2.alt} 
                 className="w-full h-full object-cover will-change-transform" 
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500" />
               <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              {img2.caption && (
+                <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-20">
+                  <p className="text-white text-xs font-sans font-bold bg-black/60 px-2.5 py-1.5 rounded backdrop-blur-sm inline-block">
+                    {img2.caption}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Column 3 - Item 2 (Bottom) */}
             <div className="success-masonry-item lg:col-start-3 lg:row-start-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="" 
-                alt="Alumni Success 3" 
+                src={img3.imageUrl} 
+                alt={img3.alt} 
                 className="w-full h-full object-cover will-change-transform" 
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500" />
               <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              {img3.caption && (
+                <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-20">
+                  <p className="text-white text-xs font-sans font-bold bg-black/60 px-2.5 py-1.5 rounded backdrop-blur-sm inline-block">
+                    {img3.caption}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Column 4: Tall Image (Far Right) */}
             <div className="success-masonry-item lg:col-start-4 lg:row-span-2 relative overflow-hidden rounded-lg shadow-xl group cursor-pointer opacity-0">
               <img 
-                src="" 
-                alt="Alumni Success 4" 
+                src={img4.imageUrl} 
+                alt={img4.alt} 
                 className="w-full h-full object-cover will-change-transform" 
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500" />
               <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
               <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+              {img4.caption && (
+                <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-20">
+                  <p className="text-white text-xs font-sans font-bold bg-black/60 px-3 py-1.5 rounded backdrop-blur-sm inline-block">
+                    {img4.caption}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
