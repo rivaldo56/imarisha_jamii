@@ -11,7 +11,12 @@ document.addEventListener('load', (e) => {
   }
 }, true);
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found. Ensure the HTML file contains a <div id="root"></div>');
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <App />
   </StrictMode>,
