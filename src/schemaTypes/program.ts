@@ -42,6 +42,25 @@ export const program = {
       },
     },
     {
+      name: 'galleryImages',
+      title: 'Gallery Images',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+      description: 'Upload 4-8 images for the gallery slider (e.g., fee structure, posters).',
+    },
+    {
       name: 'whoItIsFor',
       title: 'Who It Is For',
       type: 'text',

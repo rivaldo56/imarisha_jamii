@@ -1,9 +1,9 @@
 import { SEO } from '../components/SEO';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { programsConfig } from '../config';
-import { ArrowLeft, ArrowRight, Clock, Calendar, GraduationCap, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock, Calendar, GraduationCap, CheckCircle2, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { EmotionalCTA } from '../sections/EmotionalCTA';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { urlFor } from '../lib/sanity';
@@ -12,6 +12,8 @@ export default function ProgramDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Check static config
   const staticProgram = programsConfig.programs.find(p => p.id === id);
@@ -34,6 +36,15 @@ export default function ProgramDetail() {
     schedule: sanityProgram.schedule,
     longDescription: sanityProgram.longDescription
   } : null);
+
+  let galleryImages: string[] = [];
+  if (sanityProgram?.galleryImages && Array.isArray(sanityProgram.galleryImages) && sanityProgram.galleryImages.length > 0) {
+    galleryImages = sanityProgram.galleryImages.map((img: any) => urlFor(img).url());
+  } else if (staticProgram?.galleryImages && staticProgram.galleryImages.length > 0) {
+    galleryImages = staticProgram.galleryImages;
+  } else {
+    galleryImages = programsConfig.defaultGalleryImages || [];
+  }
 
   useEffect(() => {
     if (!sanityLoading && !program) {
@@ -136,6 +147,70 @@ export default function ProgramDetail() {
         </div>
       </section>
 
+      {/* Program Gallery Section */}
+      {galleryImages.length > 0 && (
+        <section className="py-16 md:py-24 bg-white border-y border-softblack/5">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <h2 className="detail-fade-in text-2xl md:text-3xl font-sans font-bold text-softblack mb-10 flex items-center gap-4">
+              <span className="w-8 h-1 bg-bronze rounded-full" /> Program Information
+            </h2>
+            <div className="relative group detail-fade-in">
+              <div 
+                className="aspect-video w-full rounded-2xl overflow-hidden cursor-pointer relative bg-zinc-100 border border-softblack/5 shadow-sm"
+                onClick={() => setIsFullscreen(true)}
+              >
+                <img 
+                  src={galleryImages[currentImageIndex]} 
+                  alt={`Program Info ${currentImageIndex + 1}`}
+                  className="w-full h-full object-contain md:object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                  <div className="bg-black/50 text-white px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md">
+                    Tap to expand
+                  </div>
+                </div>
+              </div>
+              
+              {galleryImages.length > 1 && (
+                <>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentImageIndex(prev => prev === 0 ? galleryImages.length - 1 : prev - 1);
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-softblack shadow-lg hover:bg-white transition-colors"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentImageIndex(prev => prev === galleryImages.length - 1 ? 0 : prev + 1);
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-softblack shadow-lg hover:bg-white transition-colors"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+
+                  <div className="flex justify-center gap-2 mt-6">
+                    {galleryImages.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentImageIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          idx === currentImageIndex ? 'bg-bronze w-6' : 'bg-softblack/20 hover:bg-softblack/40'
+                        }`}
+                        aria-label={`Go to image ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Deep Dive Content */}
       <section className="py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-6 md:px-12">
@@ -189,6 +264,51 @@ export default function ProgramDetail() {
         ctaHref="/contact"
       />
     </div>
+
+    {/* Fullscreen Lightbox Modal */}
+    {isFullscreen && galleryImages.length > 0 && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-8">
+        <button 
+          onClick={() => setIsFullscreen(false)}
+          className="absolute top-6 right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors z-50"
+        >
+          <X size={28} />
+        </button>
+        
+        <img 
+          src={galleryImages[currentImageIndex]} 
+          alt="Fullscreen view"
+          className="max-w-full max-h-full object-contain select-none"
+        />
+
+        {galleryImages.length > 1 && (
+          <>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentImageIndex(prev => prev === 0 ? galleryImages.length - 1 : prev - 1);
+              }}
+              className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-2 md:p-4"
+            >
+              <ChevronLeft size={48} />
+            </button>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentImageIndex(prev => prev === galleryImages.length - 1 ? 0 : prev + 1);
+              }}
+              className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-2 md:p-4"
+            >
+              <ChevronRight size={48} />
+            </button>
+            
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 font-mono tracking-widest text-sm bg-black/40 px-4 py-2 rounded-full backdrop-blur-md">
+              {currentImageIndex + 1} / {galleryImages.length}
+            </div>
+          </>
+        )}
+      </div>
+    )}
   </>
   );
 }

@@ -159,6 +159,7 @@ export interface ProgramItem {
   schedule: string;
   longDescription: string;
   certification: string;
+  galleryImages?: string[];
 }
 
 export interface ProgramsConfig {
@@ -174,6 +175,7 @@ export interface ProgramsConfig {
   keywords?: string;
   programs: ProgramItem[];
   faqs: FAQItem[];
+  defaultGalleryImages?: string[];
 }
 
 export const programsConfig: ProgramsConfig = {
@@ -187,6 +189,11 @@ export const programsConfig: ProgramsConfig = {
   },
   metaDescription: "Explore our flexible adult school programs in Nairobi. We offer KCSE completion, bridging courses, and professional skills training.",
   keywords: "KCSE completion, bridging courses Nairobi, adult education programs, professional skills Kenya",
+  defaultGalleryImages: [
+    "/school_background.png",
+    "/hero_main_portrait.jpg",
+    "/student_life_hero.png"
+  ],
   programs: [
     {
       id: "high_school",
