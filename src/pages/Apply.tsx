@@ -111,6 +111,14 @@ export default function Apply() {
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
+    
+    // Honeypot check
+    if (formData.get('_honey')) {
+      // Silently succeed for bots
+      navigate('/thank-you');
+      return;
+    }
+
     const data = new URLSearchParams();
     
     formData.forEach((value, key) => {
@@ -230,6 +238,10 @@ export default function Apply() {
                 onSubmit={handleCustomSubmit}
                 className="space-y-12"
               >
+                {/* Honeypot field - hidden from real users */}
+                <div className="hidden" aria-hidden="true">
+                  <input type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+                </div>
                 {/* Step 1: Student Details */}
                 <div data-step="1" className={`${step === 1 ? 'block animate-in fade-in slide-in-from-right-4 duration-500' : 'hidden'} space-y-8`}>
                   <h3 className="text-2xl font-sans font-bold text-softblack border-b border-softblack/10 pb-4">Student Details</h3>

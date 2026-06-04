@@ -4,7 +4,6 @@ import { contactConfig } from '../config';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
 import { trackEvent, ANALYTICS_EVENTS } from '../utils/analytics';
 import { SEO } from '../components/SEO';
-import { Map, MapMarker, MarkerContent, MarkerPopup, MapControls } from '../components/ui/map';
 import gsap from 'gsap';
 import { PageFAQ } from '../sections/PageFAQ';
 
@@ -45,6 +44,14 @@ export default function Contact() {
     
     const formData = new FormData(formRef.current!);
     
+    // Honeypot check
+    if (formData.get('_honey')) {
+      // Silently succeed for bots
+      setFormStatus('success');
+      formRef.current?.reset();
+      return;
+    }
+    
     trackEvent(ANALYTICS_EVENTS.CONTACT_FORM_SUBMIT || 'contact_form_submit', { 
       name: formData.get('name'),
       email: formData.get('email')
@@ -72,6 +79,14 @@ export default function Contact() {
     setFeedbackStatus('submitting');
 
     const formData = new FormData(feedbackFormRef.current!);
+    
+    // Honeypot check
+    if (formData.get('_honey')) {
+      setFeedbackStatus('success');
+      feedbackFormRef.current?.reset();
+      return;
+    }
+
     const data = new URLSearchParams();
 
     // Mapping fields
@@ -213,6 +228,10 @@ export default function Contact() {
                     <p className="text-softblack/60 font-body">Tell us what you're looking for. We'll guide you from there.</p>
                   </div>
                   <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                    {/* Honeypot field - hidden from real users */}
+                    <div className="hidden" aria-hidden="true">
+                      <input type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+                    </div>
                     <div className="space-y-2">
                       <label htmlFor="full-name" className="text-sm font-bold text-softblack/70 ml-1">Full Name</label>
                       <input
@@ -348,6 +367,10 @@ export default function Contact() {
               </div>
             ) : (
               <form ref={feedbackFormRef} onSubmit={handleFeedbackSubmit} className="space-y-8">
+                {/* Honeypot field - hidden from real users */}
+                <div className="hidden" aria-hidden="true">
+                  <input type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+                </div>
                 {/* Message / Feedback */}
                 <div className="space-y-2">
                   <label htmlFor="feedback-message" className="text-xs font-bold uppercase tracking-widest text-softblack/40">Message / Feedback *</label>
@@ -452,34 +475,16 @@ export default function Contact() {
       <section className="pb-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="bg-altwhite rounded-3xl border border-softblack/5 shadow-xl overflow-hidden h-[500px] md:h-[600px] relative">
-            <Map 
-              center={[contactConfig.info.coordinates.lng, contactConfig.info.coordinates.lat]} 
-              zoom={15}
-              attributionControl={{ compact: true }}
-            >
-              <MapControls position="bottom-right" showZoom showLocate showFullscreen />
-              <MapMarker 
-                longitude={contactConfig.info.coordinates.lng} 
-                latitude={contactConfig.info.coordinates.lat}
-              >
-                <MarkerContent>
-                  <div className="relative group/marker">
-                    <div className="w-12 h-12 bg-bronze rounded-full flex items-center justify-center text-white shadow-2xl border-4 border-white group-hover/marker:scale-110 transition-transform duration-300">
-                      <MapPin size={24} />
-                    </div>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 bg-softblack text-white text-xs py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none font-bold">
-                      Imarisha Jamii Centre
-                    </div>
-                  </div>
-                </MarkerContent>
-                <MarkerPopup closeButton className="max-w-[220px]">
-                  <h4 className="font-sans font-bold text-softblack text-base mb-1">Imarisha Jamii Centre</h4>
-                  <p className="text-xs text-softblack/60 font-body leading-tight">
-                    Umoja Innercore, Within Friends Church Compound. Nairobi.
-                  </p>
-                </MarkerPopup>
-              </MapMarker>
-            </Map>
+            <iframe 
+              src={`https://maps.google.com/maps?q=${contactConfig.info.coordinates.lat},${contactConfig.info.coordinates.lng}&z=15&output=embed`}
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={true} 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Imarisha Jamii Centre Location"
+            ></iframe>
           </div>
         </div>
       </section>
