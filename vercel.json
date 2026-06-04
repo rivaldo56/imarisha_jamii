@@ -2,6 +2,7 @@
   "redirects": [
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.imarishajamiicentre.co.ke" }],
       "destination": "https://imarishajamiicentre.co.ke/$1",
       "permanent": true
     }
