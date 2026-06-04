@@ -42,6 +42,8 @@ export interface HeroConfig {
   heroImageAlt: string;
   overlayText: string;
   navLinks: NavLink[];
+  sliderImages?: string[];
+  sliderInterval?: number;
 }
 
 export const heroConfig: HeroConfig = {
@@ -50,6 +52,14 @@ export const heroConfig: HeroConfig = {
   heroImageAlt: "Adult learner in classroom setting",
   overlayText: "Your Comeback Starts Here",
   navLinks: mainNavLinks,
+  sliderImages: [
+    "/school_background.png",
+    "/hero_main_portrait.jpg",
+    "/hero_secondary_portrait.jpg",
+    "/hero_tertiary_portrait.jpg",
+    "/student_life_hero.png"
+  ],
+  sliderInterval: 3000,
 };
 
 // About Us Page

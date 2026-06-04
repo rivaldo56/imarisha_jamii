@@ -9,7 +9,19 @@ export const homepage = {
       type: 'object',
       fields: [
         { name: 'backgroundText', title: 'Background Text', type: 'text' },
-        { name: 'heroImage', title: 'Hero Image', type: 'image' },
+        { name: 'heroImage', title: 'Hero Image (Deprecated)', type: 'image' },
+        {
+          name: 'heroImages',
+          title: 'Hero Slider Images',
+          type: 'array',
+          of: [{ type: 'image', options: { hotspot: true } }]
+        },
+        { 
+          name: 'sliderInterval', 
+          title: 'Slider Interval (ms)', 
+          type: 'number',
+          description: 'Time in milliseconds between slide transitions (e.g., 3000 for 3 seconds). Default is 3000.'
+        },
         { name: 'overlayText', title: 'Overlay Text', type: 'string' },
       ],
     },
