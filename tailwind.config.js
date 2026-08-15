@@ -97,8 +97,8 @@ module.exports = {
           "100%": { opacity: "1", transform: "scale(1)" },
         },
         "marquee": {
-          "0%": { transform: "translateX(100%)" },
-          "100%": { transform: "translateX(-100%)" },
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-25%)" },
         },
         "bounce-subtle": {
           "0%, 100%": { transform: "translateY(0)" },
