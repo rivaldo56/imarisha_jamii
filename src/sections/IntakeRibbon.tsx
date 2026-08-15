@@ -2,6 +2,7 @@ import { X } from 'lucide-react';
 import { intakeRibbonConfig } from '../config';
 import { Link } from 'react-router-dom';
 import { useSanityData, QUERIES } from '../lib/useSanityData';
+import { getMarqueeAnimationDuration } from './intakeRibbonSpeed';
 
 interface IntakeRibbonProps {
   onClose: () => void;
@@ -12,6 +13,7 @@ interface Announcement {
   message: string;
   ctaText: string;
   ctaHref: string;
+  scrollDurationSeconds?: number;
   active: boolean;
 }
 
@@ -28,6 +30,7 @@ export function IntakeRibbon({ onClose }: IntakeRibbonProps) {
         text: announcements[0].message || announcements[0].title,
         ctaText: announcements[0].ctaText || intakeRibbonConfig.ctaText,
         ctaHref: announcements[0].ctaHref || intakeRibbonConfig.ctaHref,
+        scrollDurationSeconds: announcements[0].scrollDurationSeconds ?? intakeRibbonConfig.scrollDurationSeconds,
       }
     : intakeRibbonConfig;
 
@@ -37,7 +40,10 @@ export function IntakeRibbon({ onClose }: IntakeRibbonProps) {
     <div className="sticky top-0 z-[60] bg-bronze backdrop-blur-md text-white py-2 px-4 relative flex items-center justify-center border-b border-white/10 overflow-hidden transition-all duration-500">
       <div className="flex items-center gap-4 max-w-7xl w-full justify-center pr-8 md:pr-0 overflow-hidden">
         <div className="flex-1 overflow-hidden relative h-6 flex items-center">
-          <div className="whitespace-nowrap animate-marquee absolute">
+          <div
+            className="whitespace-nowrap animate-marquee absolute"
+            style={{ animationDuration: getMarqueeAnimationDuration(activeAnnouncement.scrollDurationSeconds) }}
+          >
             <span className="text-[10px] sm:text-xs md:text-sm font-medium tracking-tight mx-4">
               {activeAnnouncement.text}
             </span>

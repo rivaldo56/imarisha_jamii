@@ -1,3 +1,5 @@
+import type { NumberRule } from 'sanity';
+
 export const announcement = {
   name: 'announcement',
   title: 'Announcement',
@@ -22,6 +24,14 @@ export const announcement = {
       name: 'ctaHref',
       title: 'CTA Link',
       type: 'string',
+    },
+    {
+      name: 'scrollDurationSeconds',
+      title: 'Banner Speed (seconds per loop)',
+      type: 'number',
+      description: 'Higher values move more slowly. Recommended range: 25–60 seconds.',
+      initialValue: 35,
+      validation: (rule: NumberRule) => rule.integer().min(10).max(120),
     },
     {
       name: 'startDate',

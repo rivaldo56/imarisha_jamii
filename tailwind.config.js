@@ -111,7 +111,7 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "fade-in-up": "fade-in-up 0.6s ease-out forwards",
         "scale-in": "scale-in 0.8s ease-out forwards",
-        "marquee": "marquee 25s linear infinite",
+        "marquee": "marquee 35s linear infinite",
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
       },
     },

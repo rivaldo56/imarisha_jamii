@@ -15,6 +15,7 @@ export const intakeRibbonConfig = {
   text: "March 2026 Intake is Now Open — Secure your spot today!",
   ctaText: "Apply Now",
   ctaHref: "/apply",
+  scrollDurationSeconds: 35,
   isVisible: true,
 };
 
